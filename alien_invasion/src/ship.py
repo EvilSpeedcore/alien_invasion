@@ -1,7 +1,4 @@
-import pygame
-
 from images import load_image
-from paths import Paths
 
 
 class Ship():

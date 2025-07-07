@@ -8,14 +8,15 @@ dependencies = [
     "pygame>=2.6.1",
 ]
 
-[tool.isort]
-known_third_party = ["pygame"]
-src_paths = ["alien_invasion/src"]
-
 [dependency-groups]
 lint = [
     "isort>=6.0.1",
+    "ruff>=0.12.2",
 ]
 prod = [
     "pygame>=2.6.1",
 ]
+
+[tool.isort]
+known_third_party = ["pygame"]
+src_paths = ["alien_invasion/src"]

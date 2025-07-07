@@ -1,8 +1,6 @@
-import pygame
 from pygame.sprite import Sprite
 
 from images import load_image
-from paths import Paths
 
 
 class ShipConsumable(Sprite):

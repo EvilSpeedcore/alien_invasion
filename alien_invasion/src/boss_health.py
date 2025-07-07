@@ -1,5 +1,3 @@
-from os import path
-
 from pygame.sprite import Sprite
 
 from images import load_image
