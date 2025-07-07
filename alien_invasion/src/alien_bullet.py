@@ -18,7 +18,7 @@ class AlienBullet(Sprite):
             :param alien: Instance of Aliens class.
 
         """
-        super(AlienBullet, self).__init__()
+        super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
 

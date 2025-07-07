@@ -16,7 +16,7 @@ def find_angle_with_cos(value):
 
     cos_values = []
     cos = {}
-    with open(Paths.math() / 'cos.csv', 'r', encoding='utf-8') as f:
+    with open(Paths.math() / 'cos.csv', encoding='utf-8') as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             cos[float(row[1])] = int(row[0])
@@ -39,7 +39,7 @@ def find_angle_with_sin(value):
     """
     sin_values = []
     sin = {}
-    with open(Paths.math() / 'sin.csv', 'r') as f:
+    with open(Paths.math() / 'sin.csv', encoding='utf-8') as f:
         reader = csv.reader(f, delimiter=';')
         for row in reader:
             sin[float(row[1])] = int(row[0])

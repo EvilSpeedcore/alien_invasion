@@ -4,7 +4,7 @@ from boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from ship_consumables import ShipAmmo, ShipHealth, ShipShield
 
 
-class Hud():
+class Hud:
     """Class, which represents head-up display."""
     def __init__(self, ai_settings, screen, stats, ship):
         """Initialize hud.
@@ -82,7 +82,7 @@ class Hud():
     def prep_shield(self):
         """Prepare to drawn ship shield."""
         self.shield = Group()
-        for shield in range(self.stats.shields_left):
+        for _ in range(self.stats.shields_left):
             stats_shield = ShipShield(self.ai_settings, self.screen, self.ship)
             stats_shield.rect.x = 20
             stats_shield.rect.y = 750

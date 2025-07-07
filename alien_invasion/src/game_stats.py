@@ -1,4 +1,4 @@
-class GameStats():
+class GameStats:
     """Class, which monitors game statistics."""
     def __init__(self, ai_settings):
         """Initialize game statistics.

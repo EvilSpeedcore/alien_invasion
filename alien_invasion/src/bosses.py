@@ -15,7 +15,7 @@ class Boss(Sprite):
             :param screen: Application window.
 
         """
-        super(Boss, self).__init__()
+        super().__init__()
         self.ai_settings = ai_settings
         self.screen = screen
         self.screen_rect = screen.get_rect()

@@ -15,7 +15,7 @@ class Bullet(Sprite):
 
         """
 
-        super(Bullet, self).__init__()
+        super().__init__()
         self.screen = screen
         self.image = load_image('bullet.png')
 

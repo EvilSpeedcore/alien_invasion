@@ -1,7 +1,7 @@
 from images import load_image
 
 
-class Ship():
+class Ship:
     """Class, which represents playable character in game - ship."""
     def __init__(self, ai_settings, screen):
         """Initialize ship.

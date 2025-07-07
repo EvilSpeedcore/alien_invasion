@@ -4,7 +4,7 @@ import pygame.font
 from images import load_image
 
 
-class Button():
+class Button:
     """Class, which represents button."""
     def __init__(self, screen, msg):
         """Initialize button.

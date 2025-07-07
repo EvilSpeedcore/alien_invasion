@@ -39,7 +39,7 @@ class GreenBossBullet(BossBullet):
             :param boss: Instance of Boss class.
 
         """
-        super(GreenBossBullet, self).__init__(ai_settings, screen)
+        super().__init__(ai_settings, screen)
         self.image = load_image('alien_bullet.png')
 
         # Rectangular area of the image.
@@ -106,7 +106,7 @@ class RedBossBullet(BossBullet):
             :param boss: Instance of Boss class
 
         """
-        super(RedBossBullet, self).__init__(ai_settings, screen)
+        super().__init__(ai_settings, screen)
         self.image = load_image('red_alien_bullet.png')
 
         # Rectangular area of the image.
@@ -238,7 +238,7 @@ class BlueBossBullet(BossBullet):
             :param angle: Bullet shooting angle.
 
         """
-        super(BlueBossBullet, self).__init__(ai_settings, screen)
+        super().__init__(ai_settings, screen)
         self.image = load_image('blue_alien_bullet.png')
 
         # Rectangular area of the image.

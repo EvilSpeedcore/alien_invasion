@@ -70,22 +70,12 @@ class ShipShield(ShipConsumable):
             :param ship: Instance of Ship class.
 
         """
-        if self.ship.current_ship_rotation == "up":
+        if self.ship.current_ship_rotation in ("up", "down"):
             self.centerx = self.ship.centerx
             self.rect.centerx = self.centerx
             self.centery = self.ship.centery
             self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "down":
-            self.centerx = self.ship.centerx
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "left":
-            self.centerx = self.ship.centerx - 8.0
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 3.0
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "right":
+        elif self.ship.current_ship_rotation in ("left", "right"):
             self.centerx = self.ship.centerx - 8.0
             self.rect.centerx = self.centerx
             self.centery = self.ship.centery + 3.0

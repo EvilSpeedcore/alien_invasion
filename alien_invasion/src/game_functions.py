@@ -50,9 +50,8 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
         fire_bullet(ai_settings, screen, stats, ship, bullets)
     if event.key == pygame.K_r:
         pass
-    if stats.game_active:
-        if event.key == pygame.K_SPACE:
-            ai_settings.state = ai_settings.paused
+    if stats.game_active and event.key == pygame.K_SPACE:
+        ai_settings.state = ai_settings.paused
     if event.key == pygame.K_s:
         ai_settings.state = ai_settings.running
     if event.key == pygame.K_d:
@@ -256,10 +255,10 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
         # Prepare initial state of game.
         hud.show_hud()
         ship.blitme()
-        for health in health.sprites():
-            health.draw_item()
-        for ammo in ammo.sprites():
-            ammo.draw_item()
+        for health_sprite in health.sprites():
+            health_sprite.draw_item()
+        for ammo_sprite in ammo.sprites():
+            ammo_sprite.draw_item()
         aliens.draw(screen)
         bosses.draw(screen)
     for black_hole in black_holes.sprites():
@@ -380,26 +379,25 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bull
                         health.empty()
 
             # Extra ammo spawn.
-            if not health_spawned:
-                if stats.ammo < 3:
-                    random_number = random.choice([x for x in range(1, 6)])
-                    if random_number == 1:
-                        new_ammo = ShipAmmo(ai_settings, screen)
+            if not health_spawned and stats.ammo < 3:
+                random_number = random.choice([x for x in range(1, 6)])
+                if random_number == 1:
+                    new_ammo = ShipAmmo(ai_settings, screen)
 
-                        _banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
-                        _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                                    x not in _banned_coordinates_x]
+                    _banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
+                    _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                                x not in _banned_coordinates_x]
 
-                        _banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
-                        _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                                    y not in _banned_coordinates_y]
+                    _banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
+                    _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                                y not in _banned_coordinates_y]
 
-                        new_ammo.rect.x = random.choice(_available_coordinates_x)
-                        new_ammo.rect.y = random.choice(_available_coordinates_y)
+                    new_ammo.rect.x = random.choice(_available_coordinates_x)
+                    new_ammo.rect.y = random.choice(_available_coordinates_y)
 
-                        ammo.add(new_ammo)
-                    else:
-                        ammo.empty()
+                    ammo.add(new_ammo)
+                else:
+                    ammo.empty()
 
             #  Aliens movement speed increase.
 
@@ -852,14 +850,13 @@ def use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields):
         :param used_shields: Container to hold and manage ShipShield Sprites.
 
     """
-    if stats.game_active:
-        if stats.shields_left >= 1:
-            effect = pygame.mixer.Sound(Paths.effects() / '1.ogg')
-            effect.play()
-            used_shield = ShipShield(ai_settings, screen, ship)
-            used_shields.add(used_shield)
-            stats.shields_left -= 1
-            hud.prep_shield()
+    if stats.game_active and stats.shields_left >= 1:
+        effect = pygame.mixer.Sound(Paths.effects() / '1.ogg')
+        effect.play()
+        used_shield = ShipShield(ai_settings, screen, ship)
+        used_shields.add(used_shield)
+        stats.shields_left -= 1
+        hud.prep_shield()
 
 
 def update_ship_shield(ship, alien_bullets, used_shields, boss_bullets):
@@ -1240,10 +1237,9 @@ def create_black_hole(ai_settings, screen, ship, dt, black_holes):
 
     """
     ai_settings.black_hole_spawn_timer += dt
-    if len(black_holes) == 0:
-        if ai_settings.black_hole_spawn_timer > 2000:
-            black_hole = BlackHole(ai_settings, screen, ship)
-            black_holes.add(black_hole)
+    if len(black_holes) == 0 and ai_settings.black_hole_spawn_timer > 2000:
+        black_hole = BlackHole(ai_settings, screen, ship)
+        black_holes.add(black_hole)
     elif len(black_holes) == 1:
         if ai_settings.black_hole_spawn_timer > 6000:
             black_holes.empty()

@@ -34,7 +34,7 @@ class Alien(Sprite):
             :param ship: Instance of Ship class.
 
         """
-        super(Alien, self).__init__()
+        super().__init__()
         self.screen = screen
         self.ai_settings = ai_settings
 
