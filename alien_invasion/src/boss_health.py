@@ -1,9 +1,7 @@
 from os import path
 
-import pygame
 from pygame.sprite import Sprite
 
-from paths import Paths
 from images import load_image
 
 

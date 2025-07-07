@@ -1,6 +1,5 @@
 import math
 
-import pygame
 from pygame.sprite import Sprite
 
 import find_angle as fa

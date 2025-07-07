@@ -1,0 +1,13 @@
+[project]
+name = "alien-invasion"
+version = "0.1.0"
+description = "alien invation game"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pygame>=2.6.1",
+]
+
+[tool.isort]
+known_third_party = ["pygame"]
+src_paths = ["alien_invasion/src"]

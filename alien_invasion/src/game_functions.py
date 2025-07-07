@@ -1,17 +1,19 @@
-import sys
-import pygame
-import rotation as rt
 import random
-from bullet import Bullet
-from alien import Alien
-from ship_consumables import ShipHealth, ShipAmmo, ShipShield
+import sys
 from time import sleep
+
+import pygame
+
+import rotation as rt
+from alien import Alien
 from alien_bullet import AlienBullet
-from bosses import GreenBoss, RedBoss, BlueBoss
-from bosses_bullets import GreenBossBullet, RedBossBullet, BlueBossBullet
-from boss_shield import GreenBossShield, RedBossShield, BlueBossShield
 from black_hole import BlackHole
+from boss_shield import BlueBossShield, GreenBossShield, RedBossShield
+from bosses import BlueBoss, GreenBoss, RedBoss
+from bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
+from bullet import Bullet
 from paths import Paths
+from ship_consumables import ShipAmmo, ShipHealth, ShipShield
 
 
 def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields):
@@ -211,7 +213,7 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
     screen.fill(ai_settings.bg_color)
 
     #  Draw ship bullets on screen.
-    for bullet in bullets.sprites():        
+    for bullet in bullets.sprites():
         bullet.draw_bullet()
 
     # Draw alien bullets on screen.

@@ -1,7 +1,7 @@
+from random import choice
+
 import pygame
 from pygame.sprite import Sprite
-
-from random import choice
 
 from images import load_image
 

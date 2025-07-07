@@ -1,7 +1,7 @@
 from pygame.sprite import Group, GroupSingle
 
-from ship_consumables import ShipHealth, ShipAmmo,ShipShield
-from boss_health import GreenBossHealth, RedBossHealth, BlueBossHealth
+from boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
+from ship_consumables import ShipAmmo, ShipHealth, ShipShield
 
 
 class Hud():
