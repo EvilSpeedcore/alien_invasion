@@ -13,11 +13,13 @@ dependencies = [
 [package.dev-dependencies]
 lint = [
     { name = "isort" },
-    { name = "mypy" },
     { name = "ruff" },
 ]
 prod = [
     { name = "pygame" },
+]
+type = [
+    { name = "mypy" },
 ]
 
 [package.metadata]
@@ -26,10 +28,10 @@ requires-dist = [{ name = "pygame", specifier = ">=2.6.1" }]
 [package.metadata.requires-dev]
 lint = [
     { name = "isort", specifier = ">=6.0.1" },
-    { name = "mypy", specifier = ">=1.16.1" },
     { name = "ruff", specifier = ">=0.12.2" },
 ]
 prod = [{ name = "pygame", specifier = ">=2.6.1" }]
+type = [{ name = "mypy", specifier = ">=1.16.1" }]
 
 [[package]]
 name = "isort"
