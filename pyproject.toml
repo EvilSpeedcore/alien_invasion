@@ -9,6 +9,10 @@ dependencies = [
 ]
 
 [dependency-groups]
+auto = [
+    "tox>=4.27.0",
+    "tox-uv>=1.26.1",
+]
 lint = [
     "isort>=6.0.1",
     "ruff>=0.12.2",
@@ -48,3 +52,19 @@ select = [
 
 [tool.mypy]
 disallow_untyped_defs = true
+
+[tool.tox]
+requires = ["tox>=4.19"]
+env_list = ["3.13", "lint", "type"]
+
+[tool.tox.env.lint]
+runner = "uv-venv-lock-runner"
+description = "run isort and ruff"
+dependency_groups = ["lint"]
+commands = [["isort", "."], ["ruff", "check"]]
+
+[tool.tox.env.type]
+runner = "uv-venv-lock-runner"
+description = "run mypy"
+dependency_groups = ["type"]
+commands = [["mypy", "."]]

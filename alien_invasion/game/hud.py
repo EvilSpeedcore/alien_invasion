@@ -46,7 +46,7 @@ class Hud:
 
     def prep_health(self) -> None:
         """Prepare to drawn ship health."""
-        self.health: Group["ShipHealth"] = Group()
+        self.health: Group[ShipHealth] = Group()
         for ship_number in range(self.stats.ships_left):
             ship_health = ShipHealth(self.ai_settings, self.screen)
             ship_health.rect.x = 20 + ship_number * (ship_health.rect.width + 10)
