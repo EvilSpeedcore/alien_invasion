@@ -1,6 +1,6 @@
 import csv
 
-from paths import Paths
+from game.paths import Paths
 
 
 def find_angle_with_cos(value):

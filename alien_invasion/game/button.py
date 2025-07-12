@@ -1,7 +1,7 @@
 import pygame
 import pygame.font
 
-from images import load_image
+from game.images import load_image
 
 
 class Button:

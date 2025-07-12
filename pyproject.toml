@@ -11,6 +11,7 @@ dependencies = [
 [dependency-groups]
 lint = [
     "isort>=6.0.1",
+    "mypy>=1.16.1",
     "ruff>=0.12.2",
 ]
 prod = [
@@ -19,11 +20,13 @@ prod = [
 
 [tool.isort]
 known_third_party = ["pygame"]
-src_paths = ["alien_invasion/src"]
+src_paths = ["alien_invasion/game"]
 
 [tool.ruff]
 line-length = 120
-src = ["alien_invasion/src"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["game"]
 
 [tool.ruff.lint]
 select = [

@@ -2,7 +2,7 @@ import random
 
 from pygame.sprite import Sprite
 
-from images import load_image
+from game.images import load_image
 
 
 class BlackHole(Sprite):

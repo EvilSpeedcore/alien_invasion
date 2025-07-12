@@ -1,7 +1,7 @@
 import pygame
 from pygame import Surface
 
-from paths import Paths
+from game.paths import Paths
 
 
 def load_image(relative_path: str) -> Surface:

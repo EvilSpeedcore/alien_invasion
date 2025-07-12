@@ -2,8 +2,8 @@ import math
 
 from pygame.sprite import Sprite
 
-import find_angle as fa
-from images import load_image
+import game.find_angle as fa
+from game.images import load_image
 
 
 class AlienBullet(Sprite):

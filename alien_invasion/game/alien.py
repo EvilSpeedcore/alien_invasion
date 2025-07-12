@@ -3,7 +3,7 @@ from random import choice
 import pygame
 from pygame.sprite import Sprite
 
-from images import load_image
+from game.images import load_image
 
 
 def collidable(alien_1, alien_2):
