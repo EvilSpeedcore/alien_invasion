@@ -43,3 +43,6 @@ select = [
     # isort
     "I",
 ]
+
+[tool.mypy]
+disallow_untyped_defs = true

@@ -1,17 +1,25 @@
 from random import choice
+from typing import TYPE_CHECKING
 
 import pygame
 from pygame.sprite import Sprite
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.sprite import Group
+    from pygame.surface import Surface
 
-def collidable(alien_1, alien_2):
+    from game.settings import Settings
+    from game.ship import Ship
+
+
+def collidable(alien_1: "Alien", alien_2: "Alien") -> bool:
     """Check collision between two aliens.
 
     Args:
-        :param alien_1: One alien from group of sprites.
-        :param alien_2: Another alien from group of sprites.
+        :param Alien alien_1: One alien from group of sprites.
+        :param Alien alien_2: Another alien from group of sprites.
 
     Returns:
         :return bool: True if successful, False otherwise.
@@ -25,13 +33,16 @@ def collidable(alien_1, alien_2):
 
 class Alien(Sprite):
     """Class, which represents alien ships."""
-    def __init__(self, ai_settings, screen, ship):
+    def __init__(self,
+                 ai_settings: "Settings",
+                 screen: "Surface",
+                 ship: "Ship") -> None:
         """Initialize alien.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param ship: Instance of Ship class.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
+            :param Ship ship: Instance of Ship class.
 
         """
         super().__init__()
@@ -54,8 +65,8 @@ class Alien(Sprite):
         self.rect.centery = choice(self.available_coordinates)
 
         # Current position of alien.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         # Fleet creation time.
         self.fleet_creation_time = None
@@ -63,12 +74,12 @@ class Alien(Sprite):
         # Alien color.
         self.alien_color = None
 
-    def update(self, aliens, ship):
+    def update(self, aliens: "Group", ship: "Ship") -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens.
 
         Args:
-            :param aliens: Group of alien sprites.
-            :param ship: Instance of Ship class.
+            :param Group aliens: Group of alien sprites.
+            :param Ship ship: Instance of Ship class.
 
         """
         aliens_collision = pygame.sprite.spritecollide(self, aliens, False, collidable)
