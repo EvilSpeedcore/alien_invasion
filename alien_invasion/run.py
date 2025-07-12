@@ -1,3 +1,5 @@
+from typing import TYPE_CHECKING
+
 import pygame
 from pygame.sprite import Group, GroupSingle
 
@@ -8,8 +10,15 @@ from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
 
+if TYPE_CHECKING:
+    from game.alien import Alien
+    from game.alien_bullet import AlienBullet
+    from game.bosses_bullets import BossBullet
+    from game.bullet import Bullet
+    from game.ship_consumables import ShipAmmo, ShipHealth
 
-def run_game():
+
+def run_game() -> None:
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
     pygame.init()
@@ -20,17 +29,20 @@ def run_game():
     stats = GameStats(ai_settings)
     hud = Hud(ai_settings, screen, stats, ship)
     play_button = Button(screen, "Start")
-    bullets = Group()
-    aliens = Group()
-    alien_bullets = Group()
-    health = Group()
-    ammo = Group()
-    used_shields = Group()
-    bosses = GroupSingle()
-    boss_shields = GroupSingle()
+
+    bullets: Group["Bullet"] = Group()
+    aliens: Group["Alien"] = Group()
+    alien_bullets: Group["AlienBullet"] = Group()
+    health: Group["ShipHealth"] = Group()
+    ammo: Group["ShipAmmo"] = Group()
+    used_shields: Group["ShipHealth"] = Group()
+    boss_bullets: Group["BossBullet"] = Group()
+    # TODO: How to type GroupSingle?
+    bosses: GroupSingle = GroupSingle()
+    boss_shields: GroupSingle = GroupSingle()
+    black_holes: GroupSingle = GroupSingle()
+
     clock = pygame.time.Clock()
-    boss_bullets = Group()
-    black_holes = GroupSingle()
     ai_settings.state = ai_settings.running
     # Main game cycle.
     while True:

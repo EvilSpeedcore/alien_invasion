@@ -74,11 +74,11 @@ class Alien(Sprite):
         # Alien color.
         self.alien_color = None
 
-    def update(self, aliens: "Group", ship: "Ship") -> None:
+    def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens.
 
         Args:
-            :param Group aliens: Group of alien sprites.
+            :param Group[Alien] aliens: Group of alien sprites.
             :param Ship ship: Instance of Ship class.
 
         """
