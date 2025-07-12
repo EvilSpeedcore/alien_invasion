@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pygame.sprite import Sprite
 
 from game.images import load_image
@@ -6,7 +8,7 @@ from game.images import load_image
 class BossHealth(Sprite):
     """Parent class, which represents health and shield bar of boss."""
 
-    IMAGE_DIR = None
+    IMAGE_DIR: Optional[str] = None
 
     def __init__(self, ai_settings, screen):
         """Initialize boss health.
