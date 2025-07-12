@@ -1,3 +1,6 @@
+from game.state import State
+
+
 class Settings:
     """Class, which store setting of the game."""
     def __init__(self) -> None:
@@ -36,9 +39,7 @@ class Settings:
         self.black_hole_despawn_timer = 0
 
         # Game settings
-        self.running = 1
-        self.paused = 0
-        self.state = None
+        self.state: State | None = None
         self.boss_stages = (4, 8, 12)
         self.game_sleep_time = 0.3
         self.non_boss_stages = tuple(non_boss_stage for non_boss_stage in range(1, self.boss_stages[2] + 1) if

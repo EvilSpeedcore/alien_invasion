@@ -9,6 +9,7 @@ from game.game_stats import GameStats
 from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
+from game.state import State
 
 if TYPE_CHECKING:
     from game.alien import Alien
@@ -30,6 +31,7 @@ def run_game() -> None:
     hud = Hud(ai_settings, screen, stats, ship)
     play_button = Button(screen, "Start")
 
+    # TODO: How to type Group?
     bullets: Group[Bullet] = Group()
     aliens: Group[Alien] = Group()
     alien_bullets: Group[AlienBullet] = Group()
@@ -37,19 +39,20 @@ def run_game() -> None:
     ammo: Group[ShipAmmo] = Group()
     used_shields: Group[ShipHealth] = Group()
     boss_bullets: Group[BossBullet] = Group()
+
     # TODO: How to type GroupSingle?
     bosses: GroupSingle = GroupSingle()
     boss_shields: GroupSingle = GroupSingle()
     black_holes: GroupSingle = GroupSingle()
 
     clock = pygame.time.Clock()
-    ai_settings.state = ai_settings.running
+    ai_settings.state = State.RUNNING
     # Main game cycle.
     while True:
         dt = clock.tick()
         gf.check_events(ai_settings, screen, stats, hud, play_button, ship, aliens, bullets, used_shields)
         gf.check_keys_pressed(ship)
-        if ai_settings.state == ai_settings.running:
+        if ai_settings.state == State.RUNNING:
             if stats.game_active:
                 ship.update()
                 gf.update_ship_shield(ship, alien_bullets, used_shields, boss_bullets)

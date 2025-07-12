@@ -14,6 +14,7 @@ from game.bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.bullet import Bullet
 from game.paths import Paths
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
+from game.state import State
 
 
 def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields):
@@ -51,9 +52,9 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
     if event.key == pygame.K_r:
         pass
     if stats.game_active and event.key == pygame.K_SPACE:
-        ai_settings.state = ai_settings.paused
+        ai_settings.state = State.PAUSED
     if event.key == pygame.K_s:
-        ai_settings.state = ai_settings.running
+        ai_settings.state = State.RUNNING
     if event.key == pygame.K_d:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
 
@@ -289,7 +290,7 @@ def update_bullets(ai_settings, screen, stats, hud, ship, aliens, bullets, alien
         :param black_holes: Container to hold and manage single BlackHole Sprite.
 
     """
-    bullets.update(ship)
+    bullets.update()
     for bullet in bullets.copy():
         # For UP bullet direction.
         if bullet.rect.bottom <= 0:
@@ -869,7 +870,7 @@ def update_ship_shield(ship, alien_bullets, used_shields, boss_bullets):
         :param boss_bullets: Container to hold and manage BossBullet Sprites.
 
     """
-    used_shields.update(ship)
+    used_shields.update()
     pygame.sprite.groupcollide(used_shields, alien_bullets, False, True)
     pygame.sprite.groupcollide(used_shields, boss_bullets, False, True)
 
