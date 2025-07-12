@@ -1,17 +1,25 @@
+from typing import TYPE_CHECKING
+
 from pygame.sprite import Sprite
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
+    from game.ship import Ship
+
 
 class Bullet(Sprite):
     """Class, which represents ship bullet."""
-    def __init__(self, ai_settings, screen, ship):
+    def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
         """Initialize ship bullet.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param ship: Instance of Ship class.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surace screen: Display Surface.
+            :param Ship ship: Instance of Ship class.
 
         """
 
@@ -62,7 +70,7 @@ class Bullet(Sprite):
         self.speed_factor = ai_settings.bullet_speed_factor
         self.bullet_rotation = ship.current_ship_rotation
 
-    def update(self, ship):
+    def update(self) -> None:
         """Update bullet position depending on ship current rotation.
 
             Args:
@@ -106,7 +114,7 @@ class Bullet(Sprite):
             self.rect.centery = self.y_down_right
             self.rect.centerx = self.x_down_right
                                 
-    def draw_bullet(self):
+    def draw_bullet(self) -> None:
         """Draw bullet on screen depending on ship current rotation."""
         if self.bullet_rotation == "up":
             """Вывод пули на экран."""

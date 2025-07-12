@@ -3,7 +3,7 @@ import csv
 from game.paths import Paths
 
 
-def find_angle_with_cos(value):
+def find_angle_with_cos(value: float) -> float:
     """Find angle with cos value.
 
     Args:
@@ -13,7 +13,6 @@ def find_angle_with_cos(value):
         :return: Angle.
 
     """
-
     cos_values = []
     cos = {}
     with open(Paths.math() / 'cos.csv', encoding='utf-8') as f:
@@ -27,7 +26,7 @@ def find_angle_with_cos(value):
     return cos[x]
 
 
-def find_angle_with_sin(value):
+def find_angle_with_sin(value: float) -> float:
     """FInd angle with sin value.
 
     Args:

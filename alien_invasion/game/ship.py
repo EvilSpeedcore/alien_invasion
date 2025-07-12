@@ -1,14 +1,21 @@
+from typing import TYPE_CHECKING
+
 from game.images import load_image
+
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
 
 
 class Ship:
     """Class, which represents playable character in game - ship."""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
         """Initialize ship.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
 
         """
         self.screen = screen
@@ -50,7 +57,7 @@ class Ship:
         # Direction in which ship currently moving.
         self.desirable_ship_rotation = None
 
-    def update(self):
+    def update(self) -> None:
         """Update ship position depending on movement flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.centerx += self.ai_settings.ship_speed_factor
@@ -63,16 +70,16 @@ class Ship:
         self.rect.centerx = self.centerx
         self.rect.centery = self.centery
 
-    def center_ship(self):
+    def center_ship(self) -> None:
         """Set ship position on center of the screen."""
         self.centerx = self.screen_rect.centerx
         self.centery = self.screen_rect.centery
 
-    def prepare_for_boss(self):
+    def prepare_for_boss(self) -> None:
         """Set ship position below boss position."""
         self.centerx = self.screen_rect.centerx
         self.centery = 700
              
-    def blitme(self):
+    def blitme(self) -> None:
         """Draw ship."""
         self.screen.blit(self.image, self.rect)

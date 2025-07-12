@@ -1,19 +1,25 @@
 import math
+from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
 import game.find_angle as fa
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
+
 
 class BossBullet(Sprite):
     """Parent class, which represents bullet of the boss."""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
         """Initialize bullet of the boss.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
 
         """
         super().__init__()
@@ -23,14 +29,14 @@ class BossBullet(Sprite):
         self.image = None
         self.rect = None
 
-    def draw_bullet(self):
+    def draw_bullet(self) -> None:
         """Draw bullet on screen."""
         self.screen.blit(self.image, self.rect)
 
 
 class GreenBossBullet(BossBullet):
     """Child class, which represents bullet of green boss."""
-    def __init__(self, ai_settings, screen, boss):
+    def __init__(self, ai_settings, screen, boss) -> None:
         """Initialize bullet of green boss.
 
         Args:

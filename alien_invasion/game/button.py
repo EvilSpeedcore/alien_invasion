@@ -1,17 +1,22 @@
+from typing import TYPE_CHECKING
+
 import pygame
 import pygame.font
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
 
 class Button:
     """Class, which represents button."""
-    def __init__(self, screen, msg):
+    def __init__(self, screen: "Surface", msg: str) -> None:
         """Initialize button.
 
         Args:
-            :param screen: Display Surface.
-            :param msg(str): Button label.
+            :param Surface screen: Display Surface.
+            :param str msg: Button label.
 
         """
 
@@ -28,11 +33,11 @@ class Button:
         self.msg = msg
         self.prep_msg(msg)
 
-    def prep_msg(self, msg):
+    def prep_msg(self, msg: str) -> None:
         """Turn message to Surface subject.
 
         Args:
-            :param msg: Button label.
+            :param str msg: Button label.
 
         """
         if self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
@@ -44,7 +49,7 @@ class Button:
             self.msg_image_rect = self.msg_image.get_rect()
             self.msg_image_rect.center = self.ellipse_rect.center
             
-    def draw_button(self):
+    def draw_button(self) -> None:
         """Draw button with text on screen."""
         self.screen.blit(self.button_image, self.ellipse_rect)
         self.screen.blit(self.msg_image, self.msg_image_rect)

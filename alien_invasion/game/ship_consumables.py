@@ -1,16 +1,24 @@
+from typing import TYPE_CHECKING
+
 from pygame.sprite import Sprite
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
+    from game.ship import Ship
+
 
 class ShipConsumable(Sprite):
     """Parent class, which represents items that ship can pick up on screen and use later."""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
         """Initialize ship consumable.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
 
         """
         super().__init__()
@@ -19,14 +27,14 @@ class ShipConsumable(Sprite):
         self.spawned_item = None
         self.rect = None
 
-    def draw_item(self):
+    def draw_item(self) -> None:
         """Draw item on screen."""
         self.screen.blit(self.spawned_item, self.rect)
 
 
 class ShipHealth(ShipConsumable):
     """Child class of ShipConsumable class, which represents health pick-ups."""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings: "Settings", screen: "Surface"):
         super().__init__(ai_settings, screen)
         self.image = load_image('stats_health.png')
         self.spawned_item = load_image('spawned_health.png')
@@ -35,7 +43,7 @@ class ShipHealth(ShipConsumable):
 
 class ShipAmmo(ShipConsumable):
     """Child class of ShipConsumable class, which represents ammo pick-ups."""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings: "Settings", screen: "Surface"):
         super().__init__(ai_settings, screen)
         self.image = load_image('stats_ammo.png')
         self.spawned_item = load_image('spawned_ammo.png')
@@ -44,13 +52,13 @@ class ShipAmmo(ShipConsumable):
 
 class ShipShield(ShipConsumable):
     """Child class of ShipConsumable class, which represents shield pick-ups."""
-    def __init__(self, ai_settings, screen, ship):
+    def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
         """Initialize ship shield.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param ship: Instance of Ship class.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
+            :param Ship ship: Instance of Ship class.
 
         """
         super().__init__(ai_settings, screen)
@@ -63,13 +71,8 @@ class ShipShield(ShipConsumable):
         self.centerx = float(self.rect.centerx)
         self.centery = float(self.rect.centery)
 
-    def update(self, ship):
-        """Update position of used shield relatively ship position.
-
-        Args:
-            :param ship: Instance of Ship class.
-
-        """
+    def update(self) -> None:
+        """Update position of used shield relatively ship position."""
         if self.ship.current_ship_rotation in ("up", "down"):
             self.centerx = self.ship.centerx
             self.rect.centerx = self.centerx

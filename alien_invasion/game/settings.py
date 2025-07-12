@@ -1,6 +1,6 @@
 class Settings:
     """Class, which store setting of the game."""
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize game settings"""
         # Screen settings.
         self.screen_width = 1200
@@ -41,19 +41,18 @@ class Settings:
         self.state = None
         self.boss_stages = (4, 8, 12)
         self.game_sleep_time = 0.3
-        self.non_boss_stages = (non_boss_stage for non_boss_stage in range(1, self.boss_stages[2] + 1) if
-                                non_boss_stage not in self.boss_stages)
-        self.non_boss_stages = tuple(self.non_boss_stages)
+        self.non_boss_stages = tuple(non_boss_stage for non_boss_stage in range(1, self.boss_stages[2] + 1) if
+                                     non_boss_stage not in self.boss_stages)
 
         # Settings initialization.
         self.initialize_dynamic_settings()
 
-    def initialize_dynamic_settings(self):
+    def initialize_dynamic_settings(self) -> None:
         """Initialize settings, that change during the game."""
         self.alien_speed_factor = 0.1
         self.alien_bullet_speed_factor = 0.07
 
-    def increase_aliens_speed(self):
+    def increase_aliens_speed(self) -> None:
         """Increase alien speed with stage progression."""
         self.alien_speed_factor += 0.01
         self.alien_bullet_speed_factor += 0.02

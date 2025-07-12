@@ -1,8 +1,15 @@
 import random
+from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
 from game.images import load_image
+
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
+    from game.ship import Ship
 
 
 class BlackHole(Sprite):
@@ -10,13 +17,16 @@ class BlackHole(Sprite):
 
     IMAGE_DIR = 'black_hole'
 
-    def __init__(self, ai_settings, screen, ship):
+    def __init__(self,
+                 ai_settings: "Settings",
+                 screen: "Surface",
+                 ship: "Ship") -> None:
         """Initialize black hole.
 
         Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface..
-            :param ship: Instance of Ship class.
+            :param Settings ai_settings: Instance of Settings class.
+            :param Surface screen: Display Surface.
+            :param Ship ship: Instance of Ship class.
 
         """
         super().__init__()
@@ -25,7 +35,7 @@ class BlackHole(Sprite):
         self.screen_rect = screen.get_rect()
 
         # List, which will contain loaded images.
-        self.images = []
+        self.images: list[Surface] = []
 
         # List for names of images in directory.
         self.rt_list = ['black_hole_1.png', 'black_hole_2.png', 'black_hole_3.png', 'black_hole_4.png',
@@ -60,16 +70,16 @@ class BlackHole(Sprite):
         # Black hole animation step counter.
         self.rt_image_number = 0
 
-    def draw_black_hole(self):
+    def draw_black_hole(self) -> None:
         """Draw black hole on screen."""
         self.screen.blit(self.image, self.rect)
 
-    def prepare_images(self):
+    def prepare_images(self) -> None:
         """Add loaded images to list."""
         for image in self.rt_list:
             self.images.append(load_image(f'{self.IMAGE_DIR}/{image}'))
 
-    def update(self):
+    def update(self) -> None:
         """Change image of black hole to make animation effect."""
         hp_image = self.images[self.rt_image_number]
         self.image = hp_image.copy()
