@@ -87,13 +87,9 @@ def run_game() -> None:
 
                 gf.update_ship_health(stats, hud, ship, health)
                 gf.update_ship_ammo(stats, hud, ship, ammo)
-        elif ai_settings.state == ai_settings.paused:
-            pass
-        if ai_settings.state == ai_settings.running:
+
             gf.update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, play_button,
                              health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
-        else:
-            pass
 
 
 if __name__ == '__main__':
