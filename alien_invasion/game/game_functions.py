@@ -24,6 +24,12 @@ class MainMenuEvents:
     play: bool = False
 
 
+@dataclass
+class PauseEvents:
+    quit: bool = False
+    unpause: bool = False
+
+
 def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields):
     """Handle events, when a key is pressed down.
 
@@ -56,14 +62,40 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
         rt.rotate(ship)
     if event.key == pygame.K_a:
         fire_bullet(ai_settings, screen, stats, ship, bullets)
-    if event.key == pygame.K_r:
-        pass
     if event.key == pygame.K_s:
         ai_settings.state = State.RUNNING
     if stats.game_active and event.key == pygame.K_SPACE:
         ai_settings.state = State.PAUSED
     if event.key == pygame.K_d and ai_settings.state != State.PAUSED:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
+
+
+def check_pause_keydown_events(event, ship) -> PauseEvents:
+    unpause = False
+    if event.key == pygame.K_RIGHT:
+        ship.desirable_ship_rotation = "right"
+        ship.moving_right = True
+        rt.rotate(ship)
+    if event.key == pygame.K_LEFT:
+        ship.desirable_ship_rotation = "left"
+        ship.moving_left = True
+        rt.rotate(ship)
+    if event.key == pygame.K_UP:
+        ship.desirable_ship_rotation = "up"
+        ship.moving_up = True
+        rt.rotate(ship)
+    if event.key == pygame.K_DOWN:
+        ship.desirable_ship_rotation = "down"
+        ship.moving_down = True
+        rt.rotate(ship)
+    if event.key == pygame.K_s:
+        unpause = True
+    return PauseEvents(unpause=unpause)
+
+
+def check_pause_keyup_events(event, ship) -> PauseEvents:
+    check_keyup_events(event, ship)
+    return PauseEvents()
 
 
 def check_keyup_events(event, ship):
@@ -121,6 +153,26 @@ def check_events(ai_settings, screen, stats, hud, ship, bullets, used_shields):
             check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+
+
+def check_pause_events(ship) -> PauseEvents:
+    """Handle keyup, keydown and mouse events.
+
+    Args:
+        :param ship: Instance of Ship class.
+
+    Returns:
+        :return PauseEvents: Pause events.
+
+    """
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return PauseEvents(quit=True)
+        elif event.type == pygame.KEYDOWN:
+            return check_pause_keydown_events(event, ship)
+        elif event.type == pygame.KEYUP:
+            return check_pause_keyup_events(event, ship)
+    return PauseEvents()
 
 
 def check_main_menu_events(stats, play_button) -> MainMenuEvents:

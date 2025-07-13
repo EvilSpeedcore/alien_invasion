@@ -50,19 +50,24 @@ def run_game() -> None:
 
     # Main game cycle
     while True:
+        # Pause
         while settings.state == State.PAUSED:
-            gf.check_events(settings, screen, stats, hud, ship, bullets, used_shields)
+            pause_events = gf.check_pause_events(ship)
+            if pause_events.quit:
+                gf.quit()
+            if pause_events.unpause:
+               settings.state = State.RUNNING
 
         # Menu
         while settings.state == State.MAIN_MENU:
             dt = clock.tick()
-            events = gf.check_main_menu_events(stats, play_button)
+            menu_events = gf.check_main_menu_events(stats, play_button)
             gf.update_main_menu_screen(settings, screen, stats, play_button)
 
-            if events.play:
+            if menu_events.play:
                 gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields)
                 settings.state = State.RUNNING
-            if events.quit:
+            if menu_events.quit:
                 gf.quit()
 
         # Game
