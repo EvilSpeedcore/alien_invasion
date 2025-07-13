@@ -1,5 +1,6 @@
 import random
 import sys
+from dataclasses import dataclass
 from time import sleep
 
 import pygame
@@ -15,6 +16,12 @@ from game.bullet import Bullet
 from game.paths import Paths
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
 from game.state import State
+
+
+@dataclass
+class MainMenuEvents:
+    quit: bool = False
+    play: bool = False
 
 
 def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields):
@@ -93,7 +100,7 @@ def check_keyup_events(event, ship):
             rt.rotate_to_left(ship)
 
 
-def check_events(ai_settings, screen, stats, hud, play_button, ship, aliens, bullets, used_shields):
+def check_events(ai_settings, screen, stats, hud, ship, bullets, used_shields):
     """Handle keyup, keydown and mouse events.
 
     Args:
@@ -101,9 +108,7 @@ def check_events(ai_settings, screen, stats, hud, play_button, ship, aliens, bul
         :param screen: Display Surface.
         :param stats: Instance of GameStats class.
         :param hud: Instance of Hud class.
-        :param play_button: Instance of Button class.
         :param ship: Instance of Ship class.
-        :param aliens: Container to hold and manage Alien Sprites.
         :param bullets: Container to hold and manage Bullet Sprites.
         :param used_shields: Container to hold and manage ShipShield Sprites.
 
@@ -116,38 +121,48 @@ def check_events(ai_settings, screen, stats, hud, play_button, ship, aliens, bul
             check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, used_shields)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, ship)
+
+
+def check_main_menu_events(stats, play_button) -> MainMenuEvents:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return MainMenuEvents(quit=True)
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(ai_settings, screen, stats, hud, play_button, ship, aliens, mouse_x, mouse_y)
+            return MainMenuEvents(play=check_play_button(stats, play_button))
+
+    return MainMenuEvents()
 
 
-def check_play_button(ai_settings, screen, stats, hud, play_button, ship, aliens, mouse_x, mouse_y):
+def check_play_button(stats, play_button) -> bool:
     """Check if button to start the game is pressed.
 
     Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
         :param stats: Instance of GameStats class.
-        :param hud: Instance of Hud class.
         :param play_button: Instance of Button class.
-        :param ship: Instance of Ship class.
-        :param aliens: Container to hold and manage Aliens Sprites.
-        :param mouse_x: X position of the mouse cursor.
-        :param mouse_y: Y position of the mouse cursor.
+
+    Returns:
+        :return bool: True if play button is clicked, False otherwise.
 
     """
+    assert not stats.game_active
+    mouse_x, mouse_y = pygame.mouse.get_pos()
     button_clicked = play_button.ellipse_rect.collidepoint(mouse_x, mouse_y)
-    if button_clicked and not stats.game_active:
-        ai_settings.initialize_dynamic_settings()
-        pygame.mouse.set_visible(False)
-        stats.reset_stats()
-        stats.game_active = True
-        create_fleet(ai_settings, screen, stats, ship, aliens)
-        ship.center_ship()
-        rt.rotate_to_up(ship)
-        hud.prep_health()
-        hud.prep_ammo()
-        hud.prep_shield()
+    return button_clicked
+
+
+def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields) -> None:
+    settings.initialize_dynamic_settings()
+    pygame.mouse.set_visible(False)
+    stats.reset_stats()
+    create_fleet(settings, screen, stats, ship, aliens)
+    ship.set_default_movement()
+    ship.center_ship()
+    rt.rotate_to_up(ship)
+    hud.prep_health()
+    hud.prep_ammo()
+    hud.prep_shield()
+    used_shields.empty()
+    stats.game_active = True
 
 
 def check_keys_pressed(ship):
@@ -161,29 +176,29 @@ def check_keys_pressed(ship):
     if ship.moving_up and ship.moving_left:
         ship.current_ship_rotation = "up-left" 
         while ship.current_ship_rotation == "up-left":
-                ship.image = ship.original_image_up_left
-                break
+            ship.image = ship.original_image_up_left
+            break
 
     # Check for UP_RIGHT ship direction.
     if ship.moving_up and ship.moving_right:
         ship.current_ship_rotation = "up-right" 
         while ship.current_ship_rotation == "up-right":
-                ship.image = ship.original_image_up_right
-                break
+            ship.image = ship.original_image_up_right
+            break
 
     # Check for DOWN_LEFT ship direction.
     if ship.moving_down and ship.moving_left:
         ship.current_ship_rotation = "down-left" 
         while ship.current_ship_rotation == "down-left":
-                ship.image = ship.original_image_down_left
-                break
+            ship.image = ship.original_image_down_left
+            break
 
     # Check for DOWN_RIGHT ship direction.
     if ship.moving_down and ship.moving_right:
         ship.current_ship_rotation = "down-right" 
         while ship.current_ship_rotation == "down-right":
-                ship.image = ship.original_image_down_right
-                break
+            ship.image = ship.original_image_down_right
+            break
 
 
 def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, play_button, health, ammo,
@@ -244,16 +259,8 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
             boss_shields.empty()
 
     if not stats.game_active:
-        # Show start button and clear the screen.
-        used_shields.empty()
-        bosses.empty()
-        boss_shields.empty()
-        black_holes.empty()
-        boss_bullets.empty()
-        play_button.prep_msg(play_button.msg)
-        play_button.draw_button()
+        ai_settings.state = State.MAIN_MENU
     else:
-        # Prepare initial state of game.
         hud.show_hud()
         ship.blitme()
         for health_sprite in health.sprites():
@@ -264,6 +271,18 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
         bosses.draw(screen)
     for black_hole in black_holes.sprites():
         black_hole.draw_black_hole()
+
+    # Update screen.
+    pygame.display.flip()
+
+
+def update_main_menu_screen(settings, screen, stats, play_button) -> None:
+    screen.fill(settings.bg_color)
+
+    if not stats.game_active:
+        # Show start button and clear the screen.
+        play_button.prep_msg(play_button.msg)
+        play_button.draw_button()
 
     # Update screen.
     pygame.display.flip()
@@ -580,7 +599,7 @@ def ship_hit(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bulle
         :param used_shields: Container to hold and manage ShipShield Sprites.
 
     """
-    if stats.ships_left > 1:      
+    if stats.ships_left > 1:
         stats.ships_left -= 1
         hud.prep_health()
         health.empty()
@@ -591,7 +610,7 @@ def ship_hit(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bulle
         stats.game_active = False
         sleep(ai_settings.game_sleep_time)
         pygame.mouse.set_visible(True)
-    alien_bullets.empty()    
+    alien_bullets.empty()
     aliens.empty()
     bullets.empty()
     if stats.game_active:
@@ -1279,3 +1298,8 @@ def update_black_hole(ai_settings, screen, stats, hud, ship, bullets, used_shiel
     if pygame.sprite.spritecollideany(ship, black_holes):
         ship_hit_at_boss_stage(ai_settings, screen, stats, hud, ship, bullets,
                                used_shields, bosses, boss_bullets, boss_shields, black_holes)
+
+
+def quit() -> None:
+    pygame.quit()
+    sys.exit(0)

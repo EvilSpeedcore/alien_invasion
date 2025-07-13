@@ -45,17 +45,7 @@ class Ship:
         self.centerx = float(self.rect.centerx)
         self.centery = float(self.rect.centery)
 
-        # Flags to check if ship moving in one or another direction.
-        self.moving_right = False
-        self.moving_left = False
-        self.moving_up = False
-        self.moving_down = False
-
-        # Default ship direction.
-        self.current_ship_rotation = "up"
-
-        # Direction in which ship currently moving.
-        self.desirable_ship_rotation = None
+        self.set_default_movement()
 
     def update(self) -> None:
         """Update ship position depending on movement flag."""
@@ -83,3 +73,16 @@ class Ship:
     def blitme(self) -> None:
         """Draw ship."""
         self.screen.blit(self.image, self.rect)
+
+    def set_default_movement(self) -> None:
+        # Flags to check if ship moving in one or another direction.
+        self.moving_right = False
+        self.moving_left = False
+        self.moving_up = False
+        self.moving_down = False
+
+        # Default ship direction.
+        self.current_ship_rotation = "up"
+
+        # Direction in which ship currently moving.
+        self.desirable_ship_rotation = None
