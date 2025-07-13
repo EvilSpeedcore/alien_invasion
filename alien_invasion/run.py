@@ -60,7 +60,6 @@ def run_game() -> None:
 
         # Menu
         while settings.state == State.MAIN_MENU:
-            dt = clock.tick()
             menu_events = gf.check_main_menu_events(stats, play_button)
             gf.update_main_menu_screen(settings, screen, stats, play_button)
 
@@ -77,7 +76,7 @@ def run_game() -> None:
             gf.check_keys_pressed(ship)
             if stats.game_active:
                 ship.update()
-                gf.update_ship_shield(ship, alien_bullets, used_shields, boss_bullets)
+                gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
                 gf.update_bullets(settings, screen, stats, hud, ship, aliens, bullets,
                                 alien_bullets, health, ammo, bosses, boss_bullets, boss_shields, black_holes)
                 gf.update_aliens(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
@@ -113,8 +112,8 @@ def run_game() -> None:
                 gf.update_ship_health(stats, hud, ship, health)
                 gf.update_ship_ammo(stats, hud, ship, ammo)
 
-                gf.update_screen(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, play_button,
-                                health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
+                gf.update_screen(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets,
+                                 health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
 
 if __name__ == '__main__':

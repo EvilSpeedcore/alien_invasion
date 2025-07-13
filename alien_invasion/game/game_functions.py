@@ -66,7 +66,7 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
         ai_settings.state = State.RUNNING
     if stats.game_active and event.key == pygame.K_SPACE:
         ai_settings.state = State.PAUSED
-    if event.key == pygame.K_d and ai_settings.state != State.PAUSED:
+    if event.key == pygame.K_d:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
 
 
@@ -253,7 +253,7 @@ def check_keys_pressed(ship):
             break
 
 
-def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, play_button, health, ammo,
+def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health, ammo,
                   used_shields, dt, bosses, boss_bullets, boss_shields, black_holes):
     """Update screen.
 
@@ -266,7 +266,6 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
         :param aliens: Container to hold and manage Alien Sprites.
         :param bullets: Container to hold and manage Bullet Sprites.
         :param alien_bullets: Container to hold and manage AlienBullet Sprites.
-        :param play_button: Instance of Button class.
         :param health: Container to hold and manage ShipHealth Sprites.
         :param ammo: Container to hold and manage ShipAmmo Sprites.
         :param used_shields: Container to hold and manage ShipShield Sprites.
@@ -434,21 +433,21 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bull
 
             # Extra health spawn.
             if stats.ships_left < 4:
-                    random_number = random.choice([x for x in range(1, 6)])
-                    if random_number == 1:
-                        new_health = ShipHealth(ai_settings, screen)
-                        banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
-                        available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                                   x not in banned_coordinates_x]
-                        banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
-                        available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                                   y not in banned_coordinates_y]
-                        new_health.rect.x = random.choice(available_coordinates_x)
-                        new_health.rect.y = random.choice(available_coordinates_y)
-                        health.add(new_health)
-                        health_spawned = True
-                    else:
-                        health.empty()
+                random_number = random.choice([x for x in range(1, 6)])
+                if random_number == 1:
+                    new_health = ShipHealth(ai_settings, screen)
+                    banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
+                    available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                                x not in banned_coordinates_x]
+                    banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
+                    available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                                y not in banned_coordinates_y]
+                    new_health.rect.x = random.choice(available_coordinates_x)
+                    new_health.rect.y = random.choice(available_coordinates_y)
+                    health.add(new_health)
+                    health_spawned = True
+                else:
+                    health.empty()
 
             # Extra ammo spawn.
             if not health_spawned and stats.ammo < 3:
@@ -471,11 +470,10 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bull
                 else:
                     ammo.empty()
 
-            #  Aliens movement speed increase.
-
+            # Aliens movement speed increase.
             ai_settings.increase_aliens_speed()
 
-            #  Create new fleet of aliens.
+            # Create new fleet of aliens.
             create_fleet(ai_settings, screen, stats, ship, aliens)
 
 
@@ -931,11 +929,10 @@ def use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields):
         hud.prep_shield()
 
 
-def update_ship_shield(ship, alien_bullets, used_shields, boss_bullets):
+def update_ship_shield(alien_bullets, used_shields, boss_bullets):
     """Update ship shield position. Check for collisions between shield and bullet.
 
     Args:
-        :param ship: Instance of Ship class.
         :param alien_bullets: Container to hold and manage AlienBullet Sprites.
         :param used_shields: Container to hold and manage ShipShield Sprites.
         :param boss_bullets: Container to hold and manage BossBullet Sprites.
