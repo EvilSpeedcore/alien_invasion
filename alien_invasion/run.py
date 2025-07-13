@@ -51,9 +51,7 @@ def run_game() -> None:
     # Main game cycle
     while True:
         while settings.state == State.PAUSED:
-            events = gf.check_pause_events()
-            if events.unpause:
-                settings.state = State.RUNNING
+            gf.check_events(settings, screen, stats, hud, ship, bullets, used_shields)
 
         # Menu
         while settings.state == State.MAIN_MENU:

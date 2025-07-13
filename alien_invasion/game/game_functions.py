@@ -19,11 +19,6 @@ from game.state import State
 
 
 @dataclass
-class PauseEvents:
-    unpause: bool = False
-
-
-@dataclass
 class MainMenuEvents:
     quit: bool = False
     play: bool = False
@@ -63,9 +58,11 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
         fire_bullet(ai_settings, screen, stats, ship, bullets)
     if event.key == pygame.K_r:
         pass
+    if event.key == pygame.K_s:
+        ai_settings.state = State.RUNNING
     if stats.game_active and event.key == pygame.K_SPACE:
         ai_settings.state = State.PAUSED
-    if event.key == pygame.K_d:
+    if event.key == pygame.K_d and ai_settings.state != State.PAUSED:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
 
 
@@ -134,15 +131,6 @@ def check_main_menu_events(stats, play_button) -> MainMenuEvents:
             return MainMenuEvents(play=check_play_button(stats, play_button))
 
     return MainMenuEvents()
-
-
-def check_pause_events() -> PauseEvents:
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
-                return PauseEvents(unpause=True)
-
-    return PauseEvents()
 
 
 def check_play_button(stats, play_button) -> bool:
