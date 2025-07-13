@@ -50,6 +50,11 @@ def run_game() -> None:
 
     # Main game cycle
     while True:
+        while settings.state == State.PAUSED:
+            events = gf.check_pause_events()
+            if events.unpause:
+                settings.state = State.RUNNING
+
         # Menu
         while settings.state == State.MAIN_MENU:
             dt = clock.tick()
