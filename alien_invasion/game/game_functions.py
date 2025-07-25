@@ -196,13 +196,13 @@ def check_play_button(stats, play_button) -> bool:
         :return bool: True if play button is clicked, False otherwise.
 
     """
-    assert not stats.game_active
     mouse_x, mouse_y = pygame.mouse.get_pos()
     button_clicked = play_button.ellipse_rect.collidepoint(mouse_x, mouse_y)
     return button_clicked
 
 
-def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields, black_holes) -> None:
+def initialize_game_from_main_menu(settings, screen, stats, hud, ship,
+                                   aliens, used_shields, black_holes, boss_shields) -> None:
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
@@ -216,6 +216,7 @@ def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, u
     used_shields.empty()
     # TODO: Should not be here. Should be in a clean up of 3rd boss stage!
     black_holes.empty()
+    boss_shields.empty()
 
 
 def check_keys_pressed(ship):
@@ -649,7 +650,7 @@ def ship_hit(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bulle
     alien_bullets.empty()
     aliens.empty()
     bullets.empty()
-    if stats.game_active:
+    if stats.ships_left > 0:
         create_fleet(ai_settings, screen, stats, ship, aliens)
         ship.center_ship()
         sleep(ai_settings.game_sleep_time)
