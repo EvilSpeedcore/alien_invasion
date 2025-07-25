@@ -12,7 +12,7 @@ class Settings:
 
         # Ship settings.
         self.bullets_allowed = 1
-        self.ships_limit = 30
+        self.ships_limit = 3
         self.ship_speed_factor = 0.75
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1

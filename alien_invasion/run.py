@@ -1,3 +1,4 @@
+from time import sleep
 from typing import TYPE_CHECKING
 
 import pygame
@@ -60,12 +61,16 @@ def run_game() -> None:
 
         # Menu
         while settings.state == State.MAIN_MENU:
+            pygame.mouse.set_visible(True)
+            stats.game_active = False
+
             menu_events = gf.check_main_menu_events(stats, play_button)
-            gf.update_main_menu_screen(settings, screen, stats, play_button)
+            gf.update_main_menu_screen(settings, screen, play_button)
 
             if menu_events.play:
                 gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields, black_holes)
                 settings.state = State.RUNNING
+                stats.game_active = True
             if menu_events.quit:
                 gf.quit()
 
@@ -119,6 +124,10 @@ def run_game() -> None:
 
                 gf.update_screen(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets,
                                  health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
+
+                if gf.check_game_end(settings, stats):
+                    sleep(settings.game_sleep_time)
+                    settings.state = State.MAIN_MENU
 
 
 if __name__ == '__main__':

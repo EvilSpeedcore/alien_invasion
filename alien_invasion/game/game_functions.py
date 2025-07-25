@@ -216,7 +216,6 @@ def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, u
     used_shields.empty()
     # TODO: Should not be here. Should be in a clean up of 3rd boss stage!
     black_holes.empty()
-    stats.game_active = True
 
 
 def check_keys_pressed(ship):
@@ -329,13 +328,12 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
     pygame.display.flip()
 
 
-def update_main_menu_screen(settings, screen, stats, play_button) -> None:
+def update_main_menu_screen(settings, screen, play_button) -> None:
     screen.fill(settings.bg_color)
 
-    if not stats.game_active:
-        # Show start button and clear the screen.
-        play_button.prep_msg(play_button.msg)
-        play_button.draw_button()
+    # Show start button and clear the screen.
+    play_button.prep_msg(play_button.msg)
+    play_button.draw_button()
 
     # Update screen.
     pygame.display.flip()
@@ -396,7 +394,7 @@ def update_bullets(settings, screen, stats, hud, ship, aliens, bullets, alien_bu
 
 def prepare_next_regular_stage(settings, screen, stats, ship, aliens, bullets,
                                alien_bullets, health, ammo) -> None:
-    """Prepares next stage.
+    """Prepares next regular stage.
 
     Args:
         :param settings: Instance of Settings class.
@@ -411,9 +409,6 @@ def prepare_next_regular_stage(settings, screen, stats, ship, aliens, bullets,
 
     """
     stats.stage += 1
-    if stats.stage > settings.boss_stages[2]:
-        stats.game_active = False
-        pygame.mouse.set_visible(True)
     if stats.stage in settings.non_boss_stages:
 
         # CLS when moving to the next stage.
@@ -644,17 +639,13 @@ def ship_hit(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bulle
         :param used_shields: Container to hold and manage ShipShield Sprites.
 
     """
-    if stats.ships_left > 1:
-        stats.ships_left -= 1
-        hud.prep_health()
-        health.empty()
-        ammo.empty()
-        used_shields.empty()
-        ai_settings.time_elapsed_since_shield = 0
-    else:
-        stats.game_active = False
-        sleep(ai_settings.game_sleep_time)
-        pygame.mouse.set_visible(True)
+    stats.ships_left -= 1
+    hud.prep_health()
+    health.empty()
+    ammo.empty()
+    used_shields.empty()
+    ai_settings.time_elapsed_since_shield = 0
+
     alien_bullets.empty()
     aliens.empty()
     bullets.empty()
@@ -1347,3 +1338,10 @@ def update_black_hole(ai_settings, screen, stats, hud, ship, bullets, used_shiel
 def quit() -> None:
     pygame.quit()
     sys.exit(0)
+
+
+def check_game_end(settings, stats) -> bool:
+    if stats.stage > settings.boss_stages[2]:
+        return True
+
+    return stats.ships_left < 1
