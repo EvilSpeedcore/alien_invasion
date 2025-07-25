@@ -64,7 +64,7 @@ def run_game() -> None:
             gf.update_main_menu_screen(settings, screen, stats, play_button)
 
             if menu_events.play:
-                gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields)
+                gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields, black_holes)
                 settings.state = State.RUNNING
             if menu_events.quit:
                 gf.quit()
@@ -76,9 +76,14 @@ def run_game() -> None:
             gf.check_keys_pressed(ship)
             if stats.game_active:
                 ship.update()
+
+                if not (aliens or bosses):
+                    gf.prepare_next_regular_stage(settings, screen, stats, ship, aliens,
+                                                  bullets, alien_bullets, health, ammo)
+
                 gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
                 gf.update_bullets(settings, screen, stats, hud, ship, aliens, bullets,
-                                alien_bullets, health, ammo, bosses, boss_bullets, boss_shields, black_holes)
+                                  alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
                 gf.update_aliens(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
                                 ammo, used_shields)
                 gf.fire_alien_bullets(settings, screen, stats, ship, aliens, alien_bullets, dt)

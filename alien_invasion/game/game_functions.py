@@ -202,7 +202,7 @@ def check_play_button(stats, play_button) -> bool:
     return button_clicked
 
 
-def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields) -> None:
+def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, used_shields, black_holes) -> None:
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
@@ -214,6 +214,8 @@ def initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens, u
     hud.prep_ammo()
     hud.prep_shield()
     used_shields.empty()
+    # TODO: Should not be here. Should be in a clean up of 3rd boss stage!
+    black_holes.empty()
     stats.game_active = True
 
 
@@ -339,12 +341,12 @@ def update_main_menu_screen(settings, screen, stats, play_button) -> None:
     pygame.display.flip()
 
 
-def update_bullets(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health, ammo, bosses,
+def update_bullets(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, bosses,
                    boss_bullets, boss_shields, black_holes):
     """Update ship bullets. Remove bullet from group of sprites, if it reach edge of the screen. Check for collisions.
 
     Args:
-        :param ai_settings: Instance of Settings class.
+        :param settings: Instance of Settings class.
         :param screen: Display Surface.
         :param stats: Instance of GameStats class.
         :param hud: Instance of Hud class.
@@ -352,8 +354,6 @@ def update_bullets(ai_settings, screen, stats, hud, ship, aliens, bullets, alien
         :param aliens: Container to hold and manage Alien Sprites.
         :param bullets: Container to hold and manage Bullet Sprites.
         :param alien_bullets: Container to hold and manage AlienBullet Sprites.
-        :param health: Container to hold and manage ShipHealth Sprites.
-        :param ammo: Container to hold and manage ShipAmmo Sprites.
         :param bosses: Container to hold and manage single Bosses Sprite.
         :param boss_bullets: Container to hold and manage BossBullet Sprites.
         :param boss_shields: Container to hold and manage single BossShield Sprite.
@@ -386,20 +386,20 @@ def update_bullets(ai_settings, screen, stats, hud, ship, aliens, bullets, alien
         # For DOWN_RIGHT bullet direction.
         if bullet.rect.top > ship.screen_rect.bottom or bullet.rect.left > ship.screen_rect.right:
             bullets.remove(bullet)
-    # Check for collision between ship bullets and aliens.
-    check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bullets,
-                                  alien_bullets, health, ammo, bosses, black_holes)
+
+    pygame.sprite.groupcollide(bullets, aliens, True, True)
+
     # Check for collision between ship billet and boss.
-    check_bullet_boss_collision(ai_settings, screen, stats, hud, ship, aliens, bullets,
+    check_bullet_boss_collision(settings, screen, stats, hud, ship, aliens, bullets,
                                 alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
 
 
-def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bullets,
-                                  alien_bullets, health, ammo, bosses, black_holes):
-    """Handle collisions between ship bullets and aliens.
+def prepare_next_regular_stage(settings, screen, stats, ship, aliens, bullets,
+                               alien_bullets, health, ammo) -> None:
+    """Prepares next stage.
 
     Args:
-        :param ai_settings: Instance of Settings class.
+        :param settings: Instance of Settings class.
         :param screen: Display Surface.
         :param stats: Instance of GameStats class.
         :param ship: Instance of Ship class.
@@ -408,73 +408,68 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, ship, aliens, bull
         :param alien_bullets: Container to hold and manage AlienBullet Sprites.
         :param health: Container to hold and manage ShipHealth Sprites.
         :param ammo: Container to hold and manage ShipAmmo Sprites.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param black_holes: Container to hold and manage single BlackHole Sprite.
 
     """
-    pygame.sprite.groupcollide(bullets, aliens, True, True)
-    if len(aliens) == 0 and len(bosses) == 0:
-        stats.stage += 1
-        if stats.stage > ai_settings.boss_stages[2]:
-            stats.game_active = False
-            pygame.mouse.set_visible(True)
-        if stats.stage in ai_settings.non_boss_stages:
+    stats.stage += 1
+    if stats.stage > settings.boss_stages[2]:
+        stats.game_active = False
+        pygame.mouse.set_visible(True)
+    if stats.stage in settings.non_boss_stages:
 
-            # CLS when moving to the next stage.
-            ship.center_ship()
-            health.empty()
-            ammo.empty()
-            alien_bullets.empty()
-            bullets.empty()
-            black_holes.empty()
+        # CLS when moving to the next stage.
+        ship.center_ship()
+        health.empty()
+        ammo.empty()
+        alien_bullets.empty()
+        bullets.empty()
 
-            #  Flag, which shows the fact, that extra health not yet spawned.
-            health_spawned = False
+        # Flag, which shows the fact, that extra health not yet spawned.
+        health_spawned = False
 
-            # Extra health spawn.
-            if stats.ships_left < 4:
-                random_number = random.choice([x for x in range(1, 6)])
-                if random_number == 1:
-                    new_health = ShipHealth(ai_settings, screen)
-                    banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
-                    available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                                x not in banned_coordinates_x]
-                    banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
-                    available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                                y not in banned_coordinates_y]
-                    new_health.rect.x = random.choice(available_coordinates_x)
-                    new_health.rect.y = random.choice(available_coordinates_y)
-                    health.add(new_health)
-                    health_spawned = True
-                else:
-                    health.empty()
+        # Extra health spawn.
+        if stats.ships_left < 4:
+            random_number = random.choice([x for x in range(1, 6)])
+            if random_number == 1:
+                new_health = ShipHealth(settings, screen)
+                banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
+                available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                           x not in banned_coordinates_x]
+                banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
+                available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                           y not in banned_coordinates_y]
+                new_health.rect.x = random.choice(available_coordinates_x)
+                new_health.rect.y = random.choice(available_coordinates_y)
+                health.add(new_health)
+                health_spawned = True
+            else:
+                health.empty()
 
-            # Extra ammo spawn.
-            if not health_spawned and stats.ammo < 3:
-                random_number = random.choice([x for x in range(1, 6)])
-                if random_number == 1:
-                    new_ammo = ShipAmmo(ai_settings, screen)
+        # Extra ammo spawn.
+        if not health_spawned and stats.ammo < 3:
+            random_number = random.choice([x for x in range(1, 6)])
+            if random_number == 1:
+                new_ammo = ShipAmmo(settings, screen)
 
-                    _banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
-                    _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                                x not in _banned_coordinates_x]
+                _banned_coordinates_x = [x for x in range(int(ship.centerx - 100.0), int(ship.centerx + 106.0))]
+                _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                            x not in _banned_coordinates_x]
 
-                    _banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
-                    _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                                y not in _banned_coordinates_y]
+                _banned_coordinates_y = [y for y in range(int(ship.centery - 100.0), int(ship.centery + 106.0))]
+                _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                            y not in _banned_coordinates_y]
 
-                    new_ammo.rect.x = random.choice(_available_coordinates_x)
-                    new_ammo.rect.y = random.choice(_available_coordinates_y)
+                new_ammo.rect.x = random.choice(_available_coordinates_x)
+                new_ammo.rect.y = random.choice(_available_coordinates_y)
 
-                    ammo.add(new_ammo)
-                else:
-                    ammo.empty()
+                ammo.add(new_ammo)
+            else:
+                ammo.empty()
 
-            # Aliens movement speed increase.
-            ai_settings.increase_aliens_speed()
+        # Aliens movement speed increase.
+        settings.increase_aliens_speed()
 
-            # Create new fleet of aliens.
-            create_fleet(ai_settings, screen, stats, ship, aliens)
+        # Create new fleet of aliens.
+        create_fleet(settings, screen, stats, ship, aliens)
 
 
 def check_bullet_boss_collision(ai_settings, screen, stats, hud, ship, aliens, bullets,
