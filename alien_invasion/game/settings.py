@@ -1,6 +1,3 @@
-from game.state import State
-
-
 class Settings:
     """Class, which store setting of the game."""
     def __init__(self) -> None:
@@ -12,7 +9,7 @@ class Settings:
 
         # Ship settings.
         self.bullets_allowed = 1
-        self.ships_limit = 30
+        self.ships_limit = 2
         self.ship_speed_factor = 0.75
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1
@@ -39,7 +36,6 @@ class Settings:
         self.black_hole_despawn_timer = 0
 
         # Game settings
-        self.state: State | None = None
         self.boss_stages = (4, 8, 12)
         self.game_sleep_time = 0.3
         self.non_boss_stages = tuple(non_boss_stage for non_boss_stage in range(1, self.boss_stages[2] + 1) if

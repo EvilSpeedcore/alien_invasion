@@ -10,7 +10,7 @@ from game.game_stats import GameStats
 from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
-from game.state import State
+from game.state import GameState, State
 
 if TYPE_CHECKING:
     from game.alien import Alien
@@ -46,21 +46,21 @@ def run_game() -> None:
     boss_shields: GroupSingle = GroupSingle()
     black_holes: GroupSingle = GroupSingle()
 
+    state = GameState(State.MAIN_MENU)
     clock = pygame.time.Clock()
-    settings.state = State.MAIN_MENU
 
     # Main game cycle
     while True:
-        # Pause
-        while settings.state == State.PAUSED:
+        # Pause state
+        while state(State.PAUSED):
             pause_events = gf.check_pause_events(ship)
             if pause_events.quit:
                 gf.quit()
             if pause_events.unpause:
-               settings.state = State.ACTIVE
+               state.set(State.ACTIVE)
 
-        # Menu
-        while settings.state == State.MAIN_MENU:
+        # Menu state
+        while state(State.MAIN_MENU):
             pygame.mouse.set_visible(True)
 
             menu_events = gf.check_main_menu_events(play_button)
@@ -69,19 +69,19 @@ def run_game() -> None:
             if menu_events.play:
                 gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens,
                                                   used_shields, boss_shields, black_holes)
-                settings.state = State.ACTIVE
+                state.set(State.ACTIVE)
             if menu_events.quit:
                 gf.quit()
 
-        # Game
-        while settings.state == State.ACTIVE:
+        # Active game state
+        while state(State.ACTIVE):
             dt = clock.tick()
             active_events = gf.check_active_game_events(settings, screen, stats, hud,
                                                         ship, bullets, used_shields)
             if active_events.quit:
                 gf.quit()
             if active_events.pause:
-                settings.state = State.PAUSED
+                state.set(State.PAUSED)
 
             gf.check_keys_pressed(ship)
             ship.update()
@@ -131,7 +131,7 @@ def run_game() -> None:
                              health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
             if gf.check_game_end(settings, stats):
-                settings.state = State.MAIN_MENU
+                state.set(State.MAIN_MENU)
                 # Hide ship fast
                 screen.fill(settings.bg_color)
                 pygame.display.flip()
