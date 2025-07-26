@@ -12,20 +12,11 @@ if TYPE_CHECKING:
 
 
 class Bullet(Sprite):
-    """Class, which represents ship bullet."""
+
     def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
-        """Initialize ship bullet.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surace screen: Display Surface.
-            :param Ship ship: Instance of Ship class.
-
-        """
-
         super().__init__()
         self.screen = screen
-        self.image = load_image('bullet.png')
+        self.image = load_image("bullet.png")
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -73,8 +64,8 @@ class Bullet(Sprite):
     def update(self) -> None:
         """Update bullet position depending on ship current rotation.
 
-            Args:
-                :param ship: Instance of Ship class.
+        Args:
+            :param ship: Instance of Ship class.
 
         """
         if self.bullet_rotation == "up":
@@ -113,7 +104,7 @@ class Bullet(Sprite):
             self.x_down_right += self.speed_factor
             self.rect.centery = self.y_down_right
             self.rect.centerx = self.x_down_right
-                                
+
     def draw_bullet(self) -> None:
         """Draw bullet on screen depending on ship current rotation."""
         if self.bullet_rotation == "up":

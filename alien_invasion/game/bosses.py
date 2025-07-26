@@ -6,15 +6,8 @@ from game.images import load_image
 
 
 class Boss(Sprite):
-    """Parent class, which represents bosses."""
-    def __init__(self, ai_settings, screen):
-        """Initialize boss.
 
-        Args:
-            :param ai_settings: Instance of Settings class
-            :param screen: Application window.
-
-        """
+    def __init__(self, ai_settings, screen) -> None:
         super().__init__()
         self.ai_settings = ai_settings
         self.screen = screen
@@ -22,10 +15,10 @@ class Boss(Sprite):
 
 
 class GreenBoss(Boss):
-    """Child class, which represents green boss."""
-    def __init__(self, ai_settings, screen):
+
+    def __init__(self, ai_settings, screen) -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('green_alien.png')
+        self.image = load_image("green_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -39,10 +32,10 @@ class GreenBoss(Boss):
 
 
 class RedBoss(Boss):
-    """Child class, which represents red boss."""
-    def __init__(self, ai_settings, screen):
+
+    def __init__(self, ai_settings, screen) -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('red_alien.png')
+        self.image = load_image("red_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -66,7 +59,7 @@ class RedBoss(Boss):
         self.moving_angle = None
         self.define_start_direction()
 
-    def update(self):
+    def update(self) -> None:
         """Update boss position depending on boss current position."""
         if self.position == "center":
             if self.random_direction == 1:
@@ -270,24 +263,24 @@ class RedBoss(Boss):
                     self.position = "midright"
                     self.define_direction_1()
 
-    def define_start_direction(self):
-        """Define start direction of boss: left, right, top and bottom"""
-        self.random_direction = random.choice([x for x in range(1, 5)])
+    def define_start_direction(self) -> None:
+        """Define start direction of boss: left, right, top and bottom."""
+        self.random_direction = random.choice(range(1, 5))
 
-    def define_direction_1(self):
-        """Define direction of boss from following positions: midleft, midright, midtop and midbottom"""
-        self.random_direction = random.choice([x for x in range(1, 4)])
+    def define_direction_1(self) -> None:
+        """Define direction of boss from following positions: midleft, midright, midtop and midbottom."""
+        self.random_direction = random.choice(range(1, 4))
 
-    def define_direction_2(self):
+    def define_direction_2(self) -> None:
         """Define follow up direction of boss from following positions: topright, bottomright, bottomleft, topleft."""
-        self.random_direction = random.choice([x for x in range(1, 3)])
+        self.random_direction = random.choice(range(1, 3))
 
 
 class BlueBoss(Boss):
-    """Child class, which represents blue boss."""
-    def __init__(self, ai_settings, screen):
+
+    def __init__(self, ai_settings, screen) -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('blue_alien.png')
+        self.image = load_image("blue_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()

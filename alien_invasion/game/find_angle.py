@@ -1,4 +1,5 @@
 import csv
+from pathlib import Path
 
 from game.paths import Paths
 
@@ -15,7 +16,7 @@ def find_angle_with_cos(value: float) -> float:
     """
     cos_values = []
     cos = {}
-    with open(Paths.math() / "cos.csv", encoding="utf-8") as f:
+    with Path.open(Paths.math() / "cos.csv", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
         for row in reader:
             cos[float(row[1])] = int(row[0])
@@ -38,7 +39,7 @@ def find_angle_with_sin(value: float) -> float:
     """
     sin_values = []
     sin = {}
-    with open(Paths.math() / "sin.csv", encoding="utf-8") as f:
+    with Path.open(Paths.math() / "sin.csv", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=";")
         for row in reader:
             sin[float(row[1])] = int(row[0])

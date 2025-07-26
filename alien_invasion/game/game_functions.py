@@ -117,7 +117,7 @@ def check_pause_keyup_events(event, ship) -> PauseEvents:
     return PauseEvents()
 
 
-def check_keyup_events(event, ship):
+def check_keyup_events(event, ship) -> None:
     """Handle events when a key is released.
 
     Args:

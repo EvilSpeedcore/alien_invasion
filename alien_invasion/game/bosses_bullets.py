@@ -13,15 +13,8 @@ if TYPE_CHECKING:
 
 
 class BossBullet(Sprite):
-    """Parent class, which represents bullet of the boss."""
+
     def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
-        """Initialize bullet of the boss.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-
-        """
         super().__init__()
         self.ai_settings = ai_settings
         self.screen = screen
@@ -35,18 +28,10 @@ class BossBullet(Sprite):
 
 
 class GreenBossBullet(BossBullet):
-    """Child class, which represents bullet of green boss."""
+
     def __init__(self, ai_settings, screen, boss) -> None:
-        """Initialize bullet of green boss.
-
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Application window.
-            :param boss: Instance of Boss class.
-
-        """
         super().__init__(ai_settings, screen)
-        self.image = load_image('alien_bullet.png')
+        self.image = load_image("alien_bullet.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -68,7 +53,7 @@ class GreenBossBullet(BossBullet):
         # Counter of bounces bullets make, when they collide with screen borders.
         self.bounces = 0
 
-    def update(self):
+    def update(self) -> None:
         """Update bullet position."""
         angle = self.shooting_angle_up
         bullet_move_x = self.speed_factor * math.cos(math.radians(angle))
@@ -78,7 +63,7 @@ class GreenBossBullet(BossBullet):
         self.rect.centery = self.y
         self.rect.centerx = self.x
 
-    def change_direction(self, boss_bullets):
+    def change_direction(self, boss_bullets) -> None:
         """Change bullet direction after it reaching screen borders.
 
         Args:
@@ -102,18 +87,10 @@ class GreenBossBullet(BossBullet):
 
 
 class RedBossBullet(BossBullet):
-    """Child class, which represents bullet of red boss."""
-    def __init__(self, ai_settings, screen, boss):
-        """Initialize bullet of red boss.
 
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param boss: Instance of Boss class
-
-        """
+    def __init__(self, ai_settings, screen, boss) -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('red_alien_bullet.png')
+        self.image = load_image("red_alien_bullet.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -132,7 +109,7 @@ class RedBossBullet(BossBullet):
         self.shooting_angle = None
         self.angles = (180, 360)
 
-    def update(self):
+    def update(self) -> None:
         """Update bullet position."""
         if self.ship_position == "4":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[1] - self.shooting_angle))
@@ -191,7 +168,7 @@ class RedBossBullet(BossBullet):
             self.rect.centery = self.y
             self.rect.centerx = self.x
 
-    def define_angle(self, ship):
+    def define_angle(self, ship) -> None:
         """Define shooting angle of bullet depending on ship current position.
 
         Args:
@@ -204,7 +181,7 @@ class RedBossBullet(BossBullet):
         self.shooting_angle_cos = ac / bc
         self.shooting_angle = fa.find_angle_with_cos(self.shooting_angle_cos)
 
-    def define_position(self, ship):
+    def define_position(self, ship) -> None:
         """Define ship position relatively bullet position."""
         if self.x < ship.centerx and self.y < ship.centery:
             self.ship_position = "4"
@@ -233,19 +210,10 @@ class RedBossBullet(BossBullet):
 
 
 class BlueBossBullet(BossBullet):
-    """Child class, which represents bullets of blue boss."""
-    def __init__(self, ai_settings, screen, boss, angle):
-        """Initialize bullet of blue boss.
 
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param boss: Instance of Boss class.
-            :param angle: Bullet shooting angle.
-
-        """
+    def __init__(self, ai_settings, screen, boss, angle) -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('blue_alien_bullet.png')
+        self.image = load_image("blue_alien_bullet.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -261,7 +229,7 @@ class BlueBossBullet(BossBullet):
         self.speed_factor = ai_settings.blue_boss_bullet_speed_factor
         self.angle = angle
 
-    def update(self):
+    def update(self) -> None:
         """Update bullet position."""
         bullet_move_x = self.speed_factor * math.cos(math.radians(self.angle))
         bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angle))
