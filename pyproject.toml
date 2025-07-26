@@ -52,6 +52,7 @@ ignore = [
     "PLR0913",   # too-many-arguments
     "PLR0915",   # too-many-statements
     "PLR2004",   # magic-values (fix)
+    "S311",      # pseudo-random-generators (fix)
     "TD002",
     "TD003",
 
