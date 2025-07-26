@@ -124,7 +124,7 @@ def run_game() -> None:
                 gf.update_ship_health(stats, hud, ship, health)
                 gf.update_ship_ammo(stats, hud, ship, ammo)
 
-                gf.update_screen(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets,
+                gf.update_screen(settings, screen, hud, ship, aliens, bullets, alien_bullets,
                                  health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
                 if gf.check_game_end(settings, stats):

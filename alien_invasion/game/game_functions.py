@@ -255,7 +255,7 @@ def check_keys_pressed(ship):
             break
 
 
-def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health, ammo,
+def update_screen(ai_settings, screen, hud, ship, aliens, bullets, alien_bullets, health, ammo,
                   used_shields, dt, bosses, boss_bullets, boss_shields, black_holes):
     """Update screen.
 
@@ -311,17 +311,14 @@ def update_screen(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_
         else:
             boss_shields.empty()
 
-    if not stats.game_active:
-        ai_settings.state = State.MAIN_MENU
-    else:
-        hud.show_hud()
-        ship.blitme()
-        for health_sprite in health.sprites():
-            health_sprite.draw_item()
-        for ammo_sprite in ammo.sprites():
-            ammo_sprite.draw_item()
-        aliens.draw(screen)
-        bosses.draw(screen)
+    hud.show_hud()
+    ship.blitme()
+    for health_sprite in health.sprites():
+        health_sprite.draw_item()
+    for ammo_sprite in ammo.sprites():
+        ammo_sprite.draw_item()
+    aliens.draw(screen)
+    bosses.draw(screen)
     for black_hole in black_holes.sprites():
         black_hole.draw_black_hole()
 
