@@ -84,6 +84,7 @@ def run_game() -> None:
                 ship.update()
 
                 if not (aliens or bosses):
+                    # TODO: What if ship and last alien dies at the same time?
                     gf.prepare_next_regular_stage(settings, screen, stats, ship, aliens,
                                                   bullets, alien_bullets, health, ammo)
 

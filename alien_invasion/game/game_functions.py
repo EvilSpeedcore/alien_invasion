@@ -650,7 +650,7 @@ def ship_hit(ai_settings, screen, stats, hud, ship, aliens, bullets, alien_bulle
     alien_bullets.empty()
     aliens.empty()
     bullets.empty()
-    if stats.ships_left > 0:
+    if stats.ships_left:
         create_fleet(ai_settings, screen, stats, ship, aliens)
         ship.center_ship()
         sleep(ai_settings.game_sleep_time)
@@ -676,69 +676,64 @@ def ship_hit_at_boss_stage(ai_settings, screen, stats, hud, ship, bullets,
     """
     # Handle collisions between ship and green boss.
     if stats.stage == ai_settings.boss_stages[0]:
-        if stats.ships_left > 1:
-            stats.ships_left -= 1
-            hud.prep_health()
-            hud.green_boss_hp = 19
-            hud.prep_green_boss_health()
-            used_shields.empty()
+        stats.ships_left -= 1
+        hud.prep_health()
+        hud.green_boss_hp = 19
+        hud.prep_green_boss_health()
 
-            # Ship and boss shield timer refresh.
-            ai_settings.time_elapsed_since_shield = 0
-            ai_settings.time_elapsed_since_boss_shield = 0
-        else:
-            stats.game_active = False
-            sleep(ai_settings.game_sleep_time)
-            pygame.mouse.set_visible(True)
+        # Ship and boss timers refresh.
+        ai_settings.time_elapsed_since_shield = 0
+        ai_settings.time_elapsed_since_boss_shield = 0
+
         bullets.empty()
         bosses.empty()
         boss_bullets.empty()
-        if stats.game_active:
+        used_shields.empty()
+
+        if stats.ships_left:
             create_green_boss(ai_settings, screen, hud, bosses, boss_shields)
             ship.prepare_for_boss()
             sleep(ai_settings.game_sleep_time)
 
     # Handle collisions between ship and red boss.
     elif stats.stage == ai_settings.boss_stages[1]:
-        if stats.ships_left > 1:
-            stats.ships_left -= 1
-            hud.prep_health()
-            hud.red_boss_hp = 14
-            hud.prep_red_boss_health()
-            used_shields.empty()
-            ai_settings.time_elapsed_since_shield = 0
-            ai_settings.time_elapsed_since_boss_shield = 0
-        else:
-            stats.game_active = False
-            sleep(ai_settings.game_sleep_time)
-            pygame.mouse.set_visible(True)
+        stats.ships_left -= 1
+        hud.prep_health()
+        hud.red_boss_hp = 14
+        hud.prep_red_boss_health()
+
+        # Ship and boss timers refresh.
+        ai_settings.time_elapsed_since_shield = 0
+        ai_settings.time_elapsed_since_boss_shield = 0
+
         bullets.empty()
         bosses.empty()
         boss_bullets.empty()
-        if stats.game_active:
+        used_shields.empty()
+
+        if stats.ships_left:
             create_red_boss(ai_settings, screen, hud, bosses, boss_shields)
             ship.prepare_for_boss()
             sleep(ai_settings.game_sleep_time)
 
     # Handle collisions between ship and blue boss.
     elif stats.stage == ai_settings.boss_stages[2]:
-        if stats.ships_left > 1:
-            stats.ships_left -= 1
-            hud.prep_health()
-            hud.blue_boss_hp = 19
-            hud.prep_blue_boss_health()
-            used_shields.empty()
-            boss_bullets.empty()
-            ai_settings.black_hole_spawn_timer = 0
-            ai_settings.time_elapsed_since_shield = 0
-            ai_settings.time_elapsed_since_boss_shield = 0
-        else:
-            stats.game_active = False
-            sleep(ai_settings.game_sleep_time)
-            pygame.mouse.set_visible(True)
+        stats.ships_left -= 1
+        hud.prep_health()
+        hud.blue_boss_hp = 19
+        hud.prep_blue_boss_health()
+
+        # Ship and boss timers refresh.
+        ai_settings.black_hole_spawn_timer = 0
+        ai_settings.time_elapsed_since_shield = 0
+        ai_settings.time_elapsed_since_boss_shield = 0
+
         bullets.empty()
         bosses.empty()
-        if stats.game_active:
+        boss_bullets.empty()
+        used_shields.empty()
+
+        if stats.ships_left:
             black_holes.empty()
             create_blue_boss(ai_settings, screen, hud, bosses, boss_shields)
             ship.prepare_for_boss()
