@@ -36,16 +36,25 @@ known-first-party = ["game"]
 
 [tool.ruff.lint]
 select = [
-    # pycodestyle
-    "E",
-    # Pyflakes
-    "F",
-    # pyupgrade
-    "UP",
-    # flake8
-    "B", "SIM", "ARG",
-    # isort
-    "I",
+    "ALL"
+]
+ignore = [
+    "ANN001",    # missing-type-annotation (fix)
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D107",
+    "D417",
+    "C901",      # too-complex
+    "FIX002",
+    "PLR0912",   # too-many-branches
+    "PLR0913",   # too-many-arguments
+    "PLR0915",   # too-many-statements
+    "PLR2004",   # magic-values (fix)
+    "TD002",
+    "TD003",
+
 ]
 
 [tool.mypy]

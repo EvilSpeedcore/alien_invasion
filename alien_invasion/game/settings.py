@@ -1,7 +1,6 @@
 class Settings:
-    """Class, which store setting of the game."""
+
     def __init__(self) -> None:
-        """Initialize game settings"""
         # Screen settings.
         self.screen_width = 1200
         self.screen_height = 800
@@ -9,7 +8,7 @@ class Settings:
 
         # Ship settings.
         self.bullets_allowed = 1
-        self.ships_limit = 30
+        self.ships_limit = 3
         self.ship_speed_factor = 0.75
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1

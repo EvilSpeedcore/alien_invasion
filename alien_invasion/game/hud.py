@@ -14,21 +14,12 @@ if TYPE_CHECKING:
 
 
 class Hud:
-    """Class, which represents head-up display."""
+
     def __init__(self,
                  ai_settings: "Settings",
                  screen: "Surface",
                  stats: "GameStats",
                  ship: "Ship") -> None:
-        """Initialize hud.
-
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param stats: Instance of GameStats class.
-            :param ship: Instance of Ship class.
-
-        """
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.ai_settings = ai_settings

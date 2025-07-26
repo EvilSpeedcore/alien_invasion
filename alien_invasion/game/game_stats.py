@@ -5,14 +5,8 @@ if TYPE_CHECKING:
 
 
 class GameStats:
-    """Class, which monitors game statistics."""
+
     def __init__(self, ai_settings: "Settings") -> None:
-        """Initialize game statistics.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-
-        """
         self.ai_settings = ai_settings
         self.reset_stats()
 

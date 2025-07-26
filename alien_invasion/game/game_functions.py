@@ -1275,7 +1275,7 @@ def update_blue_boss_shield(hud, bullets, boss_shields):
             hud.prep_blue_boss_health()
 
 
-def create_black_hole(ai_settings, screen, ship, dt, black_holes):
+def create_black_hole(ai_settings, screen, ship, dt, black_holes) -> None:
     """Create black hole.
 
     Args:
@@ -1297,7 +1297,7 @@ def create_black_hole(ai_settings, screen, ship, dt, black_holes):
 
 
 def update_black_hole(ai_settings, screen, stats, hud, ship, bullets, used_shields, dt, bosses,
-                      boss_bullets, boss_shields, black_holes):
+                      boss_bullets, boss_shields, black_holes) -> None:
     """Update black hole animation. Check for collisions between ship and black hole.
 
     Args:
@@ -1330,7 +1330,7 @@ def update_black_hole(ai_settings, screen, stats, hud, ship, bullets, used_shiel
                                used_shields, bosses, boss_bullets, boss_shields, black_holes)
 
 
-def quit() -> None:
+def quit_game() -> None:
     pygame.quit()
     sys.exit(0)
 

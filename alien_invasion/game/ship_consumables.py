@@ -12,15 +12,8 @@ if TYPE_CHECKING:
 
 
 class ShipConsumable(Sprite):
-    """Parent class, which represents items that ship can pick up on screen and use later."""
+
     def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
-        """Initialize ship consumable.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-
-        """
         super().__init__()
         self.ai_settings = ai_settings
         self.screen = screen
@@ -33,38 +26,30 @@ class ShipConsumable(Sprite):
 
 
 class ShipHealth(ShipConsumable):
-    """Child class of ShipConsumable class, which represents health pick-ups."""
-    def __init__(self, ai_settings: "Settings", screen: "Surface"):
+
+    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('stats_health.png')
-        self.spawned_item = load_image('spawned_health.png')
+        self.image = load_image("stats_health.png")
+        self.spawned_item = load_image("spawned_health.png")
         self.rect = self.image.get_rect()
 
 
 class ShipAmmo(ShipConsumable):
-    """Child class of ShipConsumable class, which represents ammo pick-ups."""
-    def __init__(self, ai_settings: "Settings", screen: "Surface"):
+
+    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
         super().__init__(ai_settings, screen)
-        self.image = load_image('stats_ammo.png')
-        self.spawned_item = load_image('spawned_ammo.png')
+        self.image = load_image("stats_ammo.png")
+        self.spawned_item = load_image("spawned_ammo.png")
         self.rect = self.image.get_rect()
 
 
 class ShipShield(ShipConsumable):
-    """Child class of ShipConsumable class, which represents shield pick-ups."""
+
     def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
-        """Initialize ship shield.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-            :param Ship ship: Instance of Ship class.
-
-        """
         super().__init__(ai_settings, screen)
         self.ship = ship
-        self.image = load_image('stats_shield.png')
-        self.spawned_item = load_image('spawned_shield.png')
+        self.image = load_image("stats_shield.png")
+        self.spawned_item = load_image("spawned_shield.png")
         self.rect = self.spawned_item.get_rect()
         self.rect.centerx = self.ship.centerx
         self.rect.centery = self.ship.centery

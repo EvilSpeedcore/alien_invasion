@@ -44,7 +44,7 @@ def rotate_to_right(ship: "Ship") -> None:
 def rotate_to_left(ship: "Ship") -> None:
     """Rotate ship to LEFT direction."""
     ship.image = ship.original_image_left
-    ship.current_ship_rotation = "left" 
+    ship.current_ship_rotation = "left"
 
 
 def rotate_to_down(ship: "Ship") -> None:

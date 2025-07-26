@@ -9,27 +9,20 @@ if TYPE_CHECKING:
 
 
 class Ship:
-    """Class, which represents playable character in game - ship."""
+
     def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
-        """Initialize ship.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-
-        """
         self.screen = screen
         self.ai_settings = ai_settings
 
         # Instead of rotation of one ship image, we upload several images for each ship direction.
-        self.original_image = load_image('ship_up.png')
-        self.original_image_up_right = load_image('ship_up_right.png')
-        self.original_image_up_left = load_image('ship_up_left.png')
-        self.original_image_down_right = load_image('ship_down_right.png')
-        self.original_image_down_left = load_image('ship_down_left.png')
-        self.original_image_right = load_image('ship_right.png')
-        self.original_image_left = load_image('ship_left.png')
-        self.original_image_down = load_image('ship_down.png')
+        self.original_image = load_image("ship_up.png")
+        self.original_image_up_right = load_image("ship_up_right.png")
+        self.original_image_up_left = load_image("ship_up_left.png")
+        self.original_image_down_right = load_image("ship_down_right.png")
+        self.original_image_down_left = load_image("ship_down_left.png")
+        self.original_image_right = load_image("ship_right.png")
+        self.original_image_left = load_image("ship_left.png")
+        self.original_image_down = load_image("ship_down.png")
         self.image = self.original_image
 
         # Get the rectangular area of the image.
@@ -38,7 +31,7 @@ class Ship:
         self.screen_rect = screen.get_rect()
 
         # Set starting position of ship at the center of screen.
-        self.rect.centerx = self.screen_rect.centerx 
+        self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
 
         # Current ship position.
@@ -69,7 +62,7 @@ class Ship:
         """Set ship position below boss position."""
         self.centerx = self.screen_rect.centerx
         self.centery = 700
-             
+
     def blitme(self) -> None:
         """Draw ship."""
         self.screen.blit(self.image, self.rect)

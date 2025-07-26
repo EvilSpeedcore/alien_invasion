@@ -55,7 +55,7 @@ def run_game() -> None:
         while state(State.PAUSED):
             pause_events = gf.check_pause_events(ship)
             if pause_events.quit:
-                gf.quit()
+                gf.quit_game()
             if pause_events.unpause:
                state.set(State.ACTIVE)
 
@@ -71,7 +71,7 @@ def run_game() -> None:
                                                   used_shields, boss_shields, black_holes)
                 state.set(State.ACTIVE)
             if menu_events.quit:
-                gf.quit()
+                gf.quit_game()
 
         # Active game state
         while state(State.ACTIVE):
@@ -79,7 +79,7 @@ def run_game() -> None:
             active_events = gf.check_active_game_events(settings, screen, stats, hud,
                                                         ship, bullets, used_shields)
             if active_events.quit:
-                gf.quit()
+                gf.quit_game()
             if active_events.pause:
                 state.set(State.PAUSED)
 
@@ -138,5 +138,5 @@ def run_game() -> None:
                 sleep(settings.game_sleep_time)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_game()
