@@ -57,7 +57,7 @@ def run_game() -> None:
             if pause_events.quit:
                 gf.quit()
             if pause_events.unpause:
-               settings.state = State.RUNNING
+               settings.state = State.ACTIVE
 
         # Menu
         while settings.state == State.MAIN_MENU:
@@ -69,16 +69,21 @@ def run_game() -> None:
             if menu_events.play:
                 gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens,
                                                   used_shields, boss_shields, black_holes)
-                settings.state = State.RUNNING
+                settings.state = State.ACTIVE
             if menu_events.quit:
                 gf.quit()
 
         # Game
-        while settings.state == State.RUNNING:
+        while settings.state == State.ACTIVE:
             dt = clock.tick()
-            gf.check_events(settings, screen, stats, hud, ship, bullets, used_shields)
-            gf.check_keys_pressed(ship)
+            active_events = gf.check_active_game_events(settings, screen, stats, hud,
+                                                        ship, bullets, used_shields)
+            if active_events.quit:
+                gf.quit()
+            if active_events.pause:
+                settings.state = State.PAUSED
 
+            gf.check_keys_pressed(ship)
             ship.update()
 
             if not (aliens or bosses):

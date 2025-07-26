@@ -3,6 +3,6 @@ from enum import Enum, auto
 
 class State(Enum):
 
-    RUNNING = auto()
+    ACTIVE = auto()
     PAUSED = auto()
     MAIN_MENU = auto()
