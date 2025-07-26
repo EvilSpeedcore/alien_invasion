@@ -902,7 +902,7 @@ def use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields):
         :param used_shields: Container to hold and manage ShipShield Sprites.
 
     """
-    if stats.game_active and stats.shields_left >= 1:
+    if stats.shields_left:
         effect = pygame.mixer.Sound(Paths.effects() / '1.ogg')
         effect.play()
         used_shield = ShipShield(ai_settings, screen, ship)
