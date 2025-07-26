@@ -175,17 +175,17 @@ def check_pause_events(ship) -> PauseEvents:
     return PauseEvents()
 
 
-def check_main_menu_events(stats, play_button) -> MainMenuEvents:
+def check_main_menu_events(play_button) -> MainMenuEvents:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return MainMenuEvents(quit=True)
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            return MainMenuEvents(play=check_play_button(stats, play_button))
+            return MainMenuEvents(play=check_play_button(play_button))
 
     return MainMenuEvents()
 
 
-def check_play_button(stats, play_button) -> bool:
+def check_play_button(play_button) -> bool:
     """Check if button to start the game is pressed.
 
     Args:

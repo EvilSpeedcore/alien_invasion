@@ -64,7 +64,7 @@ def run_game() -> None:
             pygame.mouse.set_visible(True)
             stats.game_active = False
 
-            menu_events = gf.check_main_menu_events(stats, play_button)
+            menu_events = gf.check_main_menu_events(play_button)
             gf.update_main_menu_screen(settings, screen, play_button)
 
             if menu_events.play:
