@@ -62,7 +62,6 @@ def run_game() -> None:
         # Menu
         while settings.state == State.MAIN_MENU:
             pygame.mouse.set_visible(True)
-            stats.game_active = False
 
             menu_events = gf.check_main_menu_events(play_button)
             gf.update_main_menu_screen(settings, screen, play_button)
@@ -71,7 +70,6 @@ def run_game() -> None:
                 gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens,
                                                   used_shields, boss_shields, black_holes)
                 settings.state = State.RUNNING
-                stats.game_active = True
             if menu_events.quit:
                 gf.quit()
 

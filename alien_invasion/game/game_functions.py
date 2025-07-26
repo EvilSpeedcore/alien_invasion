@@ -64,7 +64,7 @@ def check_keydown_events(event, ai_settings, screen, stats, hud, ship, bullets, 
         fire_bullet(ai_settings, screen, stats, ship, bullets)
     if event.key == pygame.K_s:
         ai_settings.state = State.RUNNING
-    if stats.game_active and event.key == pygame.K_SPACE:
+    if event.key == pygame.K_SPACE:
         ai_settings.state = State.PAUSED
     if event.key == pygame.K_d:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
