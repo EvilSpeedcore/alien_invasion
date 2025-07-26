@@ -61,7 +61,7 @@ class Hud:
         hp_image = boss_health.hp_images[self.green_boss_hp]
         boss_health.image = hp_image.copy()
         boss_health.rect.x = 500
-        boss_health.rect.y = 50
+        boss_health.rect.y = 60
         self.boss_health.add(boss_health)
 
     def prep_red_boss_health(self) -> None:
@@ -71,7 +71,7 @@ class Hud:
         hp_image = boss_health.hp_images[self.red_boss_hp]
         boss_health.image = hp_image.copy()
         boss_health.rect.x = 500
-        boss_health.rect.y = 50
+        boss_health.rect.y = 60
         self.boss_health.add(boss_health)
 
     def prep_blue_boss_health(self) -> None:
@@ -81,7 +81,7 @@ class Hud:
         hp_image = boss_health.hp_images[self.blue_boss_hp]
         boss_health.image = hp_image.copy()
         boss_health.rect.x = 500
-        boss_health.rect.y = 50
+        boss_health.rect.y = 60
         self.boss_health.add(boss_health)
 
     def prep_ammo(self) -> None:
