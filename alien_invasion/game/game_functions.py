@@ -184,6 +184,8 @@ def check_main_menu_events(play_button) -> MainMenuEvents:
             events.update(MainMenuEvents(quit=True))
         elif event.type == pygame.MOUSEBUTTONDOWN:
             events.update(MainMenuEvents(play=check_play_button(play_button)))
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+            events.update(MainMenuEvents(play=True))
     return events
 
 
