@@ -80,59 +80,59 @@ def run_game() -> None:
             dt = clock.tick()
             gf.check_events(settings, screen, stats, hud, ship, bullets, used_shields)
             gf.check_keys_pressed(ship)
-            if stats.game_active:
-                ship.update()
 
-                if not (aliens or bosses):
-                    # TODO: What if ship and last alien dies at the same time?
-                    gf.prepare_next_regular_stage(settings, screen, stats, ship, aliens,
-                                                  bullets, alien_bullets, health, ammo)
+            ship.update()
 
-                gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
-                gf.update_bullets(settings, screen, stats, hud, ship, aliens, bullets,
-                                  alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
-                gf.update_aliens(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
-                                ammo, used_shields)
-                gf.fire_alien_bullets(settings, screen, stats, ship, aliens, alien_bullets, dt)
-                gf.update_alien_bullets(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
-                                        ammo, used_shields)
-                if stats.stage == settings.boss_stages[0]:
-                    gf.update_green_boss(settings, screen, stats, hud, ship, bullets,
-                                        used_shields, bosses, boss_bullets, boss_shields, bosses)
-                    gf.fire_green_boss_bullets(settings, screen, dt, bosses, boss_bullets)
-                    gf.update_green_boss_bullets(settings, screen, stats, hud, ship, bullets,
-                                                used_shields, bosses, boss_bullets, boss_shields, black_holes)
-                    gf.update_green_boss_shield(hud, bullets, boss_shields)
-                elif stats.stage == settings.boss_stages[1]:
-                    gf.update_red_boss(settings, screen, stats, hud, ship, bullets,
+            if not (aliens or bosses):
+                # TODO: What if ship and last alien dies at the same time?
+                gf.prepare_next_regular_stage(settings, screen, stats, ship, aliens,
+                                              bullets, alien_bullets, health, ammo)
+
+            gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
+            gf.update_bullets(settings, screen, stats, hud, ship, aliens, bullets,
+                              alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
+            gf.update_aliens(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
+                             ammo, used_shields)
+            gf.fire_alien_bullets(settings, screen, stats, ship, aliens, alien_bullets, dt)
+            gf.update_alien_bullets(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
+                                    ammo, used_shields)
+            if stats.stage == settings.boss_stages[0]:
+                gf.update_green_boss(settings, screen, stats, hud, ship, bullets,
+                                     used_shields, bosses, boss_bullets, boss_shields, bosses)
+                gf.fire_green_boss_bullets(settings, screen, dt, bosses, boss_bullets)
+                gf.update_green_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                                             used_shields, bosses, boss_bullets, boss_shields, black_holes)
+                gf.update_green_boss_shield(hud, bullets, boss_shields)
+            elif stats.stage == settings.boss_stages[1]:
+                gf.update_red_boss(settings, screen, stats, hud, ship, bullets,
+                                   used_shields, bosses, boss_bullets, boss_shields, black_holes)
+                gf.update_red_boss_shield(hud, bullets, boss_shields)
+                gf.fire_red_boss_bullets(settings, screen, ship, dt, bosses, boss_bullets)
+                gf.update_red_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                                           used_shields, bosses, boss_bullets, boss_shields, black_holes)
+            elif stats.stage == settings.boss_stages[2]:
+                gf.update_blue_boss(settings, screen, stats, hud, ship, bullets,
                                     used_shields, bosses, boss_bullets, boss_shields, black_holes)
-                    gf.update_red_boss_shield(hud, bullets, boss_shields)
-                    gf.fire_red_boss_bullets(settings, screen, ship, dt, bosses, boss_bullets)
-                    gf.update_red_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                gf.update_blue_boss_shield(hud, bullets, boss_shields)
+                gf.fire_blue_boss_bullets(settings, screen, dt, bosses, boss_bullets)
+                gf.update_blue_boss_bullets(settings, screen, stats, hud, ship, bullets,
                                             used_shields, bosses, boss_bullets, boss_shields, black_holes)
-                elif stats.stage == settings.boss_stages[2]:
-                    gf.update_blue_boss(settings, screen, stats, hud, ship, bullets,
-                                        used_shields, bosses, boss_bullets, boss_shields, black_holes)
-                    gf.update_blue_boss_shield(hud, bullets, boss_shields)
-                    gf.fire_blue_boss_bullets(settings, screen, dt, bosses, boss_bullets)
-                    gf.update_blue_boss_bullets(settings, screen, stats, hud, ship, bullets,
-                                                used_shields, bosses, boss_bullets, boss_shields, black_holes)
-                    gf.create_black_hole(settings, screen, ship, dt, black_holes)
-                    gf.update_black_hole(settings, screen, stats, hud, ship, bullets,
-                                        used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
+                gf.create_black_hole(settings, screen, ship, dt, black_holes)
+                gf.update_black_hole(settings, screen, stats, hud, ship, bullets,
+                                     used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
-                gf.update_ship_health(stats, hud, ship, health)
-                gf.update_ship_ammo(stats, hud, ship, ammo)
+            gf.update_ship_health(stats, hud, ship, health)
+            gf.update_ship_ammo(stats, hud, ship, ammo)
 
-                gf.update_screen(settings, screen, hud, ship, aliens, bullets, alien_bullets,
-                                 health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
+            gf.update_screen(settings, screen, hud, ship, aliens, bullets, alien_bullets,
+                             health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
-                if gf.check_game_end(settings, stats):
-                    settings.state = State.MAIN_MENU
-                    # Hide ship fast
-                    screen.fill(settings.bg_color)
-                    pygame.display.flip()
-                    sleep(settings.game_sleep_time)
+            if gf.check_game_end(settings, stats):
+                settings.state = State.MAIN_MENU
+                # Hide ship fast
+                screen.fill(settings.bg_color)
+                pygame.display.flip()
+                sleep(settings.game_sleep_time)
 
 
 if __name__ == '__main__':
