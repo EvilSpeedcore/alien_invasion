@@ -22,17 +22,38 @@ class MainMenuEvents:
     quit: bool = False
     play: bool = False
 
+    def update(self, events: "MainMenuEvents") -> None:
+        # Update once
+        if self.quit is False and events.quit is True:
+            self.quit = events.quit
+        if self.play is False and events.play is True:
+            self.play = events.play
+
 
 @dataclass
 class PauseEvents:
     quit: bool = False
     unpause: bool = False
 
+    def update(self, events: "PauseEvents") -> None:
+        # Update once
+        if self.quit is False and events.quit is True:
+            self.quit = events.quit
+        if self.unpause is False and events.unpause is True:
+            self.unpause = events.unpause
+
 
 @dataclass
 class ActiveGameEvents:
     quit: bool = False
     pause: bool = False
+
+    def update(self, events: "ActiveGameEvents") -> None:
+        # Update once
+        if self.quit is False and events.quit is True:
+            self.quit = events.quit
+        if self.pause is False and events.pause is True:
+            self.pause = events.pause
 
 
 def check_active_game_keydown_events(event, ai_settings, screen, stats,
@@ -57,7 +78,7 @@ def check_active_game_keydown_events(event, ai_settings, screen, stats,
     if event.key == pygame.K_a:
         fire_bullet(ai_settings, screen, stats, ship, bullets)
     if event.key == pygame.K_SPACE:
-        events.pause = True
+        events.update(ActiveGameEvents(pause=True))
     if event.key == pygame.K_d:
         use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
     return events
@@ -82,7 +103,7 @@ def check_pause_keydown_events(event, ship) -> PauseEvents:
         ship.moving_down = True
         rt.rotate(ship)
     if event.key == pygame.K_s:
-        events.unpause = True
+        events.update(PauseEvents(unpause=True))
     return events
 
 
@@ -132,36 +153,38 @@ def check_keyup_events(event, ship):
 
 def check_active_game_events(ai_settings, screen, stats,
                              hud, ship, bullets, used_shields) -> ActiveGameEvents:
+    events = ActiveGameEvents()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            return ActiveGameEvents(quit=True)
+            events.update(ActiveGameEvents(quit=True))
         elif event.type == pygame.KEYDOWN:
-            return check_active_game_keydown_events(event, ai_settings, screen, stats,
-                                                    hud, ship, bullets, used_shields)
+            events.update(check_active_game_keydown_events(event, ai_settings, screen, stats,
+                                                           hud, ship, bullets, used_shields))
         elif event.type == pygame.KEYUP:
-            return check_active_game_keyup_events(event, ship)
-    return ActiveGameEvents()
+            events.update(check_active_game_keyup_events(event, ship))
+    return events
 
 
 def check_pause_events(ship) -> PauseEvents:
+    events = PauseEvents()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            return PauseEvents(quit=True)
+            events.update(PauseEvents(quit=True))
         elif event.type == pygame.KEYDOWN:
-            return check_pause_keydown_events(event, ship)
+            events.update(check_pause_keydown_events(event, ship))
         elif event.type == pygame.KEYUP:
-            return check_pause_keyup_events(event, ship)
-    return PauseEvents()
+            events.update(check_pause_keyup_events(event, ship))
+    return events
 
 
 def check_main_menu_events(play_button) -> MainMenuEvents:
+    events = MainMenuEvents()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            return MainMenuEvents(quit=True)
+            events.update(MainMenuEvents(quit=True))
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            return MainMenuEvents(play=check_play_button(play_button))
-
-    return MainMenuEvents()
+            events.update(MainMenuEvents(play=check_play_button(play_button)))
+    return events
 
 
 def check_play_button(play_button) -> bool:
