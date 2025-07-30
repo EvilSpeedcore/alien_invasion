@@ -8,8 +8,8 @@ from game.images import load_image
 
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
-    
-    def __init__(self, ai_settings, screen, alien):
+
+    def __init__(self, ai_settings, screen, alien) -> None:
         """Initialize alien bullet.
 
         Args:
@@ -23,9 +23,9 @@ class AlienBullet(Sprite):
         self.screen_rect = self.screen.get_rect()
 
         # Image load for different bullets.
-        self.image = load_image('alien_bullet.png')
-        self.red_bullet = load_image('red_alien_bullet.png')
-        self.blue_bullet = load_image('blue_alien_bullet.png')
+        self.image = load_image("alien_bullet.png")
+        self.red_bullet = load_image("red_alien_bullet.png")
+        self.blue_bullet = load_image("blue_alien_bullet.png")
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -44,7 +44,7 @@ class AlienBullet(Sprite):
         self.shooting_angle = None
         self.angles = (180, 360)
 
-    def update(self):
+    def update(self) -> None:
         """Update position of bullets depending on ship current position."""
         if self.ship_position == "4":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[1] - self.shooting_angle))
@@ -104,11 +104,11 @@ class AlienBullet(Sprite):
             self.rect.centery = self.y
             self.rect.centerx = self.x
 
-    def draw_alien_bullet(self):
+    def draw_alien_bullet(self) -> None:
         """Draw alien bullet on screen."""
         self.screen.blit(self.image, self.rect)
 
-    def define_angle(self, ship):
+    def define_angle(self, ship) -> None:
         """Define direction of bullet.
 
         Args:
@@ -121,7 +121,7 @@ class AlienBullet(Sprite):
         self.shooting_angle_cos = ac / bc
         self.shooting_angle = fa.find_angle_with_cos(self.shooting_angle_cos)
 
-    def define_position(self, ship):
+    def define_position(self, ship) -> None:
         """Define position of ship.
 
         Args:

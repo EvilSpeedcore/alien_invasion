@@ -33,11 +33,11 @@ class Button:
 
         """
         if self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
-            self.msg_image = self.font.render(msg, True, self.hover_text_color, self.button_color)
+            self.msg_image = self.font.render(msg, True, self.hover_text_color, self.button_color)  # noqa: FBT003
             self.msg_image_rect = self.msg_image.get_rect()
             self.msg_image_rect.center = self.ellipse_rect.center
         else:
-            self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)
+            self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)  # noqa: FBT003
             self.msg_image_rect = self.msg_image.get_rect()
             self.msg_image_rect.center = self.ellipse_rect.center
 

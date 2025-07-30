@@ -27,12 +27,11 @@ def collidable(alien_1: "Alien", alien_2: "Alien") -> bool:
     """
     if alien_1 is alien_2:
         return False
-    else:
-        return alien_1.rect.colliderect(alien_2.rect)
+    return alien_1.rect.colliderect(alien_2.rect)
 
 
 class Alien(Sprite):
-    """Class, which represents alien ships."""
+
     def __init__(self,
                  ai_settings: "Settings",
                  screen: "Surface",
@@ -50,16 +49,16 @@ class Alien(Sprite):
         self.ai_settings = ai_settings
 
         # Image load of different aliens.
-        self.image = load_image('green_alien.png')
-        self.red_alien = load_image('red_alien.png')
-        self.blue_alien = load_image('blue_alien.png')
+        self.image = load_image("green_alien.png")
+        self.red_alien = load_image("red_alien.png")
+        self.blue_alien = load_image("blue_alien.png")
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()
 
         # Every new aliens spawns in random area of the screen from allowed coordinates.
-        self.banned_coordinates = [y for y in range(int(ship.centery - 200.0), int(ship.centery + 206.0))]
+        self.banned_coordinates = list(range(int(ship.centery - 200.0), int(ship.centery + 206.0)))
         self.available_coordinates = [y for y in range(60, self.screen_rect.bottom - self.rect.height) if
                                       y not in self.banned_coordinates]
         self.rect.centery = choice(self.available_coordinates)
@@ -82,7 +81,7 @@ class Alien(Sprite):
             :param Ship ship: Instance of Ship class.
 
         """
-        aliens_collision = pygame.sprite.spritecollide(self, aliens, False, collidable)
+        aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
         if aliens_collision:
             aliens.remove(aliens_collision[0])
         else:

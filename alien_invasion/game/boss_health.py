@@ -29,7 +29,7 @@ class BossHealth(Sprite):
     def prepare_images(self) -> None:
         """Add loaded images to list."""
         for hp in self.hp_list:
-            self.hp_images.append(load_image(f'{self.IMAGE_DIR}/{hp}'))
+            self.hp_images.append(load_image(f"{self.IMAGE_DIR}/{hp}"))
 
 
 class GreenBossHealth(BossHealth):
@@ -45,7 +45,7 @@ class GreenBossHealth(BossHealth):
                         "6_shield.png", "7_shield.png", "8_shield.png", "9_shield.png", "10_shield.png"]
 
         # Load of image, which represents health bar of undamaged boss.
-        self.image = load_image(f'{self.IMAGE_DIR}/10_hp.png')
+        self.image = load_image(f"{self.IMAGE_DIR}/10_hp.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -65,7 +65,7 @@ class RedBossHealth(BossHealth):
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
                         "1_shield.png", "2_shield.png", "3_shield.png", "4_shield.png", "5_shield.png"]
-        self.image = load_image(f'{self.IMAGE_DIR}/10_hp.png')
+        self.image = load_image(f"{self.IMAGE_DIR}/10_hp.png")
         self.rect = self.image.get_rect()
         self.prepare_images()
 
@@ -81,6 +81,6 @@ class BlueBossHealth(BossHealth):
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
                         "1_shield.png", "2_shield.png", "3_shield.png", "4_shield.png", "5_shield.png",
                         "6_shield.png", "7_shield.png", "8_shield.png", "9_shield.png", "10_shield.png"]
-        self.image = load_image(f'{self.IMAGE_DIR}/10_hp.png')
+        self.image = load_image(f"{self.IMAGE_DIR}/10_hp.png")
         self.rect = self.image.get_rect()
         self.prepare_images()
