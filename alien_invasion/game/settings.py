@@ -35,10 +35,7 @@ class Settings:
         self.black_hole_despawn_timer = 0
 
         # Game settings
-        self.boss_stages = (4, 8, 12)
         self.game_sleep_time = 0.3
-        self.non_boss_stages = tuple(non_boss_stage for non_boss_stage in range(1, self.boss_stages[2] + 1) if
-                                     non_boss_stage not in self.boss_stages)
 
         # Settings initialization.
         self.initialize_dynamic_settings()

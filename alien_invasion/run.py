@@ -10,6 +10,7 @@ from game.game_stats import GameStats
 from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
+from game.stages import Stages
 from game.state import GameState, State
 
 if TYPE_CHECKING:
@@ -29,7 +30,8 @@ def run_game() -> None:
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
     stats = GameStats(settings)
-    hud = Hud(settings, screen, stats, ship)
+    stages = Stages()
+    hud = Hud(settings, screen, stats, stages, ship)
     play_button = Button(screen, "Start")
 
     # TODO: How to type Group?
@@ -67,7 +69,8 @@ def run_game() -> None:
             gf.update_main_menu_screen(settings, screen, play_button)
 
             if menu_events.play:
-                gf.initialize_game_from_main_menu(settings, screen, stats, hud, ship, aliens,
+                stages.select("1_1")
+                gf.initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship, aliens,
                                                   used_shields, boss_shields, black_holes)
                 state.set(State.ACTIVE)
             if menu_events.quit:
@@ -88,40 +91,40 @@ def run_game() -> None:
 
             if not (aliens or bosses):
                 # TODO: What if ship and last alien dies at the same time?
-                gf.prepare_next_regular_stage(settings, screen, stats, ship, aliens,
+                gf.prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens,
                                               bullets, alien_bullets, health, ammo)
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
-            gf.update_bullets(settings, screen, stats, hud, ship, aliens, bullets,
+            gf.update_bullets(settings, screen, stages, hud, ship, aliens, bullets,
                               alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
-            gf.update_aliens(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
-                             ammo, used_shields)
-            gf.fire_alien_bullets(settings, screen, stats, ship, aliens, alien_bullets, dt)
-            gf.update_alien_bullets(settings, screen, stats, hud, ship, aliens, bullets, alien_bullets, health,
-                                    ammo, used_shields)
-            if stats.stage == settings.boss_stages[0]:
-                gf.update_green_boss(settings, screen, stats, hud, ship, bullets,
+            gf.update_aliens(settings, screen, stats, stages, hud, ship, aliens,
+                             bullets, alien_bullets, health, ammo, used_shields)
+            gf.fire_alien_bullets(settings, screen, stages, ship, aliens, alien_bullets, dt)
+            gf.update_alien_bullets(settings, screen, stats, stages, hud, ship,
+                                    aliens, bullets, alien_bullets, health, ammo, used_shields)
+            if stages.current.name == "green_boss":
+                gf.update_green_boss(settings, screen, stats, stages, hud, ship, bullets,
                                      used_shields, bosses, boss_bullets, boss_shields, bosses)
                 gf.fire_green_boss_bullets(settings, screen, dt, bosses, boss_bullets)
-                gf.update_green_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                gf.update_green_boss_bullets(settings, screen, stats, stages, hud, ship, bullets,
                                              used_shields, bosses, boss_bullets, boss_shields, black_holes)
                 gf.update_green_boss_shield(hud, bullets, boss_shields)
-            elif stats.stage == settings.boss_stages[1]:
-                gf.update_red_boss(settings, screen, stats, hud, ship, bullets,
+            elif stages.current.name == "red_boss":
+                gf.update_red_boss(settings, screen, stats, stages, hud, ship, bullets,
                                    used_shields, bosses, boss_bullets, boss_shields, black_holes)
                 gf.update_red_boss_shield(hud, bullets, boss_shields)
                 gf.fire_red_boss_bullets(settings, screen, ship, dt, bosses, boss_bullets)
-                gf.update_red_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                gf.update_red_boss_bullets(settings, screen, stats, stages, hud, ship, bullets,
                                            used_shields, bosses, boss_bullets, boss_shields, black_holes)
-            elif stats.stage == settings.boss_stages[2]:
-                gf.update_blue_boss(settings, screen, stats, hud, ship, bullets,
+            elif stages.current.name == "blue_boss":
+                gf.update_blue_boss(settings, screen, stats, stages, hud, ship, bullets,
                                     used_shields, bosses, boss_bullets, boss_shields, black_holes)
                 gf.update_blue_boss_shield(hud, bullets, boss_shields)
                 gf.fire_blue_boss_bullets(settings, screen, dt, bosses, boss_bullets)
-                gf.update_blue_boss_bullets(settings, screen, stats, hud, ship, bullets,
+                gf.update_blue_boss_bullets(settings, screen, stats, stages, hud, ship, bullets,
                                             used_shields, bosses, boss_bullets, boss_shields, black_holes)
                 gf.create_black_hole(settings, screen, ship, dt, black_holes)
-                gf.update_black_hole(settings, screen, stats, hud, ship, bullets,
+                gf.update_black_hole(settings, screen, stats, stages, hud, ship, bullets,
                                      used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
             gf.update_ship_health(stats, hud, ship, health)
@@ -130,11 +133,12 @@ def run_game() -> None:
             gf.update_screen(settings, screen, hud, ship, aliens, bullets, alien_bullets,
                              health, ammo, used_shields, dt, bosses, boss_bullets, boss_shields, black_holes)
 
-            if gf.check_game_end(settings, stats):
+            if gf.check_game_end(stages, stats):
                 state.set(State.MAIN_MENU)
                 # Hide ship fast
                 screen.fill(settings.bg_color)
                 pygame.display.flip()
+                stages.reset()
                 sleep(settings.game_sleep_time)
 
 

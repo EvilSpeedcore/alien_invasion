@@ -4,6 +4,7 @@ from pygame.sprite import Group, GroupSingle
 
 from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
+from game.stages import BossStage
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
     from game.game_stats import GameStats
     from game.settings import Settings
     from game.ship import Ship
+    from game.stages import Stages
 
 
 class Hud:
@@ -19,12 +21,15 @@ class Hud:
                  ai_settings: "Settings",
                  screen: "Surface",
                  stats: "GameStats",
+                 stages: "Stages",
                  ship: "Ship") -> None:
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.ai_settings = ai_settings
         self.stats = stats
+        self.stages = stages
         self.ship = ship
+
         self.green_boss_hp = 19
         self.red_boss_hp = 14
         self.blue_boss_hp = 19
@@ -98,6 +103,8 @@ class Hud:
         self.health.draw(self.screen)
         self.ammo.draw(self.screen)
         self.shield.draw(self.screen)
-        if self.stats.stage in self.ai_settings.boss_stages:
-            self.boss_health.draw(self.screen)
-            self.boss_health.draw(self.screen)
+        match stage := self.stages.current:
+            case BossStage() if type(stage) is BossStage:
+                # TODO: Why draw to times?
+                self.boss_health.draw(self.screen)
+                self.boss_health.draw(self.screen)
