@@ -4,8 +4,8 @@ from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+import game.game_functions as gf
 import game.rotation as rt
-from game.game_functions import create_fleet
 from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
@@ -93,11 +93,11 @@ class Stage(BaseStage):
                                    ship=self.ship,
                                    ammo=self.ammo)
 
-        create_fleet(ai_settings=self.settings,
-                     screen=self.screen,
-                     stages=self.stages,
-                     ship=self.ship,
-                     aliens=self.aliens)
+        gf.create_fleet(ai_settings=self.settings,
+                        screen=self.screen,
+                        stages=self.stages,
+                        ship=self.ship,
+                        aliens=self.aliens)
 
     def transit(self) -> None:
         super().transit()
@@ -114,10 +114,15 @@ class Stage(BaseStage):
 
 class BossStage(BaseStage):
 
-    def __init__(self, ship: "Ship", boss_shields, name: str) -> None:
+    def __init__(self,
+                 ship: "Ship",
+                 boss_health,
+                 boss_shields,
+                 name: str) -> None:
         super().__init__(name)
 
         self.ship = ship
+        self.boss_health = boss_health
         self.boss_shields = boss_shields
 
     def set_up(self) -> None:
@@ -127,19 +132,81 @@ class BossStage(BaseStage):
 
     def tear_down(self) -> None:
         super().tear_down()
+        self.boss_health.empty()
         self.boss_shields.empty()
+
+
+class GreenBossStage(BossStage):
+
+    def __init__(self,
+                 settings: "Settings",
+                 screen,
+                 hud,
+                 ship: "Ship",
+                 bosses,
+                 boss_health,
+                 boss_shields,
+                 name: str) -> None:
+        super().__init__(ship=ship,
+                         boss_health=boss_health,
+                         boss_shields=boss_shields,
+                         name=name)
+
+        self.settings = settings
+        self.screen = screen
+        self.hud = hud
+        self.bosses = bosses
+
+    def set_up(self) -> None:
+        super().set_up()
+        gf.create_green_boss(ai_settings=self.settings,
+                             screen=self.screen,
+                             hud=self.hud,
+                             bosses=self.bosses,
+                             boss_shields=self.boss_shields)
+
+
+class RedBossStage(GreenBossStage):
+
+    def set_up(self) -> None:
+        super(GreenBossStage, self).set_up()
+        gf.create_red_boss(ai_settings=self.settings,
+                           screen=self.screen,
+                           hud=self.hud,
+                           bosses=self.bosses,
+                           boss_shields=self.boss_shields)
 
 
 class BlueBossStage(BossStage):
 
     def __init__(self,
+                 settings: "Settings",
+                 screen,
+                 hud,
                  ship: "Ship",
+                 bosses,
+                 boss_health,
                  boss_shields,
                  black_holes,
                  name: str) -> None:
-        super().__init__(ship=ship, boss_shields=boss_shields, name=name)
+        super().__init__(ship=ship,
+                         boss_health=boss_health,
+                         boss_shields=boss_shields,
+                         name=name)
 
+        self.settings = settings
+        self.screen = screen
+        self.hud = hud
+        self.bosses = bosses
         self.black_holes = black_holes
+
+    def set_up(self) -> None:
+        super().set_up()
+        gf.create_blue_boss(ai_settings=self.settings,
+                            screen=self.screen,
+                            hud=self.hud,
+                            bosses=self.bosses,
+                            boss_shields=self.boss_shields)
 
     def tear_down(self) -> None:
         super().tear_down()
@@ -152,6 +219,7 @@ class Stages(list[Stage | BossStage]):
                  settings: "Settings",
                  screen,
                  stats,
+                 hud,
                  aliens,
                  ship,
                  health,
@@ -159,11 +227,14 @@ class Stages(list[Stage | BossStage]):
                  bullets,
                  alien_bullets,
                  used_shields,
+                 bosses,
+                 boss_health,
                  boss_shields,
                  black_holes) -> None:
         self.settings = settings
         self.screen = screen
         self.stats = stats
+        self.hud = hud
         self.aliens = aliens
         self.ship = ship
         self.health = health
@@ -171,6 +242,8 @@ class Stages(list[Stage | BossStage]):
         self.bullets = bullets
         self.alien_bullets = alien_bullets
         self.used_shields = used_shields
+        self.bosses = bosses
+        self.boss_health = boss_health
         self.boss_shields = boss_shields
         self.black_holes = black_holes
 
@@ -193,28 +266,56 @@ class Stages(list[Stage | BossStage]):
                      name=name)
 
     def create_boss_stage(self, name: str) -> BossStage:
-        return BossStage(ship=self.ship, boss_shields=self.boss_shields, name=name)
+        return BossStage(ship=self.ship,
+                         boss_health=self.boss_health,
+                         boss_shields=self.boss_shields,
+                         name=name)
 
-    def create_blue_boss_stage(self) -> None:
-        return BlueBossStage(ship=self.ship,
+    def create_green_boss_stage(self, name: str) -> GreenBossStage:
+        return GreenBossStage(settings=self.settings,
+                              screen=self.screen,
+                              hud=self.hud,
+                              ship=self.ship,
+                              bosses=self.bosses,
+                              boss_health=self.boss_health,
+                              boss_shields=self.boss_shields,
+                              name=name)
+
+    def create_red_boss_stage(self, name: str) -> GreenBossStage:
+        return RedBossStage(settings=self.settings,
+                            screen=self.screen,
+                            hud=self.hud,
+                            ship=self.ship,
+                            bosses=self.bosses,
+                            boss_health=self.boss_health,
+                            boss_shields=self.boss_shields,
+                            name=name)
+
+    def create_blue_boss_stage(self, name: str) -> None:
+        return BlueBossStage(settings=self.settings,
+                             screen=self.screen,
+                             hud=self.hud,
+                             bosses=self.bosses,
+                             ship=self.ship,
+                             boss_health=self.boss_health,
                              boss_shields=self.boss_shields,
                              black_holes=self.black_holes,
-                             name="blue_boss")
+                             name=name)
 
     def create_stages(self) -> list[Stage | BossStage]:
         return [
             self.create_stage(name="1_1"),
             self.create_stage(name="1_2"),
             self.create_stage(name="1_3"),
-            self.create_boss_stage(name="green_boss"),
+            self.create_green_boss_stage(name="green_boss"),
             self.create_stage(name="2_1"),
             self.create_stage(name="2_2"),
             self.create_stage(name="2_3"),
-            self.create_boss_stage(name="red_boss"),
+            self.create_red_boss_stage(name="red_boss"),
             self.create_stage(name="2_5"),
             self.create_stage(name="2_6"),
             self.create_stage(name="2_7"),
-            self.create_blue_boss_stage(),
+            self.create_blue_boss_stage(name="blue_boss"),
             self.create_stage(name="end"),  # TODO: Fix. Not really a stage
         ]
 
@@ -244,9 +345,6 @@ class Stages(list[Stage | BossStage]):
         next_stage.set_up()
         log.info("%s -> %s", prev_stage, next_stage)
         return next_stage
-
-    def reset(self) -> None:
-        self.current = self[0]
 
 
 def maybe_spawn_extra_health(settings: "Settings", screen, stats, ship: "Ship", health) -> bool:

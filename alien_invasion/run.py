@@ -36,22 +36,26 @@ def run_game() -> None:
     play_button = Button(screen, "Start")
 
     # TODO: How to type Group?
-    bullets: Group[Bullet] = Group()
     aliens: Group[Alien] = Group()
+    bullets: Group[Bullet] = Group()
     alien_bullets: Group[AlienBullet] = Group()
+
     health: Group[ShipHealth] = Group()
     ammo: Group[ShipAmmo] = Group()
     used_shields: Group[ShipHealth] = Group()
-    boss_bullets: Group[BossBullet] = Group()
 
     # TODO: How to type GroupSingle?
-    bosses: GroupSingle = GroupSingle()
-    boss_shields: GroupSingle = GroupSingle()
-    black_holes: GroupSingle = GroupSingle()
+    bosses = GroupSingle()
+    boss_bullets: Group[BossBullet] = Group()
+    boss_shields = GroupSingle()
+    boss_health = GroupSingle()
+    black_holes = GroupSingle()
 
+    hud = Hud(settings, screen, stats, ship, boss_health)
     stages = Stages(settings=settings,
                     screen=screen,
                     stats=stats,
+                    hud=hud,
                     aliens=aliens,
                     ship=ship,
                     health=health,
@@ -59,9 +63,10 @@ def run_game() -> None:
                     bullets=bullets,
                     alien_bullets=alien_bullets,
                     used_shields=used_shields,
+                    bosses=bosses,
+                    boss_health=boss_health,
                     boss_shields=boss_shields,
                     black_holes=black_holes)
-    hud = Hud(settings, screen, stats, stages, ship)
 
     state = GameState(State.MAIN_MENU)
     clock = pygame.time.Clock()
@@ -107,8 +112,7 @@ def run_game() -> None:
                 stages.next_stage()
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
-            gf.update_bullets(settings, screen, stages, hud, ship, aliens, bullets,
-                              bosses, boss_bullets, boss_shields)
+            gf.update_bullets(settings, stages, hud, ship, aliens, bullets, bosses, boss_bullets)
             gf.update_aliens(settings, screen, stats, stages, hud, ship, aliens,
                              bullets, alien_bullets, health, ammo, used_shields)
             gf.fire_alien_bullets(settings, screen, stages, ship, aliens, alien_bullets, dt)

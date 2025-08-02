@@ -1,10 +1,9 @@
 from typing import TYPE_CHECKING
 
-from pygame.sprite import Group, GroupSingle
+from pygame.sprite import Group
 
 from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
-from game.stages import BossStage
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
@@ -12,7 +11,6 @@ if TYPE_CHECKING:
     from game.game_stats import GameStats
     from game.settings import Settings
     from game.ship import Ship
-    from game.stages import Stages
 
 
 class Hud:
@@ -21,14 +19,14 @@ class Hud:
                  ai_settings: "Settings",
                  screen: "Surface",
                  stats: "GameStats",
-                 stages: "Stages",
-                 ship: "Ship") -> None:
+                 ship: "Ship",
+                 boss_health) -> None:
         self.screen = screen
         self.screen_rect = screen.get_rect()
         self.ai_settings = ai_settings
         self.stats = stats
-        self.stages = stages
         self.ship = ship
+        self.boss_health = boss_health
 
         self.green_boss_hp = 19
         self.red_boss_hp = 14
@@ -38,7 +36,6 @@ class Hud:
         self.prep_health()
         self.prep_ammo()
         self.prep_shield()
-        self.prep_green_boss_health()
 
     def prep_health(self) -> None:
         """Prepare to drawn ship health."""
@@ -51,8 +48,6 @@ class Hud:
 
     def prep_green_boss_health(self) -> None:
         """Prepare to drawn green boss health."""
-        # TODO: How to type GroupSingle?
-        self.boss_health: GroupSingle = GroupSingle()
         boss_health = GreenBossHealth(self.ai_settings, self.screen)
         hp_image = boss_health.hp_images[self.green_boss_hp]
         boss_health.image = hp_image.copy()
@@ -62,7 +57,6 @@ class Hud:
 
     def prep_red_boss_health(self) -> None:
         """Prepare to drawn red boss health."""
-        self.boss_health = GroupSingle()
         boss_health = RedBossHealth(self.ai_settings, self.screen)
         hp_image = boss_health.hp_images[self.red_boss_hp]
         boss_health.image = hp_image.copy()
@@ -72,7 +66,6 @@ class Hud:
 
     def prep_blue_boss_health(self) -> None:
         """Prepare to drawn blue boss track."""
-        self.boss_health = GroupSingle()
         boss_health = BlueBossHealth(self.ai_settings, self.screen)
         hp_image = boss_health.hp_images[self.blue_boss_hp]
         boss_health.image = hp_image.copy()
@@ -103,6 +96,4 @@ class Hud:
         self.health.draw(self.screen)
         self.ammo.draw(self.screen)
         self.shield.draw(self.screen)
-        match stage := self.stages.current:
-            case BossStage() if isinstance(stage, BossStage):
-                self.boss_health.draw(self.screen)
+        self.boss_health.draw(self.screen)
