@@ -105,6 +105,4 @@ class Hud:
         self.shield.draw(self.screen)
         match stage := self.stages.current:
             case BossStage() if type(stage) is BossStage:
-                # TODO: Why draw to times?
-                self.boss_health.draw(self.screen)
                 self.boss_health.draw(self.screen)
