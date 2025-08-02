@@ -16,7 +16,7 @@ class GameState:
     def __init__(self, initial: State) -> None:
         self._state = initial
 
-    def __repr__(self) -> None:
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self._state})"
 
     def __call__(self, state: State) -> bool:
