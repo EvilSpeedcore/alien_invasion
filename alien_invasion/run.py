@@ -57,7 +57,8 @@ def run_game() -> None:
                     health=health,
                     ammo=ammo,
                     bullets=bullets,
-                    alien_bullets=alien_bullets)
+                    alien_bullets=alien_bullets,
+                    black_holes=black_holes)
     hud = Hud(settings, screen, stats, stages, ship)
 
     state = GameState(State.MAIN_MENU)
@@ -82,8 +83,8 @@ def run_game() -> None:
 
             if menu_events.play:
                 stages.select("1_1")
-                gf.initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship, aliens,
-                                                  used_shields, boss_shields, black_holes)
+                gf.initialize_game_from_main_menu(settings, screen, stats, stages, hud,
+                                                  ship, aliens, used_shields, boss_shields)
                 state.set(State.ACTIVE)
             if menu_events.quit:
                 gf.quit_game()
@@ -106,7 +107,7 @@ def run_game() -> None:
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
             gf.update_bullets(settings, screen, stages, hud, ship, aliens, bullets,
-                              bosses, boss_bullets, boss_shields, black_holes)
+                              bosses, boss_bullets, boss_shields)
             gf.update_aliens(settings, screen, stats, stages, hud, ship, aliens,
                              bullets, alien_bullets, health, ammo, used_shields)
             gf.fire_alien_bullets(settings, screen, stages, ship, aliens, alien_bullets, dt)
@@ -147,8 +148,8 @@ def run_game() -> None:
                 state.set(State.MAIN_MENU)
                 # Hide ship fast
                 screen.fill(settings.bg_color)
+                stages.current.tear_down()
                 pygame.display.flip()
-                stages.reset()
                 sleep(settings.game_sleep_time)
 
 

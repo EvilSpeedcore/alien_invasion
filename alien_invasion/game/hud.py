@@ -104,5 +104,5 @@ class Hud:
         self.ammo.draw(self.screen)
         self.shield.draw(self.screen)
         match stage := self.stages.current:
-            case BossStage() if type(stage) is BossStage:
+            case BossStage() if isinstance(stage, BossStage):
                 self.boss_health.draw(self.screen)

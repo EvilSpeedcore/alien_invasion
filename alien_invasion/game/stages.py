@@ -109,6 +109,21 @@ class BossStage(BaseStage):
         log.debug("%s: tear_down()", self)
 
 
+class BlueBossStage(BossStage):
+
+    def __init__(self,
+                 ship: "Ship",
+                 black_holes,
+                 name: str) -> None:
+        super().__init__(ship=ship, name=name)
+
+        self.black_holes = black_holes
+
+    def tear_down(self) -> None:
+        super().tear_down()
+        self.black_holes.empty()
+
+
 class Stages(list[Stage | BossStage]):
 
     def __init__(self,
@@ -120,7 +135,8 @@ class Stages(list[Stage | BossStage]):
                  health,
                  ammo,
                  bullets,
-                 alien_bullets) -> None:
+                 alien_bullets,
+                 black_holes) -> None:
         self.settings = settings
         self.screen = screen
         self.stats = stats
@@ -130,6 +146,7 @@ class Stages(list[Stage | BossStage]):
         self.ammo = ammo
         self.bullets = bullets
         self.alien_bullets = alien_bullets
+        self.black_holes = black_holes
 
         super().__init__(self.create_stages())
 
@@ -151,6 +168,11 @@ class Stages(list[Stage | BossStage]):
     def create_boss_stage(self, name: str) -> BossStage:
         return BossStage(ship=self.ship, name=name)
 
+    def create_blue_boss_stage(self) -> None:
+        return BlueBossStage(ship=self.ship,
+                             black_holes=self.black_holes,
+                             name="blue_boss")
+
     def create_stages(self) -> list[Stage | BossStage]:
         return [
             self.create_stage(name="1_1"),
@@ -164,7 +186,7 @@ class Stages(list[Stage | BossStage]):
             self.create_stage(name="2_5"),
             self.create_stage(name="2_6"),
             self.create_stage(name="2_7"),
-            self.create_boss_stage(name="blue_boss"),
+            self.create_blue_boss_stage(),
             self.create_stage(name="end"),  # TODO: Fix. Not really a stage
         ]
 

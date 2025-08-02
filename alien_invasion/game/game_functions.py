@@ -205,10 +205,11 @@ def check_play_button(play_button) -> bool:
 
 
 def initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship,
-                                   aliens, used_shields, black_holes, boss_shields) -> None:
+                                   aliens, used_shields, boss_shields) -> None:
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
+    # TODO: Move
     create_fleet(settings, screen, stages, ship, aliens)
     ship.set_default_movement()
     ship.center_ship()
@@ -217,8 +218,6 @@ def initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship,
     hud.prep_ammo()
     hud.prep_shield()
     used_shields.empty()
-    # TODO: Should not be here? Should be in a clean up of 3rd boss stage!
-    black_holes.empty()
     boss_shields.empty()
 
 
@@ -341,7 +340,7 @@ def update_main_menu_screen(settings, screen, play_button) -> None:
 
 
 def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, bosses,
-                   boss_bullets, boss_shields, black_holes) -> None:
+                   boss_bullets, boss_shields) -> None:
     """Update ship bullets. Remove bullet from sprites, if it reach edge of the screen. Check for collisions."""
     bullets.update()
     for bullet in bullets.copy():
@@ -374,11 +373,11 @@ def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, bosses,
 
     # Check for collision between ship billet and boss.
     check_bullet_boss_collision(settings, screen, stages, hud, aliens, bullets,
-                                bosses, boss_bullets, boss_shields, black_holes)
+                                bosses, boss_bullets, boss_shields)
 
 
 def check_bullet_boss_collision(ai_settings, screen, stages, hud, aliens, bullets,
-                                bosses, boss_bullets, boss_shields, black_holes) -> None:
+                                bosses, boss_bullets, boss_shields) -> None:
     """Handle collisions between ship bullets and bosses."""
     # Check collisions between ship and green boss.
     if stages.current.name == "green_boss":
@@ -415,8 +414,6 @@ def check_bullet_boss_collision(ai_settings, screen, stages, hud, aliens, bullet
     elif stages.current.name == "blue_boss":
         if len(aliens) == 0 and len(bosses) == 0:
             create_blue_boss(ai_settings, screen, hud, bosses, boss_shields)
-            # TODO: Move
-            black_holes.empty()
         boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
         if boss_collision:
             for boss in bosses.sprites():
