@@ -65,6 +65,7 @@ class Stage(BaseStage):
 
     def set_up(self) -> None:
         log.debug("%s: set_up()", self)
+        self.ship.center_ship()
         self.settings.increase_aliens_speed()
 
         if not maybe_spawn_extra_health(settings=self.settings,
@@ -86,7 +87,6 @@ class Stage(BaseStage):
 
     def tear_down(self) -> None:
         log.debug("%s: tear_down()", self)
-        self.ship.center_ship()
         self.health.empty()
         self.ammo.empty()
         self.alien_bullets.empty()

@@ -209,14 +209,16 @@ def initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship,
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
-    # TODO: Move
-    create_fleet(settings, screen, stages, ship, aliens)
     ship.set_default_movement()
-    ship.center_ship()
-    rt.rotate_to_up(ship)
     hud.prep_health()
     hud.prep_ammo()
     hud.prep_shield()
+
+    # TODO: Move
+    rt.rotate_to_up(ship)
+    create_fleet(settings, screen, stages, ship, aliens)
+    ship.center_ship()
+
     used_shields.empty()
     boss_shields.empty()
 
@@ -311,6 +313,7 @@ def update_screen(ai_settings, screen, hud, ship, aliens, bullets, alien_bullets
             boss_shield.draw_boss_shield()
             boss_shield.update()
         else:
+            # TODO: Move
             boss_shields.empty()
 
     hud.show_hud()
