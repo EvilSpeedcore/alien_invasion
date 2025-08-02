@@ -15,7 +15,6 @@ from game.bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.bullet import Bullet
 from game.paths import Paths
 from game.ship_consumables import ShipShield
-from game.stages import BossStage
 
 
 @dataclass
@@ -376,15 +375,6 @@ def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, alien_b
     # Check for collision between ship billet and boss.
     check_bullet_boss_collision(settings, screen, stages, hud, ship, aliens, bullets,
                                 alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
-
-
-def prepare_next_regular_stage(settings, screen, stages, ship, aliens) -> None:
-    match stage := stages.next_stage():
-        case BossStage() if type(stage) is BossStage:
-            return
-
-    # Create new fleet of aliens.
-    create_fleet(settings, screen, stages, ship, aliens)
 
 
 def check_bullet_boss_collision(ai_settings, screen, stages, hud, ship, aliens, bullets,

@@ -3,6 +3,7 @@ from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+from game.game_functions import create_fleet
 from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
@@ -37,9 +38,11 @@ class BaseStage:
 class Stage(BaseStage):
 
     def __init__(self,
+                 stages: "Stages",
                  settings: "Settings",
                  screen,
                  stats,
+                 aliens,
                  ship: "Ship",
                  health,
                  ammo,
@@ -48,9 +51,11 @@ class Stage(BaseStage):
                  name: str) -> None:
         super().__init__(name)
 
+        self.stages = stages
         self.settings = settings
         self.screen = screen
         self.stats = stats
+        self.aliens = aliens
         self.ship = ship
         self.health = health
         self.ammo = ammo
@@ -71,6 +76,12 @@ class Stage(BaseStage):
                                    stats=self.stats,
                                    ship=self.ship,
                                    ammo=self.ammo)
+
+        create_fleet(ai_settings=self.settings,
+                     screen=self.screen,
+                     stages=self.stages,
+                     ship=self.ship,
+                     aliens=self.aliens)
 
     def tear_down(self) -> None:
         log.debug("%s: tear_down()", self)
@@ -96,6 +107,7 @@ class Stages(list[Stage | BossStage]):
                  settings: "Settings",
                  screen,
                  stats,
+                 aliens,
                  ship,
                  health,
                  ammo,
@@ -104,6 +116,7 @@ class Stages(list[Stage | BossStage]):
         self.settings = settings
         self.screen = screen
         self.stats = stats
+        self.aliens = aliens
         self.ship = ship
         self.health = health
         self.ammo = ammo
@@ -115,9 +128,11 @@ class Stages(list[Stage | BossStage]):
         self.current = None
 
     def create_stage(self, name: str) -> Stage:
-        return Stage(settings=self.settings,
+        return Stage(stages=self,
+                     settings=self.settings,
                      screen=self.screen,
                      stats=self.stats,
+                     aliens=self.aliens,
                      ship=self.ship,
                      health=self.health,
                      ammo=self.ammo,
