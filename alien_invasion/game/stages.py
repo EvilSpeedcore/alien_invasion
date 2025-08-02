@@ -46,8 +46,8 @@ class BaseStage:
         return hash(self.name)
 
     @abstractmethod
-    def set_up(self) -> None:
-        log.debug("%s: set_up()", self)
+    def setup(self) -> None:
+        log.debug("%s: setup()", self)
 
     @abstractmethod
     def transit(self) -> None:
@@ -92,8 +92,8 @@ class Stage(BaseStage):
         self.health = health
         self.alien_bullets = alien_bullets
 
-    def set_up(self) -> None:
-        super().set_up()
+    def setup(self) -> None:
+        super().setup()
         self.ship.center_ship()
 
         if not maybe_spawn_extra_health(settings=self.settings,
@@ -149,8 +149,8 @@ class BossStage(BaseStage):
         self.boss_health = boss_health
         self.boss_shields = boss_shields
 
-    def set_up(self) -> None:
-        super().set_up()
+    def setup(self) -> None:
+        super().setup()
         self.ship.prepare_for_boss()
         rt.rotate_to_up(self.ship)
 
@@ -189,8 +189,8 @@ class GreenBossStage(BossStage):
         self.hud = hud
         self.bosses = bosses
 
-    def set_up(self) -> None:
-        super().set_up()
+    def setup(self) -> None:
+        super().setup()
         gf.create_green_boss(ai_settings=self.settings,
                              screen=self.screen,
                              hud=self.hud,
@@ -200,8 +200,8 @@ class GreenBossStage(BossStage):
 
 class RedBossStage(GreenBossStage):
 
-    def set_up(self) -> None:
-        super(GreenBossStage, self).set_up()
+    def setup(self) -> None:
+        super(GreenBossStage, self).setup()
         gf.create_red_boss(ai_settings=self.settings,
                            screen=self.screen,
                            hud=self.hud,
@@ -240,8 +240,8 @@ class BlueBossStage(BossStage):
         self.bosses = bosses
         self.black_holes = black_holes
 
-    def set_up(self) -> None:
-        super().set_up()
+    def setup(self) -> None:
+        super().setup()
         gf.create_blue_boss(ai_settings=self.settings,
                             screen=self.screen,
                             hud=self.hud,
@@ -393,7 +393,7 @@ class Stages(list[Stage | BossStage]):
         for stage in self:
             if stage.name == name:
                 self.current = stage
-                stage.set_up()
+                stage.setup()
                 return
             self.current = stage
             stage.transit()
@@ -406,7 +406,7 @@ class Stages(list[Stage | BossStage]):
         self.current = next_stage
         prev_stage.teardown()
         prev_stage.transit()
-        next_stage.set_up()
+        next_stage.setup()
         log.info("%s -> %s", prev_stage, next_stage)
         return next_stage
 
