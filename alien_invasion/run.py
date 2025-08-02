@@ -106,7 +106,7 @@ def run_game() -> None:
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
             gf.update_bullets(settings, screen, stages, hud, ship, aliens, bullets,
-                              alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
+                              bosses, boss_bullets, boss_shields, black_holes)
             gf.update_aliens(settings, screen, stats, stages, hud, ship, aliens,
                              bullets, alien_bullets, health, ammo, used_shields)
             gf.fire_alien_bullets(settings, screen, stages, ship, aliens, alien_bullets, dt)

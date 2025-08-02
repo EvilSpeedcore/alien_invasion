@@ -340,7 +340,7 @@ def update_main_menu_screen(settings, screen, play_button) -> None:
     pygame.display.flip()
 
 
-def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, alien_bullets, bosses,
+def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, bosses,
                    boss_bullets, boss_shields, black_holes) -> None:
     """Update ship bullets. Remove bullet from sprites, if it reach edge of the screen. Check for collisions."""
     bullets.update()
@@ -373,21 +373,18 @@ def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, alien_b
     pygame.sprite.groupcollide(bullets, aliens, dokilla=True, dokillb=True)
 
     # Check for collision between ship billet and boss.
-    check_bullet_boss_collision(settings, screen, stages, hud, ship, aliens, bullets,
-                                alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
+    check_bullet_boss_collision(settings, screen, stages, hud, aliens, bullets,
+                                bosses, boss_bullets, boss_shields, black_holes)
 
 
-def check_bullet_boss_collision(ai_settings, screen, stages, hud, ship, aliens, bullets,
-                                alien_bullets, bosses, boss_bullets, boss_shields, black_holes) -> None:
+def check_bullet_boss_collision(ai_settings, screen, stages, hud, aliens, bullets,
+                                bosses, boss_bullets, boss_shields, black_holes) -> None:
     """Handle collisions between ship bullets and bosses."""
     # Check collisions between ship and green boss.
     if stages.current.name == "green_boss":
+        # TODO: Move this to green boss init ...
         if len(aliens) == 0 and len(bosses) == 0:
             create_green_boss(ai_settings, screen, hud, bosses, boss_shields)
-            alien_bullets.empty()
-            bullets.empty()
-            ship.prepare_for_boss()
-            rt.rotate_to_up(ship)
         boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
         if boss_collision:
             for boss in bosses.sprites():
@@ -403,10 +400,6 @@ def check_bullet_boss_collision(ai_settings, screen, stages, hud, ship, aliens, 
     elif stages.current.name == "red_boss":
         if len(aliens) == 0 and len(bosses) == 0:
             create_red_boss(ai_settings, screen, hud, bosses, boss_shields)
-            alien_bullets.empty()
-            bullets.empty()
-            ship.prepare_for_boss()
-            rt.rotate_to_up(ship)
         boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
         if boss_collision:
             for boss in bosses.sprites():
@@ -422,11 +415,8 @@ def check_bullet_boss_collision(ai_settings, screen, stages, hud, ship, aliens, 
     elif stages.current.name == "blue_boss":
         if len(aliens) == 0 and len(bosses) == 0:
             create_blue_boss(ai_settings, screen, hud, bosses, boss_shields)
-            alien_bullets.empty()
-            bullets.empty()
+            # TODO: Move
             black_holes.empty()
-            ship.prepare_for_boss()
-            rt.rotate_to_up(ship)
         boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
         if boss_collision:
             for boss in bosses.sprites():

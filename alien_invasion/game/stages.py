@@ -3,6 +3,7 @@ from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
 
+import game.rotation as rt
 from game.game_functions import create_fleet
 from game.ship_consumables import ShipAmmo, ShipHealth
 
@@ -94,8 +95,15 @@ class Stage(BaseStage):
 
 class BossStage(BaseStage):
 
+    def __init__(self, ship: "Ship", name: str) -> None:
+        super().__init__(name)
+
+        self.ship = ship
+
     def set_up(self) -> None:
         log.debug("%s: set_up()", self)
+        self.ship.prepare_for_boss()
+        rt.rotate_to_up(self.ship)
 
     def tear_down(self) -> None:
         log.debug("%s: tear_down()", self)
@@ -141,7 +149,7 @@ class Stages(list[Stage | BossStage]):
                      name=name)
 
     def create_boss_stage(self, name: str) -> BossStage:
-        return BossStage(name=name)
+        return BossStage(ship=self.ship, name=name)
 
     def create_stages(self) -> list[Stage | BossStage]:
         return [
