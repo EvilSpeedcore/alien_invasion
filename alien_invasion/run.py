@@ -153,7 +153,7 @@ def run_game() -> None:
                 state.set(State.MAIN_MENU)
                 # Hide ship fast
                 screen.fill(settings.bg_color)
-                stages.current.tear_down()
+                stages.current.teardown()
                 pygame.display.flip()
                 sleep(settings.game_sleep_time)
 

@@ -20,7 +20,16 @@ class BaseStage:
 
     counter = count(start=0)
 
-    def __init__(self, name: str) -> None:
+    def __init__(self,
+                 bullets,
+                 health,
+                 ammo,
+                 used_shields,
+                 name: str) -> None:
+        self.bullets = bullets
+        self.health = health
+        self.ammo = ammo
+        self.used_shields = used_shields
         self.name = name
 
         self.index = next(self.counter)
@@ -45,8 +54,12 @@ class BaseStage:
         log.debug("%s: transit()", self)
 
     @abstractmethod
-    def tear_down(self) -> None:
-        log.debug("%s: tear_down()", self)
+    def teardown(self) -> None:
+        log.debug("%s: teardown()", self)
+        self.bullets.empty()
+        self.health.empty()
+        self.ammo.empty()
+        self.used_shields.empty()
 
 
 class Stage(BaseStage):
@@ -64,7 +77,11 @@ class Stage(BaseStage):
                  alien_bullets,
                  used_shields,
                  name: str) -> None:
-        super().__init__(name)
+        super().__init__(bullets=bullets,
+                         health=health,
+                         ammo=ammo,
+                         used_shields=used_shields,
+                         name=name)
 
         self.stages = stages
         self.settings = settings
@@ -73,10 +90,7 @@ class Stage(BaseStage):
         self.aliens = aliens
         self.ship = ship
         self.health = health
-        self.ammo = ammo
-        self.bullets = bullets
         self.alien_bullets = alien_bullets
-        self.used_shields = used_shields
 
     def set_up(self) -> None:
         super().set_up()
@@ -108,24 +122,27 @@ class Stage(BaseStage):
         if not isinstance(self.stages.current, BossStage):
             self.settings.increase_aliens_speed()
 
-    def tear_down(self) -> None:
-        super().tear_down()
-        self.health.empty()
-        self.ammo.empty()
+    def teardown(self) -> None:
+        super().teardown()
         self.alien_bullets.empty()
-        self.bullets.empty()
-        self.used_shields.empty()
 
 
 class BossStage(BaseStage):
 
     def __init__(self,
                  ship: "Ship",
+                 bullets,
+                 health,
+                 ammo,
                  used_shields,
                  boss_health,
                  boss_shields,
                  name: str) -> None:
-        super().__init__(name)
+        super().__init__(bullets=bullets,
+                         health=health,
+                         ammo=ammo,
+                         used_shields=used_shields,
+                         name=name)
 
         self.ship = ship
         self.used_shields = used_shields
@@ -137,9 +154,8 @@ class BossStage(BaseStage):
         self.ship.prepare_for_boss()
         rt.rotate_to_up(self.ship)
 
-    def tear_down(self) -> None:
-        super().tear_down()
-        self.used_shields.empty()
+    def teardown(self) -> None:
+        super().teardown()
         self.boss_health.empty()
         self.boss_shields.empty()
 
@@ -151,12 +167,18 @@ class GreenBossStage(BossStage):
                  screen,
                  hud,
                  ship: "Ship",
+                 bullets,
+                 health,
+                 ammo,
                  used_shields,
                  bosses,
                  boss_health,
                  boss_shields,
                  name: str) -> None:
         super().__init__(ship=ship,
+                         bullets=bullets,
+                         health=health,
+                         ammo=ammo,
                          used_shields=used_shields,
                          boss_health=boss_health,
                          boss_shields=boss_shields,
@@ -194,6 +216,9 @@ class BlueBossStage(BossStage):
                  screen,
                  hud,
                  ship: "Ship",
+                 bullets,
+                 health,
+                 ammo,
                  used_shields,
                  bosses,
                  boss_health,
@@ -201,6 +226,9 @@ class BlueBossStage(BossStage):
                  black_holes,
                  name: str) -> None:
         super().__init__(ship=ship,
+                         bullets=bullets,
+                         health=health,
+                         ammo=ammo,
                          used_shields=used_shields,
                          boss_health=boss_health,
                          boss_shields=boss_shields,
@@ -220,8 +248,8 @@ class BlueBossStage(BossStage):
                             bosses=self.bosses,
                             boss_shields=self.boss_shields)
 
-    def tear_down(self) -> None:
-        super().tear_down()
+    def teardown(self) -> None:
+        super().teardown()
         self.black_holes.empty()
 
 
@@ -279,6 +307,9 @@ class Stages(list[Stage | BossStage]):
 
     def create_boss_stage(self, name: str) -> BossStage:
         return BossStage(ship=self.ship,
+                         bullets=self.bullets,
+                         health=self.health,
+                         ammo=self.ammo,
                          used_shields=self.used_shields,
                          boss_health=self.boss_health,
                          boss_shields=self.boss_shields,
@@ -289,6 +320,9 @@ class Stages(list[Stage | BossStage]):
                               screen=self.screen,
                               hud=self.hud,
                               ship=self.ship,
+                              bullets=self.bullets,
+                              health=self.health,
+                              ammo=self.ammo,
                               used_shields=self.used_shields,
                               bosses=self.bosses,
                               boss_health=self.boss_health,
@@ -300,6 +334,9 @@ class Stages(list[Stage | BossStage]):
                             screen=self.screen,
                             hud=self.hud,
                             ship=self.ship,
+                            bullets=self.bullets,
+                            health=self.health,
+                            ammo=self.ammo,
                             used_shields=self.used_shields,
                             bosses=self.bosses,
                             boss_health=self.boss_health,
@@ -311,12 +348,22 @@ class Stages(list[Stage | BossStage]):
                              screen=self.screen,
                              hud=self.hud,
                              ship=self.ship,
+                             bullets=self.bullets,
+                             health=self.health,
+                             ammo=self.ammo,
                              bosses=self.bosses,
                              used_shields=self.used_shields,
                              boss_health=self.boss_health,
                              boss_shields=self.boss_shields,
                              black_holes=self.black_holes,
                              name=name)
+
+    def create_end_stage(self, name: str) -> BaseStage:
+        return BaseStage(bullets=self.bullets,
+                         health=self.health,
+                         ammo=self.ammo,
+                         used_shields=self.used_shields,
+                         name=name)
 
     def create_stages(self) -> list[Stage | BossStage]:
         return [
@@ -332,7 +379,7 @@ class Stages(list[Stage | BossStage]):
             self.create_stage(name="3_2"),
             self.create_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
-            BaseStage(name="end"),  # TODO: Fix. Not really a stage
+            self.create_end_stage("end"),  # TODO: Fix. Not really a stage
         ]
 
     def get_by_name(self, name: str) -> Stage | BossStage:
@@ -357,7 +404,7 @@ class Stages(list[Stage | BossStage]):
         prev_stage = self.current
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
-        prev_stage.tear_down()
+        prev_stage.teardown()
         prev_stage.transit()
         next_stage.set_up()
         log.info("%s -> %s", prev_stage, next_stage)
