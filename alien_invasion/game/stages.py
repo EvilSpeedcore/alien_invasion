@@ -1,4 +1,5 @@
 import random
+from abc import abstractmethod
 from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
@@ -35,6 +36,18 @@ class BaseStage:
     def __hash__(self) -> int:
         return hash(self.name)
 
+    @abstractmethod
+    def set_up(self) -> None:
+        log.debug("%s: set_up()", self)
+
+    @abstractmethod
+    def transit(self) -> None:
+        log.debug("%s: transit()", self)
+
+    @abstractmethod
+    def tear_down(self) -> None:
+        log.debug("%s: tear_down()", self)
+
 
 class Stage(BaseStage):
 
@@ -66,7 +79,7 @@ class Stage(BaseStage):
         self.used_shields = used_shields
 
     def set_up(self) -> None:
-        log.debug("%s: set_up()", self)
+        super().set_up()
         self.ship.center_ship()
 
         if not maybe_spawn_extra_health(settings=self.settings,
@@ -86,8 +99,12 @@ class Stage(BaseStage):
                      ship=self.ship,
                      aliens=self.aliens)
 
+    def transit(self) -> None:
+        super().transit()
+        self.settings.increase_aliens_speed()
+
     def tear_down(self) -> None:
-        log.debug("%s: tear_down()", self)
+        super().tear_down()
         self.health.empty()
         self.ammo.empty()
         self.alien_bullets.empty()
@@ -104,11 +121,12 @@ class BossStage(BaseStage):
         self.boss_shields = boss_shields
 
     def set_up(self) -> None:
-        log.debug("%s: set_up()", self)
+        super().set_up()
         self.ship.prepare_for_boss()
         rt.rotate_to_up(self.ship)
 
     def tear_down(self) -> None:
+        super().tear_down()
         self.boss_shields.empty()
 
 
@@ -218,7 +236,7 @@ class Stages(list[Stage | BossStage]):
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
         prev_stage.tear_down()
-        self.settings.increase_aliens_speed()
+        prev_stage.transit()
         next_stage.set_up()
         log.info("%s -> %s", prev_stage, next_stage)
         return next_stage

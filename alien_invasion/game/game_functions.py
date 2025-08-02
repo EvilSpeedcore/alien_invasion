@@ -305,7 +305,6 @@ def update_screen(ai_settings, screen, hud, ship, aliens, bullets, alien_bullets
             boss_shield.draw_boss_shield()
             boss_shield.update()
         else:
-            # TODO: Move
             boss_shields.empty()
 
     hud.show_hud()
