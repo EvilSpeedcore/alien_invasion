@@ -32,6 +32,7 @@ class Settings:
         self.green_boss_bullet_timer = 300
 
         # Environment settings.
+        # TODO: This does not work correctly, when we select blue boss stage?
         self.black_hole_spawn_timer = 0
         self.black_hole_rotation_timer = 0
         self.black_hole_despawn_timer = 0
