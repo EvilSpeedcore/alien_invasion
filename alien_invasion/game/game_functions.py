@@ -378,18 +378,11 @@ def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, alien_b
                                 alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
 
 
-def prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, bullets,
-                               alien_bullets, health, ammo) -> None:
+def prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, health, ammo) -> None:
     match stage := stages.next_stage():
         case BossStage() if type(stage) is BossStage:
             return
 
-    # CLS when moving to the next stage.
-    ship.center_ship()
-    health.empty()
-    ammo.empty()
-    alien_bullets.empty()
-    bullets.empty()
     # Flag, which shows the fact, that extra health not yet spawned.
     health_spawned = False
     # Extra health spawn.

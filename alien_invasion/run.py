@@ -33,8 +33,6 @@ def run_game() -> None:
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
     stats = GameStats(settings)
-    stages = Stages(settings)
-    hud = Hud(settings, screen, stats, stages, ship)
     play_button = Button(screen, "Start")
 
     # TODO: How to type Group?
@@ -50,6 +48,14 @@ def run_game() -> None:
     bosses: GroupSingle = GroupSingle()
     boss_shields: GroupSingle = GroupSingle()
     black_holes: GroupSingle = GroupSingle()
+
+    stages = Stages(settings=settings,
+                    ship=ship,
+                    health=health,
+                    ammo=ammo,
+                    bullets=bullets,
+                    alien_bullets=alien_bullets)
+    hud = Hud(settings, screen, stats, stages, ship)
 
     state = GameState(State.MAIN_MENU)
     clock = pygame.time.Clock()
@@ -94,8 +100,7 @@ def run_game() -> None:
 
             if not (aliens or bosses):
                 # TODO: What if ship and last alien die at the same time?
-                gf.prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens,
-                                              bullets, alien_bullets, health, ammo)
+                gf.prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, health, ammo)
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
             gf.update_bullets(settings, screen, stages, hud, ship, aliens, bullets,
