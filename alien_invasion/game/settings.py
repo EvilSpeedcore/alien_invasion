@@ -31,12 +31,6 @@ class Settings:
         self.time_elapsed_since_last_red_boss_bullet = 0
         self.green_boss_bullet_timer = 300
 
-        # Environment settings.
-        # TODO: This does not work correctly, when we select blue boss stage?
-        self.black_hole_spawn_timer = 0
-        self.black_hole_rotation_timer = 0
-        self.black_hole_despawn_timer = 0
-
         # Game settings
         self.game_sleep_time = 0.3
 
@@ -45,6 +39,10 @@ class Settings:
 
     def initialize_dynamic_settings(self) -> None:
         """Initialize settings, that change during the game."""
+        self.black_hole_spawn_timer = 0
+        self.black_hole_rotation_timer = 0
+        self.black_hole_despawn_timer = 0
+
         self.alien_speed_factor = 0.1
         self.alien_bullet_speed_factor = 0.07
 
