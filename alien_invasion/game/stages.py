@@ -1,6 +1,9 @@
+import random
 from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
+
+from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
 
@@ -35,6 +38,8 @@ class Stage(BaseStage):
 
     def __init__(self,
                  settings: "Settings",
+                 screen,
+                 stats,
                  ship: "Ship",
                  health,
                  ammo,
@@ -44,6 +49,8 @@ class Stage(BaseStage):
         super().__init__(name)
 
         self.settings = settings
+        self.screen = screen
+        self.stats = stats
         self.ship = ship
         self.health = health
         self.ammo = ammo
@@ -53,6 +60,17 @@ class Stage(BaseStage):
     def set_up(self) -> None:
         log.debug("%s: set_up()", self)
         self.settings.increase_aliens_speed()
+
+        if not maybe_spawn_extra_health(settings=self.settings,
+                                        screen=self.screen,
+                                        stats=self.stats,
+                                        ship=self.ship,
+                                        health=self.health):
+            maybe_spawn_extra_ammo(settings=self.settings,
+                                   screen=self.screen,
+                                   stats=self.stats,
+                                   ship=self.ship,
+                                   ammo=self.ammo)
 
     def tear_down(self) -> None:
         log.debug("%s: tear_down()", self)
@@ -76,12 +94,16 @@ class Stages(list[Stage | BossStage]):
 
     def __init__(self,
                  settings: "Settings",
+                 screen,
+                 stats,
                  ship,
                  health,
                  ammo,
                  bullets,
                  alien_bullets) -> None:
         self.settings = settings
+        self.screen = screen
+        self.stats = stats
         self.ship = ship
         self.health = health
         self.ammo = ammo
@@ -94,6 +116,8 @@ class Stages(list[Stage | BossStage]):
 
     def create_stage(self, name: str) -> Stage:
         return Stage(settings=self.settings,
+                     screen=self.screen,
+                     stats=self.stats,
                      ship=self.ship,
                      health=self.health,
                      ammo=self.ammo,
@@ -143,3 +167,54 @@ class Stages(list[Stage | BossStage]):
 
     def reset(self) -> None:
         self.current = self[0]
+
+
+def maybe_spawn_extra_health(settings: "Settings", screen, stats, ship: "Ship", health) -> bool:
+    # Flag, which shows the fact, that extra health not yet spawned.
+    health_spawned = False
+    # Extra health spawn.
+    if stats.ships_left > 3:
+        return health_spawned
+
+    random_number = random.choice(range(1, 6))
+    if random_number == 1:
+        new_health = ShipHealth(settings, screen)
+        banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
+        available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                   x not in banned_coordinates_x]
+        banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
+        available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                   y not in banned_coordinates_y]
+        new_health.rect.x = random.choice(available_coordinates_x)
+        new_health.rect.y = random.choice(available_coordinates_y)
+        health.add(new_health)
+        health_spawned = True
+    else:
+        health.empty()
+
+    return health_spawned
+
+
+def maybe_spawn_extra_ammo(settings: "Settings", screen, stats, ship: "Ship", ammo) -> bool:
+    # Extra ammo spawn.
+    ammo_spawned = False
+    if stats.ammo >= 3:
+        return ammo_spawned
+
+    random_number = random.choice(range(1, 6))
+    if random_number == 1:
+        new_ammo = ShipAmmo(settings, screen)
+        _banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
+        _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                                    x not in _banned_coordinates_x]
+        _banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
+        _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                                    y not in _banned_coordinates_y]
+        new_ammo.rect.x = random.choice(_available_coordinates_x)
+        new_ammo.rect.y = random.choice(_available_coordinates_y)
+        ammo.add(new_ammo)
+        ammo_spawned = True
+    else:
+        ammo.empty()
+
+    return ammo_spawned

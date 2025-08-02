@@ -14,7 +14,7 @@ from game.bosses import BlueBoss, GreenBoss, RedBoss
 from game.bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.bullet import Bullet
 from game.paths import Paths
-from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
+from game.ship_consumables import ShipShield
 from game.stages import BossStage
 
 
@@ -378,46 +378,10 @@ def update_bullets(settings, screen, stages, hud, ship, aliens, bullets, alien_b
                                 alien_bullets, bosses, boss_bullets, boss_shields, black_holes)
 
 
-def prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, health, ammo) -> None:
+def prepare_next_regular_stage(settings, screen, stages, ship, aliens) -> None:
     match stage := stages.next_stage():
         case BossStage() if type(stage) is BossStage:
             return
-
-    # Flag, which shows the fact, that extra health not yet spawned.
-    health_spawned = False
-    # Extra health spawn.
-    if stats.ships_left < 4:
-        random_number = random.choice(range(1, 6))
-        if random_number == 1:
-            new_health = ShipHealth(settings, screen)
-            banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
-            available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                       x not in banned_coordinates_x]
-            banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
-            available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                       y not in banned_coordinates_y]
-            new_health.rect.x = random.choice(available_coordinates_x)
-            new_health.rect.y = random.choice(available_coordinates_y)
-            health.add(new_health)
-            health_spawned = True
-        else:
-            health.empty()
-    # Extra ammo spawn.
-    if not health_spawned and stats.ammo < 3:
-        random_number = random.choice(range(1, 6))
-        if random_number == 1:
-            new_ammo = ShipAmmo(settings, screen)
-            _banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
-            _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                        x not in _banned_coordinates_x]
-            _banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
-            _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                        y not in _banned_coordinates_y]
-            new_ammo.rect.x = random.choice(_available_coordinates_x)
-            new_ammo.rect.y = random.choice(_available_coordinates_y)
-            ammo.add(new_ammo)
-        else:
-            ammo.empty()
 
     # Create new fleet of aliens.
     create_fleet(settings, screen, stages, ship, aliens)
