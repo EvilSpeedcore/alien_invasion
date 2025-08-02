@@ -317,11 +317,11 @@ class Stages(list[Stage | BossStage]):
             self.create_stage(name="2_2"),
             self.create_stage(name="2_3"),
             self.create_red_boss_stage(name="red_boss"),
-            self.create_stage(name="2_5"),
-            self.create_stage(name="2_6"),
-            self.create_stage(name="2_7"),
+            self.create_stage(name="3_1"),
+            self.create_stage(name="3_2"),
+            self.create_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
-            self.create_stage(name="end"),  # TODO: Fix. Not really a stage
+            BaseStage(name="end"),  # TODO: Fix. Not really a stage
         ]
 
     def get_by_name(self, name: str) -> Stage | BossStage:
@@ -337,6 +337,7 @@ class Stages(list[Stage | BossStage]):
                 self.current = stage
                 stage.set_up()
                 return
+            self.current = stage
             stage.transit()
         # TODO: Raise proper error
         raise AssertionError

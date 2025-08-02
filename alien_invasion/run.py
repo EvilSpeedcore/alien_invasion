@@ -89,8 +89,8 @@ def run_game() -> None:
             gf.update_main_menu_screen(settings, screen, play_button)
 
             if menu_events.play:
-                stages.select("1_1")
                 gf.initialize_game_from_main_menu(settings, stats, hud, ship)
+                stages.select("1_1")
                 state.set(State.ACTIVE)
             if menu_events.quit:
                 gf.quit_game()
