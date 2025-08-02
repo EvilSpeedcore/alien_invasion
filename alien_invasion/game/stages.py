@@ -1,5 +1,9 @@
 from itertools import count
+from logging import getLogger
 from typing import TYPE_CHECKING
+
+log = getLogger(__name__)
+
 
 if TYPE_CHECKING:
     from game.settings import Settings
@@ -59,6 +63,7 @@ class Stages(list[Stage | BossStage]):
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
         next_stage.set_up()
+        log.info("%s -> %s", prev_stage, next_stage)
         return next_stage
 
     def reset(self) -> None:
@@ -66,7 +71,7 @@ class Stages(list[Stage | BossStage]):
 
 
 def create_stages(settings: "Settings") -> list[Stage | BossStage]:
-    stages = [
+    return [
         Stage(settings, name="1_1"),
         Stage(settings, name="1_2"),
         Stage(settings, name="1_3"),
@@ -81,4 +86,3 @@ def create_stages(settings: "Settings") -> list[Stage | BossStage]:
         BossStage(settings, name="blue_boss"),
         Stage(settings, name="end"),  # TODO: Fix. Not really a stage
     ]
-    return stages

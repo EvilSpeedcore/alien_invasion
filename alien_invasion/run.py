@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -22,6 +23,8 @@ if TYPE_CHECKING:
 
 
 def run_game() -> None:
+    logging.basicConfig(filename="app.log", level=logging.DEBUG)
+
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
     pygame.init()

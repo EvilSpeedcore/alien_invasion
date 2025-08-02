@@ -383,6 +383,7 @@ def prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, bu
     match stage := stages.next_stage():
         case BossStage() if type(stage) is BossStage:
             return
+
     # CLS when moving to the next stage.
     ship.center_ship()
     health.empty()
