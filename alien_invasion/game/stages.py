@@ -121,12 +121,14 @@ class BossStage(BaseStage):
 
     def __init__(self,
                  ship: "Ship",
+                 used_shields,
                  boss_health,
                  boss_shields,
                  name: str) -> None:
         super().__init__(name)
 
         self.ship = ship
+        self.used_shields = used_shields
         self.boss_health = boss_health
         self.boss_shields = boss_shields
 
@@ -137,6 +139,7 @@ class BossStage(BaseStage):
 
     def tear_down(self) -> None:
         super().tear_down()
+        self.used_shields.empty()
         self.boss_health.empty()
         self.boss_shields.empty()
 
@@ -148,11 +151,13 @@ class GreenBossStage(BossStage):
                  screen,
                  hud,
                  ship: "Ship",
+                 used_shields,
                  bosses,
                  boss_health,
                  boss_shields,
                  name: str) -> None:
         super().__init__(ship=ship,
+                         used_shields=used_shields,
                          boss_health=boss_health,
                          boss_shields=boss_shields,
                          name=name)
@@ -189,12 +194,14 @@ class BlueBossStage(BossStage):
                  screen,
                  hud,
                  ship: "Ship",
+                 used_shields,
                  bosses,
                  boss_health,
                  boss_shields,
                  black_holes,
                  name: str) -> None:
         super().__init__(ship=ship,
+                         used_shields=used_shields,
                          boss_health=boss_health,
                          boss_shields=boss_shields,
                          name=name)
@@ -272,6 +279,7 @@ class Stages(list[Stage | BossStage]):
 
     def create_boss_stage(self, name: str) -> BossStage:
         return BossStage(ship=self.ship,
+                         used_shields=self.used_shields,
                          boss_health=self.boss_health,
                          boss_shields=self.boss_shields,
                          name=name)
@@ -281,6 +289,7 @@ class Stages(list[Stage | BossStage]):
                               screen=self.screen,
                               hud=self.hud,
                               ship=self.ship,
+                              used_shields=self.used_shields,
                               bosses=self.bosses,
                               boss_health=self.boss_health,
                               boss_shields=self.boss_shields,
@@ -291,6 +300,7 @@ class Stages(list[Stage | BossStage]):
                             screen=self.screen,
                             hud=self.hud,
                             ship=self.ship,
+                            used_shields=self.used_shields,
                             bosses=self.bosses,
                             boss_health=self.boss_health,
                             boss_shields=self.boss_shields,
@@ -300,8 +310,9 @@ class Stages(list[Stage | BossStage]):
         return BlueBossStage(settings=self.settings,
                              screen=self.screen,
                              hud=self.hud,
-                             bosses=self.bosses,
                              ship=self.ship,
+                             bosses=self.bosses,
+                             used_shields=self.used_shields,
                              boss_health=self.boss_health,
                              boss_shields=self.boss_shields,
                              black_holes=self.black_holes,
