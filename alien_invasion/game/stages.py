@@ -1,14 +1,19 @@
 from itertools import count
-from typing import ClassVar
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from game.settings import Settings
 
 
 class Stage:
 
     counter = count(start=0)
 
-    def __init__(self, name: str) -> None:
-        self.index = next(self.counter)
+    def __init__(self, settings: "Settings", name: str) -> None:
         self.name = name
+        self.settings = settings
+
+        self.index = next(self.counter)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name})"
@@ -21,47 +26,59 @@ class Stage:
     def __hash__(self) -> int:
         return hash(self.name)
 
+    def set_up(self) -> None:
+        self.settings.increase_aliens_speed()
+
 
 class BossStage(Stage):
-    pass
+
+    def set_up(self) -> None:
+        pass
 
 
-class Stages:
+class Stages(list[Stage | BossStage]):
 
-    lst: ClassVar[list[Stage]] = [
-        Stage(name="1_1"),
-        Stage(name="1_2"),
-        Stage(name="1_3"),
-        BossStage(name="green_boss"),
-        Stage(name="2_1"),
-        Stage(name="2_2"),
-        Stage(name="2_3"),
-        BossStage(name="red_boss"),
-        Stage(name="2_5"),
-        Stage(name="2_6"),
-        Stage(name="2_7"),
-        BossStage(name="blue_boss"),
-        Stage(name="end"),  # TODO: Fix. Not really a stage
-    ]
+    def __init__(self, settings: "Settings") -> None:
+        super().__init__(create_stages(settings))
 
-    def __init__(self) -> None:
         self.current = None
 
     def get_by_name(self, name: str) -> Stage | BossStage:
-        for stage in self.lst:
+        for stage in self:
             if stage.name == name:
                 return stage
         # TODO: Raise proper error
         raise AssertionError
 
     def select(self, name: str) -> None:
+        # TODO: "Rotate" calling set up
         self.current = self.get_by_name(name)
 
     def next_stage(self) -> Stage:
         prev_stage = self.current
-        next_stage = self.lst[prev_stage.index + 1]
+        next_stage = self[prev_stage.index + 1]
         self.current = next_stage
+        next_stage.set_up()
         return next_stage
 
     def reset(self) -> None:
-        self.current = self.lst[0]
+        self.current = self[0]
+
+
+def create_stages(settings: "Settings") -> list[Stage | BossStage]:
+    stages = [
+        Stage(settings, name="1_1"),
+        Stage(settings, name="1_2"),
+        Stage(settings, name="1_3"),
+        BossStage(settings, name="green_boss"),
+        Stage(settings, name="2_1"),
+        Stage(settings, name="2_2"),
+        Stage(settings, name="2_3"),
+        BossStage(settings, name="red_boss"),
+        Stage(settings, name="2_5"),
+        Stage(settings, name="2_6"),
+        Stage(settings, name="2_7"),
+        BossStage(settings, name="blue_boss"),
+        Stage(settings, name="end"),  # TODO: Fix. Not really a stage
+    ]
+    return stages

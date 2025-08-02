@@ -30,7 +30,7 @@ def run_game() -> None:
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
     stats = GameStats(settings)
-    stages = Stages()
+    stages = Stages(settings)
     hud = Hud(settings, screen, stats, stages, ship)
     play_button = Button(screen, "Start")
 
@@ -90,7 +90,7 @@ def run_game() -> None:
             ship.update()
 
             if not (aliens or bosses):
-                # TODO: What if ship and last alien dies at the same time?
+                # TODO: What if ship and last alien die at the same time?
                 gf.prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens,
                                               bullets, alien_bullets, health, ammo)
 

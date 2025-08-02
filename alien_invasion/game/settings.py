@@ -15,7 +15,9 @@ class Settings:
         self.time_elapsed_since_shield = 0
 
         # Aliens settings.
+        # TODO: Not used? Use in increase_aliens_speed?
         self.alien_speed_factor_scale = 0.001
+        # TODO: Not used? Use in increase_aliens_speed?
         self.alien_bullet_speed_factor_scale = 0.001
         self.time_elapsed_since_last_alien_bullet = 0
 

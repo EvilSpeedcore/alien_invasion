@@ -424,8 +424,7 @@ def prepare_next_regular_stage(settings, screen, stats, stages, ship, aliens, bu
             ammo.add(new_ammo)
         else:
             ammo.empty()
-    # Aliens movement speed increase.
-    settings.increase_aliens_speed()
+
     # Create new fleet of aliens.
     create_fleet(settings, screen, stages, ship, aliens)
 
