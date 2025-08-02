@@ -18,19 +18,12 @@ class BlackHole(Sprite):
     IMAGE_DIR = "black_hole"
 
     def __init__(self,
-                 ai_settings: "Settings",
+                 settings: "Settings",
                  screen: "Surface",
                  ship: "Ship") -> None:
-        """Initialize black hole.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-            :param Ship ship: Instance of Ship class.
-
-        """
+        """Initialize black hole."""
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
         self.screen_rect = screen.get_rect()
 

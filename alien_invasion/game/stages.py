@@ -12,6 +12,12 @@ log = getLogger(__name__)
 
 
 if TYPE_CHECKING:
+    from pygame.sprite import Group, GroupSingle
+    from pygame.surface import Surface
+
+    from game.collections import Sprites
+    from game.game_stats import GameStats
+    from game.hud import Hud
     from game.settings import Settings
     from game.ship import Ship
 
@@ -20,16 +26,8 @@ class BaseStage:
 
     counter = count(start=0)
 
-    def __init__(self,
-                 bullets,
-                 health,
-                 ammo,
-                 used_shields,
-                 name: str) -> None:
-        self.bullets = bullets
-        self.health = health
-        self.ammo = ammo
-        self.used_shields = used_shields
+    def __init__(self, sprites: "Sprites", name: str) -> None:
+        self.sprites = sprites
         self.name = name
 
         self.index = next(self.counter)
@@ -56,10 +54,10 @@ class BaseStage:
     @abstractmethod
     def teardown(self) -> None:
         log.debug("%s: teardown()", self)
-        self.bullets.empty()
-        self.health.empty()
-        self.ammo.empty()
-        self.used_shields.empty()
+        self.sprites.ship_bullets.empty()
+        self.sprites.ship_health.empty()
+        self.sprites.ship_ammo.empty()
+        self.sprites.ship_shields.empty()
 
 
 class Stage(BaseStage):
@@ -67,30 +65,18 @@ class Stage(BaseStage):
     def __init__(self,
                  stages: "Stages",
                  settings: "Settings",
-                 screen,
-                 stats,
-                 aliens,
+                 screen: "Surface",
+                 stats: "GameStats",
                  ship: "Ship",
-                 health,
-                 ammo,
-                 bullets,
-                 alien_bullets,
-                 used_shields,
+                 sprites: "Sprites",
                  name: str) -> None:
-        super().__init__(bullets=bullets,
-                         health=health,
-                         ammo=ammo,
-                         used_shields=used_shields,
-                         name=name)
+        super().__init__(sprites=sprites, name=name)
 
         self.stages = stages
         self.settings = settings
         self.screen = screen
         self.stats = stats
-        self.aliens = aliens
         self.ship = ship
-        self.health = health
-        self.alien_bullets = alien_bullets
 
     def setup(self) -> None:
         super().setup()
@@ -100,18 +86,18 @@ class Stage(BaseStage):
                                         screen=self.screen,
                                         stats=self.stats,
                                         ship=self.ship,
-                                        health=self.health):
+                                        health=self.sprites.ship_health):
             maybe_spawn_extra_ammo(settings=self.settings,
                                    screen=self.screen,
                                    stats=self.stats,
                                    ship=self.ship,
-                                   ammo=self.ammo)
+                                   ammo=self.sprites.ship_ammo)
 
-        gf.create_fleet(ai_settings=self.settings,
+        gf.create_fleet(settings=self.settings,
                         screen=self.screen,
                         stages=self.stages,
                         ship=self.ship,
-                        aliens=self.aliens)
+                        aliens=self.sprites.aliens)
 
     def transit(self) -> None:
         super().transit()
@@ -124,30 +110,15 @@ class Stage(BaseStage):
 
     def teardown(self) -> None:
         super().teardown()
-        self.alien_bullets.empty()
+        self.sprites.alien_bullets.empty()
 
 
 class BossStage(BaseStage):
 
-    def __init__(self,
-                 ship: "Ship",
-                 bullets,
-                 health,
-                 ammo,
-                 used_shields,
-                 boss_health,
-                 boss_shields,
-                 name: str) -> None:
-        super().__init__(bullets=bullets,
-                         health=health,
-                         ammo=ammo,
-                         used_shields=used_shields,
-                         name=name)
+    def __init__(self, ship: "Ship", sprites: "Sprites", name: str) -> None:
+        super().__init__(sprites=sprites, name=name)
 
         self.ship = ship
-        self.used_shields = used_shields
-        self.boss_health = boss_health
-        self.boss_shields = boss_shields
 
     def setup(self) -> None:
         super().setup()
@@ -156,136 +127,88 @@ class BossStage(BaseStage):
 
     def teardown(self) -> None:
         super().teardown()
-        self.boss_health.empty()
-        self.boss_shields.empty()
+        self.sprites.boss_health.empty()
+        self.sprites.boss_shields.empty()
 
 
 class GreenBossStage(BossStage):
 
     def __init__(self,
                  settings: "Settings",
-                 screen,
-                 hud,
+                 screen: "Surface",
+                 hud: "Hud",
                  ship: "Ship",
-                 bullets,
-                 health,
-                 ammo,
-                 used_shields,
-                 bosses,
-                 boss_health,
-                 boss_shields,
+                 sprites: "Sprites",
                  name: str) -> None:
-        super().__init__(ship=ship,
-                         bullets=bullets,
-                         health=health,
-                         ammo=ammo,
-                         used_shields=used_shields,
-                         boss_health=boss_health,
-                         boss_shields=boss_shields,
-                         name=name)
+        super().__init__(ship=ship, sprites=sprites, name=name)
 
         self.settings = settings
         self.screen = screen
         self.hud = hud
-        self.bosses = bosses
 
     def setup(self) -> None:
         super().setup()
-        gf.create_green_boss(ai_settings=self.settings,
+        gf.create_green_boss(settings=self.settings,
                              screen=self.screen,
                              hud=self.hud,
-                             bosses=self.bosses,
-                             boss_shields=self.boss_shields)
+                             bosses=self.sprites.bosses,
+                             boss_shields=self.sprites.boss_shields)
 
 
 class RedBossStage(GreenBossStage):
 
     def setup(self) -> None:
         super(GreenBossStage, self).setup()
-        gf.create_red_boss(ai_settings=self.settings,
+        gf.create_red_boss(settings=self.settings,
                            screen=self.screen,
                            hud=self.hud,
-                           bosses=self.bosses,
-                           boss_shields=self.boss_shields)
+                           bosses=self.sprites.bosses,
+                           boss_shields=self.sprites.boss_shields)
 
 
 class BlueBossStage(BossStage):
 
     def __init__(self,
                  settings: "Settings",
-                 screen,
-                 hud,
+                 screen: "Surface",
+                 hud: "Hud",
                  ship: "Ship",
-                 bullets,
-                 health,
-                 ammo,
-                 used_shields,
-                 bosses,
-                 boss_health,
-                 boss_shields,
-                 black_holes,
+                 sprites: "Sprites",
                  name: str) -> None:
-        super().__init__(ship=ship,
-                         bullets=bullets,
-                         health=health,
-                         ammo=ammo,
-                         used_shields=used_shields,
-                         boss_health=boss_health,
-                         boss_shields=boss_shields,
-                         name=name)
+        super().__init__(ship=ship, sprites=sprites, name=name)
 
         self.settings = settings
         self.screen = screen
         self.hud = hud
-        self.bosses = bosses
-        self.black_holes = black_holes
 
     def setup(self) -> None:
         super().setup()
-        gf.create_blue_boss(ai_settings=self.settings,
+        gf.create_blue_boss(settings=self.settings,
                             screen=self.screen,
                             hud=self.hud,
-                            bosses=self.bosses,
-                            boss_shields=self.boss_shields)
+                            bosses=self.sprites.bosses,
+                            boss_shields=self.sprites.boss_shields)
 
     def teardown(self) -> None:
         super().teardown()
-        self.black_holes.empty()
+        self.sprites.boss_black_holes.empty()
 
 
 class Stages(list[Stage | BossStage]):
 
     def __init__(self,
                  settings: "Settings",
-                 screen,
-                 stats,
-                 hud,
-                 aliens,
-                 ship,
-                 health,
-                 ammo,
-                 bullets,
-                 alien_bullets,
-                 used_shields,
-                 bosses,
-                 boss_health,
-                 boss_shields,
-                 black_holes) -> None:
+                 screen: "Surface",
+                 stats: "GameStats",
+                 hud: "Hud",
+                 ship: "Ship",
+                 sprites: "Sprites") -> None:
         self.settings = settings
         self.screen = screen
         self.stats = stats
         self.hud = hud
-        self.aliens = aliens
         self.ship = ship
-        self.health = health
-        self.ammo = ammo
-        self.bullets = bullets
-        self.alien_bullets = alien_bullets
-        self.used_shields = used_shields
-        self.bosses = bosses
-        self.boss_health = boss_health
-        self.boss_shields = boss_shields
-        self.black_holes = black_holes
+        self.sprites = sprites
 
         super().__init__(self.create_stages())
 
@@ -296,37 +219,19 @@ class Stages(list[Stage | BossStage]):
                      settings=self.settings,
                      screen=self.screen,
                      stats=self.stats,
-                     aliens=self.aliens,
                      ship=self.ship,
-                     health=self.health,
-                     ammo=self.ammo,
-                     bullets=self.bullets,
-                     alien_bullets=self.alien_bullets,
-                     used_shields=self.used_shields,
+                     sprites=self.sprites,
                      name=name)
 
     def create_boss_stage(self, name: str) -> BossStage:
-        return BossStage(ship=self.ship,
-                         bullets=self.bullets,
-                         health=self.health,
-                         ammo=self.ammo,
-                         used_shields=self.used_shields,
-                         boss_health=self.boss_health,
-                         boss_shields=self.boss_shields,
-                         name=name)
+        return BossStage(ship=self.ship, sprites=self.sprites, name=name)
 
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
         return GreenBossStage(settings=self.settings,
                               screen=self.screen,
                               hud=self.hud,
                               ship=self.ship,
-                              bullets=self.bullets,
-                              health=self.health,
-                              ammo=self.ammo,
-                              used_shields=self.used_shields,
-                              bosses=self.bosses,
-                              boss_health=self.boss_health,
-                              boss_shields=self.boss_shields,
+                              sprites=self.sprites,
                               name=name)
 
     def create_red_boss_stage(self, name: str) -> GreenBossStage:
@@ -334,13 +239,7 @@ class Stages(list[Stage | BossStage]):
                             screen=self.screen,
                             hud=self.hud,
                             ship=self.ship,
-                            bullets=self.bullets,
-                            health=self.health,
-                            ammo=self.ammo,
-                            used_shields=self.used_shields,
-                            bosses=self.bosses,
-                            boss_health=self.boss_health,
-                            boss_shields=self.boss_shields,
+                            sprites=self.sprites,
                             name=name)
 
     def create_blue_boss_stage(self, name: str) -> None:
@@ -348,22 +247,11 @@ class Stages(list[Stage | BossStage]):
                              screen=self.screen,
                              hud=self.hud,
                              ship=self.ship,
-                             bullets=self.bullets,
-                             health=self.health,
-                             ammo=self.ammo,
-                             bosses=self.bosses,
-                             used_shields=self.used_shields,
-                             boss_health=self.boss_health,
-                             boss_shields=self.boss_shields,
-                             black_holes=self.black_holes,
+                             sprites=self.sprites,
                              name=name)
 
     def create_end_stage(self, name: str) -> BaseStage:
-        return BaseStage(bullets=self.bullets,
-                         health=self.health,
-                         ammo=self.ammo,
-                         used_shields=self.used_shields,
-                         name=name)
+        return BaseStage(sprites=self.sprites, name=name)
 
     def create_stages(self) -> list[Stage | BossStage]:
         return [
@@ -411,7 +299,11 @@ class Stages(list[Stage | BossStage]):
         return next_stage
 
 
-def maybe_spawn_extra_health(settings: "Settings", screen, stats, ship: "Ship", health) -> bool:
+def maybe_spawn_extra_health(settings: "Settings",
+                             screen: "Surface",
+                             stats: "GameStats",
+                             ship: "Ship",
+                             health: "GroupSingle") -> bool:
     # Flag, which shows the fact, that extra health not yet spawned.
     health_spawned = False
     # Extra health spawn.
@@ -437,7 +329,11 @@ def maybe_spawn_extra_health(settings: "Settings", screen, stats, ship: "Ship", 
     return health_spawned
 
 
-def maybe_spawn_extra_ammo(settings: "Settings", screen, stats, ship: "Ship", ammo) -> bool:
+def maybe_spawn_extra_ammo(settings: "Settings",
+                           screen: "Surface",
+                           stats: "GameStats",
+                           ship: "Ship",
+                           ammo: "Group") -> bool:
     # Extra ammo spawn.
     ammo_spawned = False
     if stats.ammo >= 3:

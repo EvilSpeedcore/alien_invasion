@@ -10,9 +10,9 @@ if TYPE_CHECKING:
 
 class Ship:
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         self.screen = screen
-        self.ai_settings = ai_settings
+        self.settings = settings
 
         # Instead of rotation of one ship image, we upload several images for each ship direction.
         self.original_image = load_image("ship_up.png")
@@ -43,13 +43,13 @@ class Ship:
     def update(self) -> None:
         """Update ship position depending on movement flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.centerx += self.ai_settings.ship_speed_factor
+            self.centerx += self.settings.ship_speed_factor
         if self.moving_left and self.rect.left > 0:
-            self.centerx -= self.ai_settings.ship_speed_factor
+            self.centerx -= self.settings.ship_speed_factor
         if self.moving_up and self.rect.top > self.screen_rect.top:
-            self.centery -= self.ai_settings.ship_speed_factor
+            self.centery -= self.settings.ship_speed_factor
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.centery += self.ai_settings.ship_speed_factor
+            self.centery += self.settings.ship_speed_factor
         self.rect.centerx = self.centerx
         self.rect.centery = self.centery
 

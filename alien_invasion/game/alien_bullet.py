@@ -9,15 +9,7 @@ from game.images import load_image
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
 
-    def __init__(self, ai_settings, screen, alien) -> None:
-        """Initialize alien bullet.
-
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-            :param alien: Instance of Aliens class.
-
-        """
+    def __init__(self, settings, screen, alien) -> None:
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
@@ -38,7 +30,7 @@ class AlienBullet(Sprite):
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
 
-        self.speed_factor = ai_settings.alien_bullet_speed_factor  # Bullet speed.
+        self.speed_factor = settings.alien_bullet_speed_factor  # Bullet speed.
         self.ship_position = None
         self.shooting_angle_cos = None
         self.shooting_angle = None
@@ -109,12 +101,7 @@ class AlienBullet(Sprite):
         self.screen.blit(self.image, self.rect)
 
     def define_angle(self, ship) -> None:
-        """Define direction of bullet.
-
-        Args:
-            :param ship: Instance of Ship class.
-
-        """
+        """Define direction of bullet."""
         ab = abs(self.y - ship.centery)
         ac = abs(self.x - ship.centerx)
         bc = math.sqrt(pow(ab, 2) + pow(ac, 2))
@@ -122,12 +109,7 @@ class AlienBullet(Sprite):
         self.shooting_angle = fa.find_angle_with_cos(self.shooting_angle_cos)
 
     def define_position(self, ship) -> None:
-        """Define position of ship.
-
-        Args:
-            :param ship: Instance of Ship class.
-
-        """
+        """Define position of ship."""
         if self.x < ship.centerx and self.y < ship.centery:
             self.ship_position = "4"
             self.define_angle(ship)

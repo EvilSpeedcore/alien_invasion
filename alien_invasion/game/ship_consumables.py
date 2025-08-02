@@ -13,9 +13,9 @@ if TYPE_CHECKING:
 
 class ShipConsumable(Sprite):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
         self.spawned_item = None
         self.rect = None
@@ -27,8 +27,8 @@ class ShipConsumable(Sprite):
 
 class ShipHealth(ShipConsumable):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+        super().__init__(settings, screen)
         self.image = load_image("stats_health.png")
         self.spawned_item = load_image("spawned_health.png")
         self.rect = self.image.get_rect()
@@ -36,8 +36,8 @@ class ShipHealth(ShipConsumable):
 
 class ShipAmmo(ShipConsumable):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+        super().__init__(settings, screen)
         self.image = load_image("stats_ammo.png")
         self.spawned_item = load_image("spawned_ammo.png")
         self.rect = self.image.get_rect()
@@ -45,8 +45,8 @@ class ShipAmmo(ShipConsumable):
 
 class ShipShield(ShipConsumable):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings: "Settings", screen: "Surface", ship: "Ship") -> None:
+        super().__init__(settings, screen)
         self.ship = ship
         self.image = load_image("stats_shield.png")
         self.spawned_item = load_image("spawned_shield.png")

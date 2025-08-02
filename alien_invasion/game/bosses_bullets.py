@@ -14,9 +14,9 @@ if TYPE_CHECKING:
 
 class BossBullet(Sprite):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
         self.image = None
@@ -29,8 +29,8 @@ class BossBullet(Sprite):
 
 class GreenBossBullet(BossBullet):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen, boss) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("alien_bullet.png")
 
         # Rectangular area of the image.
@@ -45,7 +45,7 @@ class GreenBossBullet(BossBullet):
         self.y = float(self.rect.centery)
 
         # Bullet speed.
-        self.speed_factor = ai_settings.green_boss_bullet_speed_factor
+        self.speed_factor = settings.green_boss_bullet_speed_factor
 
         # Angle of bullet direction.
         self.shooting_angle_up = None
@@ -88,8 +88,8 @@ class GreenBossBullet(BossBullet):
 
 class RedBossBullet(BossBullet):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen, boss) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("red_alien_bullet.png")
 
         # Rectangular area of the image.
@@ -103,7 +103,7 @@ class RedBossBullet(BossBullet):
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
 
-        self.speed_factor = ai_settings.red_boss_bullet_speed_factor
+        self.speed_factor = settings.red_boss_bullet_speed_factor
         self.ship_position = None
         self.shooting_angle_cos = None
         self.shooting_angle = None
@@ -211,8 +211,8 @@ class RedBossBullet(BossBullet):
 
 class BlueBossBullet(BossBullet):
 
-    def __init__(self, ai_settings, screen, boss, angle) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen, boss, angle) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("blue_alien_bullet.png")
 
         # Rectangular area of the image.
@@ -226,7 +226,7 @@ class BlueBossBullet(BossBullet):
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
 
-        self.speed_factor = ai_settings.blue_boss_bullet_speed_factor
+        self.speed_factor = settings.blue_boss_bullet_speed_factor
         self.angle = angle
 
     def update(self) -> None:

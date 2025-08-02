@@ -7,17 +7,17 @@ from game.images import load_image
 
 class Boss(Sprite):
 
-    def __init__(self, ai_settings, screen) -> None:
+    def __init__(self, settings, screen) -> None:
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
         self.screen_rect = screen.get_rect()
 
 
 class GreenBoss(Boss):
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("green_alien.png")
 
         # Rectangular area of the image.
@@ -33,8 +33,8 @@ class GreenBoss(Boss):
 
 class RedBoss(Boss):
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("red_alien.png")
 
         # Rectangular area of the image.
@@ -55,7 +55,7 @@ class RedBoss(Boss):
         self.hit_points = 10
 
         # Boss speed.
-        self.speed_factor = ai_settings.red_boss_speed_factor
+        self.speed_factor = settings.red_boss_speed_factor
         self.moving_angle = None
         self.define_start_direction()
 
@@ -278,8 +278,8 @@ class RedBoss(Boss):
 
 class BlueBoss(Boss):
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.image = load_image("blue_alien.png")
 
         # Rectangular area of the image.

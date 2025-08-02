@@ -15,16 +15,7 @@ if TYPE_CHECKING:
 
 
 def collidable(alien_1: "Alien", alien_2: "Alien") -> bool:
-    """Check collision between two aliens.
-
-    Args:
-        :param Alien alien_1: One alien from group of sprites.
-        :param Alien alien_2: Another alien from group of sprites.
-
-    Returns:
-        :return bool: True if successful, False otherwise.
-
-    """
+    """Check collision between two aliens."""
     if alien_1 is alien_2:
         return False
     return alien_1.rect.colliderect(alien_2.rect)
@@ -33,20 +24,12 @@ def collidable(alien_1: "Alien", alien_2: "Alien") -> bool:
 class Alien(Sprite):
 
     def __init__(self,
-                 ai_settings: "Settings",
+                 settings: "Settings",
                  screen: "Surface",
                  ship: "Ship") -> None:
-        """Initialize alien.
-
-        Args:
-            :param Settings ai_settings: Instance of Settings class.
-            :param Surface screen: Display Surface.
-            :param Ship ship: Instance of Ship class.
-
-        """
         super().__init__()
         self.screen = screen
-        self.ai_settings = ai_settings
+        self.settings = settings
 
         # Image load of different aliens.
         self.image = load_image("green_alien.png")
@@ -74,26 +57,20 @@ class Alien(Sprite):
         self.alien_color = None
 
     def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
-        """Update aliens position depending on ship current position. Check for collision between aliens.
-
-        Args:
-            :param Group[Alien] aliens: Group of alien sprites.
-            :param Ship ship: Instance of Ship class.
-
-        """
+        """Update aliens position depending on ship current position. Check for collision between aliens."""
         aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
         if aliens_collision:
             aliens.remove(aliens_collision[0])
         else:
             if self.x > ship.centerx:
-                self.x -= self.ai_settings.alien_speed_factor
+                self.x -= self.settings.alien_speed_factor
                 self.rect.centerx = self.x
             if self.y > ship.centery:
-                self.y -= self.ai_settings.alien_speed_factor
+                self.y -= self.settings.alien_speed_factor
                 self.rect.centery = self.y
             if self.x < ship.centerx:
-                self.x += self.ai_settings.alien_speed_factor
+                self.x += self.settings.alien_speed_factor
                 self.rect.centerx = self.x
             if self.y < ship.centery:
-                self.y += self.ai_settings.alien_speed_factor
+                self.y += self.settings.alien_speed_factor
                 self.rect.centery = self.y

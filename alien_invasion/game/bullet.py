@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class Bullet(Sprite):
 
-    def __init__(self, ai_settings: "Settings", screen: "Surface", ship: "Ship") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface", ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
         self.image = load_image("bullet.png")
@@ -58,7 +58,7 @@ class Bullet(Sprite):
         self.y_down_right = float(self.rect.centery) + 32
         self.x_down_right = float(self.rect.centerx) + 27
 
-        self.speed_factor = ai_settings.bullet_speed_factor
+        self.speed_factor = settings.bullet_speed_factor
         self.bullet_rotation = ship.current_ship_rotation
 
     def update(self) -> None:

@@ -2,6 +2,7 @@ import random
 import sys
 from dataclasses import dataclass
 from time import sleep
+from typing import TYPE_CHECKING
 
 import pygame
 
@@ -15,6 +16,11 @@ from game.bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.bullet import Bullet
 from game.paths import Paths
 from game.ship_consumables import ShipShield
+
+if TYPE_CHECKING:
+    from game.collections import Sprites
+    from game.game_stats import GameStats
+    from game.stages import Stages
 
 
 @dataclass
@@ -56,8 +62,8 @@ class ActiveGameEvents:
             self.pause = events.pause
 
 
-def check_active_game_keydown_events(event, ai_settings, screen, stats,
-                                     hud, ship, bullets, used_shields) -> ActiveGameEvents:
+def check_active_game_keydown_events(event, settings, screen, stats,
+                                     hud, ship, sprites: "Sprites") -> ActiveGameEvents:
     events = ActiveGameEvents()
     if event.key == pygame.K_RIGHT:
         ship.desirable_ship_rotation = "right"
@@ -76,11 +82,11 @@ def check_active_game_keydown_events(event, ai_settings, screen, stats,
         ship.moving_down = True
         rt.rotate(ship)
     if event.key == pygame.K_a:
-        fire_bullet(ai_settings, screen, stats, ship, bullets)
+        fire_bullet(settings, screen, stats, ship, sprites.ship_bullets)
     if event.key == pygame.K_SPACE:
         events.update(ActiveGameEvents(pause=True))
     if event.key == pygame.K_d:
-        use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields)
+        use_ship_shield(settings, screen, stats, hud, ship, sprites.ship_shields)
     return events
 
 
@@ -118,13 +124,7 @@ def check_pause_keyup_events(event, ship) -> PauseEvents:
 
 
 def check_keyup_events(event, ship) -> None:
-    """Handle events when a key is released.
-
-    Args:
-        :param event: KEYUP events, when the keyboard buttons released.
-        :param ship: Instance of Ship class.
-
-    """
+    """Handle events when a key is released."""
     if event.key == pygame.K_RIGHT:
         ship.moving_right = False
         if ship.moving_up:
@@ -151,15 +151,15 @@ def check_keyup_events(event, ship) -> None:
             rt.rotate_to_left(ship)
 
 
-def check_active_game_events(ai_settings, screen, stats,
-                             hud, ship, bullets, used_shields) -> ActiveGameEvents:
+def check_active_game_events(settings, screen, stats,
+                             hud, ship, sprites) -> ActiveGameEvents:
     events = ActiveGameEvents()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             events.update(ActiveGameEvents(quit=True))
         elif event.type == pygame.KEYDOWN:
-            events.update(check_active_game_keydown_events(event, ai_settings, screen, stats,
-                                                           hud, ship, bullets, used_shields))
+            events.update(check_active_game_keydown_events(event, settings, screen, stats,
+                                                           hud, ship, sprites))
         elif event.type == pygame.KEYUP:
             events.update(check_active_game_keyup_events(event, ship))
     return events
@@ -251,71 +251,50 @@ def check_keys_pressed(ship) -> None:
             break
 
 
-def update_screen(ai_settings, screen, hud, ship, aliens, bullets, alien_bullets, health, ammo,
-                  used_shields, dt, bosses, boss_bullets, boss_shields, black_holes) -> None:
-    """Update screen.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param stats: Instance of GameStats class.
-        :param hud: Instance of Hud class.
-        :param ship: Instance of Ship class.
-        :param aliens: Container to hold and manage Alien Sprites.
-        :param bullets: Container to hold and manage Bullet Sprites.
-        :param alien_bullets: Container to hold and manage AlienBullet Sprites.
-        :param health: Container to hold and manage ShipHealth Sprites.
-        :param ammo: Container to hold and manage ShipAmmo Sprites.
-        :param used_shields: Container to hold and manage ShipShield Sprites.
-        :param dt: Game timer to manage events.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_bullets: Container to hold and manage BossBullet Sprites.
-        :param boss_shields: Container to hold and manage single BossShield Sprite.
-        :param black_holes: Container to hold and manage single BlackHole Sprite.
-
-    """
-    screen.fill(ai_settings.bg_color)
+def update_screen(settings, screen, hud, ship, dt, sprites: "Sprites") -> None:
+    """Update screen."""
+    screen.fill(settings.bg_color)
 
     #  Draw ship bullets on screen.
-    for bullet in bullets.sprites():
+    for bullet in sprites.ship_bullets.sprites():
         bullet.draw_bullet()
 
     # Draw alien bullets on screen.
-    for alien_bullet in alien_bullets.sprites():
+    for alien_bullet in sprites.alien_bullets.sprites():
         alien_bullet.draw_alien_bullet()
-    for green_boss_bullet in boss_bullets.sprites():
+    for green_boss_bullet in sprites.boss_bullets.sprites():
         green_boss_bullet.draw_bullet()
-    for red_boss_bullet in boss_bullets.sprites():
+    for red_boss_bullet in sprites.boss_bullets.sprites():
         red_boss_bullet.draw_bullet()
 
     #  Ship shield duration handling.
-    if len(used_shields) == 1:
-        ai_settings.time_elapsed_since_shield += dt
-        if ai_settings.time_elapsed_since_shield > 3000:
-            ai_settings.time_elapsed_since_shield = 0
-            used_shields.empty()
+    if len(sprites.ship_shields) == 1:
+        settings.time_elapsed_since_shield += dt
+        if settings.time_elapsed_since_shield > 3000:
+            settings.time_elapsed_since_shield = 0
+            sprites.ship_shields.empty()
 
     #  Display ship shield on hud.
-    for used_shield in used_shields:
+    for used_shield in sprites.ship_shields:
         used_shield.draw_item()
 
     #  Display boss shield on hud.
-    for boss_shield in boss_shields:
+    for boss_shield in sprites.boss_shields:
         if boss_shield.points > 0:
             boss_shield.draw_boss_shield()
             boss_shield.update()
         else:
-            boss_shields.empty()
+            sprites.boss_shields.empty()
 
     hud.show_hud()
     ship.blitme()
-    for health_sprite in health.sprites():
+    for health_sprite in sprites.ship_health.sprites():
         health_sprite.draw_item()
-    for ammo_sprite in ammo.sprites():
+    for ammo_sprite in sprites.ship_ammo.sprites():
         ammo_sprite.draw_item()
-    aliens.draw(screen)
-    bosses.draw(screen)
-    for black_hole in black_holes.sprites():
+    sprites.aliens.draw(screen)
+    sprites.bosses.draw(screen)
+    for black_hole in sprites.boss_black_holes.sprites():
         black_hole.draw_black_hole()
 
     # Update screen.
@@ -333,8 +312,9 @@ def update_main_menu_screen(settings, screen, play_button) -> None:
     pygame.display.flip()
 
 
-def update_bullets(settings, stages, hud, ship, aliens, bullets, bosses, boss_bullets) -> None:
+def update_bullets(settings, stages, hud, ship, sprites: "Sprites") -> None:
     """Update ship bullets. Remove bullet from sprites, if it reach edge of the screen. Check for collisions."""
+    bullets = sprites.ship_bullets
     bullets.update()
     for bullet in bullets.copy():
         # For UP bullet direction.
@@ -362,98 +342,79 @@ def update_bullets(settings, stages, hud, ship, aliens, bullets, bosses, boss_bu
         if bullet.rect.top > ship.screen_rect.bottom or bullet.rect.left > ship.screen_rect.right:
             bullets.remove(bullet)
 
-    pygame.sprite.groupcollide(bullets, aliens, dokilla=True, dokillb=True)
+    pygame.sprite.groupcollide(bullets, sprites.aliens, dokilla=True, dokillb=True)
 
     # Check for collision between ship billet and boss.
-    check_bullet_boss_collision(settings, stages, hud, bullets, bosses, boss_bullets)
+    check_bullet_boss_collision(settings, stages, hud, sprites)
 
 
-def check_bullet_boss_collision(settings, stages, hud, bullets, bosses, boss_bullets) -> None:
+def check_bullet_boss_collision(settings, stages, hud, sprites: "Sprites") -> None:
     """Handle collisions between ship bullets and bosses."""
     # Check collisions between ship and green boss.
     if stages.current.name == "green_boss":
-        boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
+        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
+                                                    sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
         if boss_collision:
-            for boss in bosses.sprites():
+            for boss in sprites.bosses.sprites():
                 boss.hit_points -= 1
                 hud.green_boss_hp -= 1
                 hud.prep_green_boss_health()
                 if boss.hit_points < 1:
                     sleep(settings.game_sleep_time)
-                    bosses.empty()
-                    boss_bullets.empty()
+                    sprites.bosses.empty()
+                    sprites.boss_bullets.empty()
 
     # Check collisions between ship and red boss.
     elif stages.current.name == "red_boss":
-        boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
+        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
+                                                    sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
         if boss_collision:
-            for boss in bosses.sprites():
+            for boss in sprites.bosses.sprites():
                 boss.hit_points -= 1
                 hud.red_boss_hp -= 1
                 hud.prep_red_boss_health()
                 if boss.hit_points < 1:
                     sleep(settings.game_sleep_time)
-                    bosses.empty()
-                    boss_bullets.empty()
+                    sprites.bosses.empty()
+                    sprites.boss_bullets.empty()
 
     # Check collisions between ship and blue boss.
     elif stages.current.name == "blue_boss":
-        boss_collision = pygame.sprite.groupcollide(bullets, bosses, dokilla=True, dokillb=False)
+        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
+                                                    sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
         if boss_collision:
-            for boss in bosses.sprites():
+            for boss in sprites.bosses.sprites():
                 boss.hit_points -= 1
                 hud.blue_boss_hp -= 1
                 hud.prep_blue_boss_health()
                 if boss.hit_points < 1:
                     sleep(settings.game_sleep_time)
-                    bosses.empty()
-                    boss_bullets.empty()
+                    sprites.bosses.empty()
+                    sprites.boss_bullets.empty()
 
 
-def fire_bullet(ai_settings, screen, stats, ship, bullets) -> None:
-    """Create ship bullets.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param stats: Instance of GameStats class.
-        :param ship: Instance of Ship class.
-        :param bullets: Container to hold and manage Bullet Sprites.
-
-    """
+def fire_bullet(settings, screen, stats, ship, bullets) -> None:
+    """Create ship bullets."""
     if len(bullets) < stats.ammo:
-        new_bullet = Bullet(ai_settings, screen, ship)
+        new_bullet = Bullet(settings, screen, ship)
         bullets.add(new_bullet)
 
 
-def get_number_aliens_x(ai_settings, alien_width) -> None:
-    """Calculate number of aliens in row.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param alien_width: Width of an alien Surface.
-
-    Returns:
-        :return: number_aliens_x: Maximum number of aliens on screen in one row.
-
-    """
-    available_space_x = ai_settings.screen_width - 2 * alien_width
+def get_number_aliens_x(settings, alien_width) -> None:
+    """Calculate number of aliens in row."""
+    available_space_x = settings.screen_width - 2 * alien_width
     return int(available_space_x / (2 * alien_width))
 
 
-def create_alien(ai_settings, screen, stages, ship, aliens, alien_number) -> None:
-    """Create an alien and place it in a row.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param stats: Instance of GameStats class.
-        :param ship: Instance of Ship class.
-        :param aliens: Container to hold and manage Alien Sprites.
-        :param alien_number: Maximum number of aliens on screen in one row.
-
-    """
-    alien = Alien(ai_settings, screen, ship)
+def create_alien(settings, screen, stages, ship, aliens, alien_number) -> None:
+    """Create an alien and place it in a row."""
+    alien = Alien(settings, screen, ship)
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.x = alien.x
@@ -469,34 +430,32 @@ def create_alien(ai_settings, screen, stages, ship, aliens, alien_number) -> Non
     aliens.add(alien)
 
 
-def create_fleet(ai_settings, screen, stages, ship, aliens) -> None:
+def create_fleet(settings, screen, stages, ship, aliens) -> None:
     """Create alien fleet."""
-    alien = Alien(ai_settings, screen, ship)
-    number_aliens_x = get_number_aliens_x(ai_settings, alien.rect.width)
+    alien = Alien(settings, screen, ship)
+    number_aliens_x = get_number_aliens_x(settings, alien.rect.width)
     for alien_number in range(number_aliens_x):
-        create_alien(ai_settings, screen, stages, ship, aliens, alien_number)
+        create_alien(settings, screen, stages, ship, aliens, alien_number)
 
 
-def ship_hit(ai_settings, screen, stats, stages, hud, ship, aliens,
-             bullets, alien_bullets, health, ammo, used_shields) -> None:
+def ship_hit(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     stats.ships_left -= 1
     hud.prep_health()
-    health.empty()
-    ammo.empty()
-    used_shields.empty()
-    ai_settings.time_elapsed_since_shield = 0
+    sprites.ship_health.empty()
+    sprites.ship_ammo.empty()
+    sprites.ship_shields.empty()
+    settings.time_elapsed_since_shield = 0
 
-    alien_bullets.empty()
-    aliens.empty()
-    bullets.empty()
+    sprites.alien_bullets.empty()
+    sprites.aliens.empty()
+    sprites.ship_bullets.empty()
     if stats.ships_left:
-        create_fleet(ai_settings, screen, stages, ship, aliens)
+        create_fleet(settings, screen, stages, ship, sprites.aliens)
         ship.center_ship()
-        sleep(ai_settings.game_sleep_time)
+        sleep(settings.game_sleep_time)
 
 
-def ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                           used_shields, bosses, boss_bullets, boss_shields, black_holes) -> None:
+def ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Handle collisions between ship and bosses."""
     # Handle collisions between ship and green boss.
     if stages.current.name == "green_boss":
@@ -506,18 +465,18 @@ def ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullet
         hud.prep_green_boss_health()
 
         # Ship and boss timers refresh.
-        ai_settings.time_elapsed_since_shield = 0
-        ai_settings.time_elapsed_since_boss_shield = 0
+        settings.time_elapsed_since_shield = 0
+        settings.time_elapsed_since_boss_shield = 0
 
-        bullets.empty()
-        bosses.empty()
-        boss_bullets.empty()
-        used_shields.empty()
+        sprites.ship_bullets.empty()
+        sprites.bosses.empty()
+        sprites.boss_bullets.empty()
+        sprites.ship_shields.empty()
 
         if stats.ships_left:
-            create_green_boss(ai_settings, screen, hud, bosses, boss_shields)
+            create_green_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
             ship.prepare_for_boss()
-            sleep(ai_settings.game_sleep_time)
+            sleep(settings.game_sleep_time)
 
     # Handle collisions between ship and red boss.
     elif stages.current.name == "red_boss":
@@ -527,18 +486,18 @@ def ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullet
         hud.prep_red_boss_health()
 
         # Ship and boss timers refresh.
-        ai_settings.time_elapsed_since_shield = 0
-        ai_settings.time_elapsed_since_boss_shield = 0
+        settings.time_elapsed_since_shield = 0
+        settings.time_elapsed_since_boss_shield = 0
 
-        bullets.empty()
-        bosses.empty()
-        boss_bullets.empty()
-        used_shields.empty()
+        sprites.bullets.empty()
+        sprites.bosses.empty()
+        sprites.boss_bullets.empty()
+        sprites.ship_shields.empty()
 
         if stats.ships_left:
-            create_red_boss(ai_settings, screen, hud, bosses, boss_shields)
+            create_red_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
             ship.prepare_for_boss()
-            sleep(ai_settings.game_sleep_time)
+            sleep(settings.game_sleep_time)
 
     # Handle collisions between ship and blue boss.
     elif stages.current.name == "blue_boss":
@@ -548,41 +507,31 @@ def ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullet
         hud.prep_blue_boss_health()
 
         # Ship and boss timers refresh.
-        ai_settings.black_hole_spawn_timer = 0
-        ai_settings.time_elapsed_since_shield = 0
-        ai_settings.time_elapsed_since_boss_shield = 0
+        settings.black_hole_spawn_timer = 0
+        settings.time_elapsed_since_shield = 0
+        settings.time_elapsed_since_boss_shield = 0
 
-        bullets.empty()
-        bosses.empty()
-        boss_bullets.empty()
-        used_shields.empty()
+        sprites.ship_bullets.empty()
+        sprites.bosses.empty()
+        sprites.boss_bullets.empty()
+        sprites.ship_shields.empty()
 
         if stats.ships_left:
-            black_holes.empty()
-            create_blue_boss(ai_settings, screen, hud, bosses, boss_shields)
+            sprites.boss_black_holes.empty()
+            create_blue_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
             ship.prepare_for_boss()
-            sleep(ai_settings.game_sleep_time)
+            sleep(settings.game_sleep_time)
 
 
-def update_aliens(ai_settings, screen, stats, stages, hud, ship, aliens,
-                  bullets, alien_bullets, health, ammo, used_shields) -> None:
+def update_aliens(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update aliens position in fleet."""
-    aliens.update(aliens, ship)
-    if pygame.sprite.spritecollideany(ship, aliens):
-        ship_hit(ai_settings, screen, stats, stages, hud, ship, aliens,
-                 bullets, alien_bullets, health, ammo, used_shields)
+    sprites.aliens.update(sprites.aliens, ship)
+    if pygame.sprite.spritecollideany(ship, sprites.aliens):
+        ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def update_ship_health(stats, hud, ship, health) -> None:
-    """Update extra health on hud after pick-up.
-
-    Args:
-        :param stats: Instance of GameStats class.
-        :param hud: Instance of Hud class.
-        :param ship: Instance of Ship class.
-        :param health: Container to hold and manage ShipHealth Sprites.
-
-    """
+    """Update extra health on hud after pick-up."""
     if pygame.sprite.spritecollideany(ship, health):
         effect = pygame.mixer.Sound(Paths.effects() / "pick_up_1.ogg")
         effect.play()
@@ -592,28 +541,20 @@ def update_ship_health(stats, hud, ship, health) -> None:
 
 
 def update_ship_ammo(stats, hud, ship, ammo) -> None:
-    """Update extra ammo om hud after pick-up.
-
-    Args:
-        :param stats: Instance of GameStats class.
-        :param hud: Instance of Hud class.
-        :param ship: Instance of Ship class.
-        :param ammo: Container to hold and manage ShipAmmo Sprites.
-
-    """
+    """Update extra ammo om hud after pick-up."""
     if pygame.sprite.spritecollideany(ship, ammo):
         stats.ammo += 1
         ammo.empty()
         hud.prep_ammo()
 
 
-def fire_alien_bullets(ai_settings, screen, stages,
-                       ship, aliens, alien_bullets, dt) -> None:
+def fire_alien_bullets(settings, screen, stages,
+                       ship, dt, sprites: "Sprites") -> None:
     """Create alien bullets."""
-    ai_settings.time_elapsed_since_last_alien_bullet += dt
-    if ai_settings.time_elapsed_since_last_alien_bullet > 2500:
-        for alien in aliens:
-            alien_bullet = AlienBullet(ai_settings, screen, alien)
+    settings.time_elapsed_since_last_alien_bullet += dt
+    if settings.time_elapsed_since_last_alien_bullet > 2500:
+        for alien in sprites.aliens:
+            alien_bullet = AlienBullet(settings, screen, alien)
             if stages.current.index < stages.get_by_name("green_boss").index:
                 pass
             elif stages.current.index < stages.get_by_name("red_boss").index + 1:
@@ -621,47 +562,38 @@ def fire_alien_bullets(ai_settings, screen, stages,
             elif stages.current.index >= stages.get_by_name("red_boss").index + 1:
                 alien_bullet.image = alien_bullet.blue_bullet
             alien_bullet.define_position(ship)
-            alien_bullets.add(alien_bullet)
-        ai_settings.time_elapsed_since_last_alien_bullet = 0
+            sprites.alien_bullets.add(alien_bullet)
+        settings.time_elapsed_since_last_alien_bullet = 0
 
 
-def fire_green_boss_bullets(ai_settings, screen, dt, bosses, boss_bullets) -> None:
-    """Create green boss bullets.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param dt: Game timer to manage events.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_bullets: Container to hold and manage BossBullet Sprites.
-
-    """
-    ai_settings.time_elapsed_since_last_boss_bullet += dt
-    if ai_settings.time_elapsed_since_last_boss_bullet > ai_settings.green_boss_bullet_timer:
+def fire_green_boss_bullets(settings, screen, dt, bosses, boss_bullets) -> None:
+    """Create green boss bullets."""
+    settings.time_elapsed_since_last_boss_bullet += dt
+    if settings.time_elapsed_since_last_boss_bullet > settings.green_boss_bullet_timer:
         for boss in bosses:
-            green_boss_bullet_1 = GreenBossBullet(ai_settings, screen, boss)
+            green_boss_bullet_1 = GreenBossBullet(settings, screen, boss)
             green_boss_bullet_1.shooting_angle_up = random.choice(range(180))
             green_boss_bullet_1.add(boss_bullets)
 
-            green_boss_bullet_2 = GreenBossBullet(ai_settings, screen, boss)
+            green_boss_bullet_2 = GreenBossBullet(settings, screen, boss)
             green_boss_bullet_2.shooting_angle_up = random.choice(range(90, 270))
             green_boss_bullet_2.add(boss_bullets)
 
-            green_boss_bullet_3 = GreenBossBullet(ai_settings, screen, boss)
+            green_boss_bullet_3 = GreenBossBullet(settings, screen, boss)
             green_boss_bullet_3.shooting_angle_up = random.choice(range(180, 360))
             green_boss_bullet_3.add(boss_bullets)
 
-            green_boss_bullet_4 = GreenBossBullet(ai_settings, screen, boss)
+            green_boss_bullet_4 = GreenBossBullet(settings, screen, boss)
             green_boss_bullet_4.shooting_angle_up = random.choice(range(270, 450))
             green_boss_bullet_4.add(boss_bullets)
 
-        ai_settings.time_elapsed_since_last_boss_bullet = 0
-        ai_settings.green_boss_bullet_timer = 1650
+        settings.time_elapsed_since_last_boss_bullet = 0
+        settings.green_boss_bullet_timer = 1650
 
 
-def update_alien_bullets(ai_settings, screen, stats, stages, hud, ship, aliens, bullets,
-                         alien_bullets, health, ammo, used_shields) -> None:
+def update_alien_bullets(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update alien bullets position."""
+    alien_bullets = sprites.alien_bullets
     alien_bullets.update()
     for alien_bullet in alien_bullets.copy():
             if alien_bullet.rect.bottom <= 0:
@@ -673,186 +605,122 @@ def update_alien_bullets(ai_settings, screen, stats, stages, hud, ship, aliens, 
             if alien_bullet.rect.top > alien_bullet.screen_rect.bottom:
                 alien_bullets.remove(alien_bullet)
     if pygame.sprite.spritecollideany(ship, alien_bullets):
-        ship_hit(ai_settings, screen, stats, stages, hud, ship, aliens,
-                 bullets, alien_bullets, health, ammo, used_shields)
+        ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def use_ship_shield(ai_settings, screen, stats, hud, ship, used_shields) -> None:
-    """Handle use of ship shield.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param stats: Instance of GameStats class.
-        :param hud: Instance of Hud class.
-        :param ship: Instance of Ship class.
-        :param used_shields: Container to hold and manage ShipShield Sprites.
-
-    """
+def use_ship_shield(settings, screen, stats, hud, ship, used_shields) -> None:
+    """Handle use of ship shield."""
     if stats.shields_left:
         effect = pygame.mixer.Sound(Paths.effects() / "1.ogg")
         effect.play()
-        used_shield = ShipShield(ai_settings, screen, ship)
+        used_shield = ShipShield(settings, screen, ship)
         used_shields.add(used_shield)
         stats.shields_left -= 1
         hud.prep_shield()
 
 
 def update_ship_shield(alien_bullets, used_shields, boss_bullets) -> None:
-    """Update ship shield position. Check for collisions between shield and bullet.
-
-    Args:
-        :param alien_bullets: Container to hold and manage AlienBullet Sprites.
-        :param used_shields: Container to hold and manage ShipShield Sprites.
-        :param boss_bullets: Container to hold and manage BossBullet Sprites.
-
-    """
+    """Update ship shield position. Check for collisions between shield and bullet."""
     used_shields.update()
     pygame.sprite.groupcollide(used_shields, alien_bullets, dokilla=False, dokillb=True)
     pygame.sprite.groupcollide(used_shields, boss_bullets, dokilla=False, dokillb=True)
 
 
-def create_green_boss(ai_settings, screen, hud, bosses, boss_shields) -> None:
-    """Create green boss.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param hud: Instance of Hud class.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_shields: Container to hold and manage single BossShield Sprite.
-
-    """
-    green_boss = GreenBoss(ai_settings, screen)
-    boss_shield = GreenBossShield(ai_settings, screen, green_boss)
+def create_green_boss(settings, screen, hud, bosses, boss_shields) -> None:
+    """Create green boss."""
+    green_boss = GreenBoss(settings, screen)
+    boss_shield = GreenBossShield(settings, screen, green_boss)
     hud.green_boss_hp = 19
     hud.prep_green_boss_health()
     bosses.add(green_boss)
     boss_shields.add(boss_shield)
 
 
-def create_blue_boss(ai_settings, screen, hud, bosses, boss_shields) -> None:
-    """Create blue boss.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param hud: Instance of Hud class.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_shields: Container to hold and manage single BossShield Sprite.
-
-    """
-    blue_boss = BlueBoss(ai_settings, screen)
-    boss_shield = BlueBossShield(ai_settings, screen, blue_boss)
+def create_blue_boss(settings, screen, hud, bosses, boss_shields) -> None:
+    """Create blue boss."""
+    blue_boss = BlueBoss(settings, screen)
+    boss_shield = BlueBossShield(settings, screen, blue_boss)
     hud.blue_boss_hp = 19
     hud.prep_blue_boss_health()
     bosses.add(blue_boss)
     boss_shields.add(boss_shield)
 
 
-def update_green_boss_bullets(ai_settings, screen, stats, stages, hud, ship, bullets,
-                              used_shields, bosses, boss_bullets, boss_shields, black_holes) -> None:
+def update_green_boss_bullets(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update green boss bullets position. Check for collisions between ship and boss bullets."""
+    boss_bullets = sprites.boss_bullets
     boss_bullets.update()
+
     for green_boss_bullet in boss_bullets.copy():
         green_boss_bullet.change_direction(boss_bullets)
 
     if pygame.sprite.spritecollideany(ship, boss_bullets):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def create_red_boss(ai_settings, screen, hud, bosses, boss_shields) -> None:
-    """Create red boss.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param hud: Instance of Hud class.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_shields: Container to hold and manage single BossShield Sprite.
-
-    """
-    red_boss = RedBoss(ai_settings, screen)
-    boss_shield = RedBossShield(ai_settings, screen, red_boss)
+def create_red_boss(settings, screen, hud, bosses, boss_shields) -> None:
+    """Create red boss."""
+    red_boss = RedBoss(settings, screen)
+    boss_shield = RedBossShield(settings, screen, red_boss)
     hud.red_boss_hp = 14
     hud.prep_red_boss_health()
     bosses.add(red_boss)
     boss_shields.add(boss_shield)
 
 
-def fire_red_boss_bullets(ai_settings, screen, ship, dt, bosses, boss_bullets) -> None:
-    """Create red boss bullets.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param ship: Instance of Ship class.
-        :param dt: Game timer to manage events.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_bullets: Container to hold and manage BossBullet Sprites.
-
-    """
-    ai_settings.time_elapsed_since_last_red_boss_bullet += dt
-    if ai_settings.time_elapsed_since_last_red_boss_bullet > 1350:
+def fire_red_boss_bullets(settings, screen, ship, dt, bosses, boss_bullets) -> None:
+    """Create red boss bullets."""
+    settings.time_elapsed_since_last_red_boss_bullet += dt
+    if settings.time_elapsed_since_last_red_boss_bullet > 1350:
         for boss in bosses:
-            red_boss_bullet = RedBossBullet(ai_settings, screen, boss)
+            red_boss_bullet = RedBossBullet(settings, screen, boss)
             red_boss_bullet.define_position(ship)
             red_boss_bullet.add(boss_bullets)
 
-            red_boss_bullet_2 = RedBossBullet(ai_settings, screen, boss)
+            red_boss_bullet_2 = RedBossBullet(settings, screen, boss)
             red_boss_bullet_2.define_position(ship)
             red_boss_bullet_2.shooting_angle += 15
             red_boss_bullet_2.add(boss_bullets)
 
-            red_boss_bullet_3 = RedBossBullet(ai_settings, screen, boss)
+            red_boss_bullet_3 = RedBossBullet(settings, screen, boss)
             red_boss_bullet_3.define_position(ship)
             red_boss_bullet_3.shooting_angle += 30
             red_boss_bullet_3.add(boss_bullets)
 
-            red_boss_bullet_4 = RedBossBullet(ai_settings, screen, boss)
+            red_boss_bullet_4 = RedBossBullet(settings, screen, boss)
             red_boss_bullet_4.define_position(ship)
             red_boss_bullet_4.shooting_angle -= 15
             red_boss_bullet_4.add(boss_bullets)
 
-            red_boss_bullet_5 = RedBossBullet(ai_settings, screen, boss)
+            red_boss_bullet_5 = RedBossBullet(settings, screen, boss)
             red_boss_bullet_5.define_position(ship)
             red_boss_bullet_5.shooting_angle -= 30
             red_boss_bullet_5.add(boss_bullets)
 
-            ai_settings.time_elapsed_since_last_red_boss_bullet = 0
+            settings.time_elapsed_since_last_red_boss_bullet = 0
 
 
-def fire_blue_boss_bullets(ai_settings, screen, dt, bosses, boss_bullets) -> None:
-    """Create blue boss bullets.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param dt: Game timer to manage events.
-        :param bosses: Container to hold and manage single Bosses Sprite.
-        :param boss_bullets: Container to hold and manage BossBullet Sprites.
-
-    """
-    ai_settings.time_elapsed_since_last_red_boss_bullet += dt
-    if ai_settings.time_elapsed_since_last_red_boss_bullet > 300:
+def fire_blue_boss_bullets(settings, screen, dt, bosses, boss_bullets) -> None:
+    """Create blue boss bullets."""
+    settings.time_elapsed_since_last_red_boss_bullet += dt
+    if settings.time_elapsed_since_last_red_boss_bullet > 300:
         for boss in bosses:
-            blue_boss_bullet = BlueBossBullet(ai_settings, screen, boss, boss.shooting_angle)
+            blue_boss_bullet = BlueBossBullet(settings, screen, boss, boss.shooting_angle)
             blue_boss_bullet.add(boss_bullets)
 
-            blue_boss_bullet = BlueBossBullet(ai_settings, screen, boss,
+            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
                                               (boss.shooting_angle + boss.shooting_angles[0]))
             blue_boss_bullet.add(boss_bullets)
 
-            blue_boss_bullet = BlueBossBullet(ai_settings, screen, boss,
+            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
                                               (boss.shooting_angle + boss.shooting_angles[1]))
             blue_boss_bullet.add(boss_bullets)
 
-            blue_boss_bullet = BlueBossBullet(ai_settings, screen, boss,
+            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
                                               (boss.shooting_angle + boss.shooting_angles[2]))
             blue_boss_bullet.add(boss_bullets)
 
-            ai_settings.time_elapsed_since_last_red_boss_bullet = 0
+            settings.time_elapsed_since_last_red_boss_bullet = 0
             if boss.rt_trigger:
                 boss.shooting_angle += 15
                 if boss.shooting_angle > 400:
@@ -863,9 +731,9 @@ def fire_blue_boss_bullets(ai_settings, screen, dt, bosses, boss_bullets) -> Non
                     boss.rt_trigger = True
 
 
-def update_red_boss_bullets(ai_settings, screen, stats, stages, hud, ship, bullets,
-                            used_shields, bosses, boss_bullets, boss_shields, black_holes) -> None:
+def update_red_boss_bullets(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update red boss bullets position. Check for collisions between ship and boss bullets."""
+    boss_bullets = sprites.boss_bullets
     boss_bullets.update()
     for red_boss_bullet in boss_bullets.copy():
             if red_boss_bullet.rect.bottom <= 0:
@@ -877,13 +745,12 @@ def update_red_boss_bullets(ai_settings, screen, stats, stages, hud, ship, bulle
             if red_boss_bullet.rect.top > red_boss_bullet.screen_rect.bottom:
                 boss_bullets.remove(red_boss_bullet)
     if pygame.sprite.spritecollideany(ship, boss_bullets):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def update_blue_boss_bullets(ai_settings, screen, stats, stages, hud, ship, bullets,
-                             used_shields, bosses, boss_bullets, boss_shields, black_holes) -> None:
+def update_blue_boss_bullets(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update blue boss bullets position. Check for collisions between ship and boss bullets."""
+    boss_bullets = sprites.boss_bullets
     boss_bullets.update()
     for blue_boss_bullet in boss_bullets.copy():
             if blue_boss_bullet.rect.bottom <= 0:
@@ -895,27 +762,17 @@ def update_blue_boss_bullets(ai_settings, screen, stats, stages, hud, ship, bull
             if blue_boss_bullet.rect.top > blue_boss_bullet.screen_rect.bottom:
                 boss_bullets.remove(blue_boss_bullet)
     if pygame.sprite.spritecollideany(ship, boss_bullets):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def update_green_boss(ai_settings, screen, stats, stages, hud, ship, bullets, used_shields, bosses,
-                      boss_bullets, boss_shields, black_holes) -> None:
+def update_green_boss(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Check for collisions between green boss and ship."""
-    if pygame.sprite.spritecollideany(ship, bosses):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+    if pygame.sprite.spritecollideany(ship, sprites.bosses):
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def update_green_boss_shield(hud, bullets, boss_shields) -> None:
-    """Update hit points of green boss shield on a collision with ship bullets.
-
-    Args:
-        :param hud: Instance of Hud class.
-        :param bullets: Container to hold and manage Bullet Sprites.
-        :param boss_shields: Container to hold and manage BossBullet Sprites.
-
-    """
+    """Update hit points of green boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
         for boss_shield in boss_shields:
             boss_shield.points -= 1
@@ -923,33 +780,22 @@ def update_green_boss_shield(hud, bullets, boss_shields) -> None:
             hud.prep_green_boss_health()
 
 
-def update_red_boss(ai_settings, screen, stats, stages, hud, ship, bullets, used_shields, bosses,
-                    boss_bullets, boss_shields, black_holes) -> None:
+def update_red_boss(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Update red boss position. Check for collisions between red boss and ship."""
-    if pygame.sprite.spritecollideany(ship, bosses):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
-    for boss in bosses:
+    if pygame.sprite.spritecollideany(ship, sprites.bosses):
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
+    for boss in sprites.bosses:
         boss.update()
 
 
-def update_blue_boss(ai_settings, screen, stats, stages, hud, ship, bullets, used_shields, bosses,
-                     boss_bullets, boss_shields, black_holes) -> None:
+def update_blue_boss(settings, screen, stats, stages, hud, ship, sprites: "Sprites") -> None:
     """Check for collisions between blue boss and ship."""
-    if pygame.sprite.spritecollideany(ship, bosses):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+    if pygame.sprite.spritecollideany(ship, sprites.bosses):
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def update_red_boss_shield(hud, bullets, boss_shields) -> None:
-    """Update hit points of red boss shield on a collision with ship bullets.
-
-    Args:
-        :param hud: Instance of Hud class.
-        :param bullets: Container to hold and manage Bullet Sprites.
-        :param boss_shields: Container to hold and manage BossShield Sprites.
-
-    """
+    """Update hit points of red boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
         for boss_shield in boss_shields:
             boss_shield.points -= 1
@@ -958,14 +804,7 @@ def update_red_boss_shield(hud, bullets, boss_shields) -> None:
 
 
 def update_blue_boss_shield(hud, bullets, boss_shields) -> None:
-    """Update hit points of blue boss shield on a collision with ship bullets.
-
-    Args:
-        :param hud: Instance of Hud class.
-        :param bullets: Container to hold and manage Bullet Sprites.
-        :param boss_shields: Container to hold and manage BossShield Sprites.
-
-    """
+    """Update hit points of blue boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
         for boss_shield in boss_shields:
             boss_shield.points -= 1
@@ -973,32 +812,23 @@ def update_blue_boss_shield(hud, bullets, boss_shields) -> None:
             hud.prep_blue_boss_health()
 
 
-def create_black_hole(ai_settings, screen, ship, dt, black_holes) -> None:
-    """Create black hole.
-
-    Args:
-        :param ai_settings: Instance of Settings class.
-        :param screen: Display Surface.
-        :param ship: Instance of Ship class.
-        :param dt: Game timer to manage events.
-        :param black_holes: Container to hold and manage single BlackHole Sprite.
-
-    """
-    ai_settings.black_hole_spawn_timer += dt
-    if len(black_holes) == 0 and ai_settings.black_hole_spawn_timer > 2000:
-        black_hole = BlackHole(ai_settings, screen, ship)
+def create_black_hole(settings, screen, ship, dt, black_holes) -> None:
+    """Create black hole."""
+    settings.black_hole_spawn_timer += dt
+    if len(black_holes) == 0 and settings.black_hole_spawn_timer > 2000:
+        black_hole = BlackHole(settings, screen, ship)
         black_holes.add(black_hole)
     elif len(black_holes) == 1:
-        if ai_settings.black_hole_spawn_timer > 6000:
+        if settings.black_hole_spawn_timer > 6000:
             black_holes.empty()
-            ai_settings.black_hole_spawn_timer = 0
+            settings.black_hole_spawn_timer = 0
 
 
-def update_black_hole(ai_settings, screen, stats, stages, hud, ship, bullets, used_shields, dt, bosses,
-                      boss_bullets, boss_shields, black_holes) -> None:
+def update_black_hole(settings, screen, stats, stages, hud, ship, dt, sprites: "Sprites") -> None:
     """Update black hole animation. Check for collisions between ship and black hole."""
-    ai_settings.black_hole_rotation_timer += dt
-    if ai_settings.black_hole_rotation_timer > 300:
+    black_holes = sprites.boss_black_holes
+    settings.black_hole_rotation_timer += dt
+    if settings.black_hole_rotation_timer > 300:
         for black_hole in black_holes.sprites():
             if black_hole.rt_image_number < 11:
                 black_hole.rt_image_number += 1
@@ -1006,10 +836,9 @@ def update_black_hole(ai_settings, screen, stats, stages, hud, ship, bullets, us
                 black_hole.rt_image_number = 0
             black_hole.update()
             black_holes.add(black_hole)
-            ai_settings.black_hole_rotation_timer = 0
+            settings.black_hole_rotation_timer = 0
     if pygame.sprite.spritecollideany(ship, black_holes):
-        ship_hit_at_boss_stage(ai_settings, screen, stats, stages, hud, ship, bullets,
-                               used_shields, bosses, boss_bullets, boss_shields, black_holes)
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def quit_game() -> None:
@@ -1017,7 +846,7 @@ def quit_game() -> None:
     sys.exit(0)
 
 
-def check_game_end(stages, stats) -> bool:
+def check_game_end(stages: "Stages", stats: "GameStats") -> bool:
     if stages.current.name == "end":
         return True
 

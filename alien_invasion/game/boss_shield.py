@@ -5,9 +5,9 @@ from game.images import load_image
 
 class BossShield(Sprite):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
+    def __init__(self, settings, screen, boss) -> None:
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
         self.boss = boss
         self.spawned_boss_shield = None
@@ -20,8 +20,8 @@ class BossShield(Sprite):
 
 class GreenBossShield(BossShield):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
-        super().__init__(ai_settings, screen, boss)
+    def __init__(self, settings, screen, boss) -> None:
+        super().__init__(settings, screen, boss)
         self.spawned_boss_shield = load_image("spawned_green_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()
@@ -40,8 +40,8 @@ class GreenBossShield(BossShield):
 
 class RedBossShield(BossShield):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
-        super().__init__(ai_settings, screen, boss)
+    def __init__(self, settings, screen, boss) -> None:
+        super().__init__(settings, screen, boss)
         self.spawned_boss_shield = load_image("spawned_red_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()
@@ -67,8 +67,8 @@ class RedBossShield(BossShield):
 
 class BlueBossShield(BossShield):
 
-    def __init__(self, ai_settings, screen, boss) -> None:
-        super().__init__(ai_settings, screen, boss)
+    def __init__(self, settings, screen, boss) -> None:
+        super().__init__(settings, screen, boss)
         self.spawned_boss_shield = load_image("spawned_blue_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()

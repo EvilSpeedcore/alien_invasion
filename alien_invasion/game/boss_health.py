@@ -8,16 +8,10 @@ class BossHealth(Sprite):
 
     IMAGE_DIR: str | None = None
 
-    def __init__(self, ai_settings, screen) -> None:
-        """Initialize boss health.
-
-        Args:
-            :param ai_settings: Instance of Settings class.
-            :param screen: Display Surface.
-
-        """
+    def __init__(self, settings, screen) -> None:
+        """Initialize boss health."""
         super().__init__()
-        self.ai_settings = ai_settings
+        self.settings = settings
         self.screen = screen
 
         # List, which will contain loaded images.
@@ -37,8 +31,8 @@ class GreenBossHealth(BossHealth):
 
     IMAGE_DIR = "green_boss_hp"
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
                         "1_shield.png", "2_shield.png", "3_shield.png", "4_shield.png", "5_shield.png",
@@ -60,8 +54,8 @@ class RedBossHealth(BossHealth):
 
     IMAGE_DIR = "red_boss_hp"
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
                         "1_shield.png", "2_shield.png", "3_shield.png", "4_shield.png", "5_shield.png"]
@@ -75,8 +69,8 @@ class BlueBossHealth(BossHealth):
 
     IMAGE_DIR = "blue_boss_hp"
 
-    def __init__(self, ai_settings, screen) -> None:
-        super().__init__(ai_settings, screen)
+    def __init__(self, settings, screen) -> None:
+        super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
                         "1_shield.png", "2_shield.png", "3_shield.png", "4_shield.png", "5_shield.png",
