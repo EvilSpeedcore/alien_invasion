@@ -226,10 +226,14 @@ class Stages(list[Stage | BossStage]):
         raise AssertionError
 
     def select(self, name: str) -> None:
-        # TODO: "Rotate" calling set up
-        stage = self.get_by_name(name)
-        self.current = stage
-        stage.set_up()
+        for stage in self:
+            if stage.name == name:
+                self.current = stage
+                stage.set_up()
+                return
+            stage.transit()
+        # TODO: Raise proper error
+        raise AssertionError
 
     def next_stage(self) -> Stage:
         prev_stage = self.current
