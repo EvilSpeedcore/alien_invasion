@@ -204,8 +204,7 @@ def check_play_button(play_button) -> bool:
     return play_button.ellipse_rect.collidepoint(mouse_x, mouse_y)
 
 
-def initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship,
-                                   aliens, used_shields, boss_shields) -> None:
+def initialize_game_from_main_menu(settings, stats, hud, ship) -> None:
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
@@ -213,14 +212,7 @@ def initialize_game_from_main_menu(settings, screen, stats, stages, hud, ship,
     hud.prep_health()
     hud.prep_ammo()
     hud.prep_shield()
-
-    # TODO: Move
     rt.rotate_to_up(ship)
-    create_fleet(settings, screen, stages, ship, aliens)
-    ship.center_ship()
-
-    used_shields.empty()
-    boss_shields.empty()
 
 
 def check_keys_pressed(ship) -> None:

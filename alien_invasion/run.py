@@ -58,6 +58,8 @@ def run_game() -> None:
                     ammo=ammo,
                     bullets=bullets,
                     alien_bullets=alien_bullets,
+                    used_shields=used_shields,
+                    boss_shields=boss_shields,
                     black_holes=black_holes)
     hud = Hud(settings, screen, stats, stages, ship)
 
@@ -83,8 +85,7 @@ def run_game() -> None:
 
             if menu_events.play:
                 stages.select("1_1")
-                gf.initialize_game_from_main_menu(settings, screen, stats, stages, hud,
-                                                  ship, aliens, used_shields, boss_shields)
+                gf.initialize_game_from_main_menu(settings, stats, hud, ship)
                 state.set(State.ACTIVE)
             if menu_events.quit:
                 gf.quit_game()

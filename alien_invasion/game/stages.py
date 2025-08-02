@@ -49,6 +49,7 @@ class Stage(BaseStage):
                  ammo,
                  bullets,
                  alien_bullets,
+                 used_shields,
                  name: str) -> None:
         super().__init__(name)
 
@@ -62,11 +63,11 @@ class Stage(BaseStage):
         self.ammo = ammo
         self.bullets = bullets
         self.alien_bullets = alien_bullets
+        self.used_shields = used_shields
 
     def set_up(self) -> None:
         log.debug("%s: set_up()", self)
         self.ship.center_ship()
-        self.settings.increase_aliens_speed()
 
         if not maybe_spawn_extra_health(settings=self.settings,
                                         screen=self.screen,
@@ -91,14 +92,16 @@ class Stage(BaseStage):
         self.ammo.empty()
         self.alien_bullets.empty()
         self.bullets.empty()
+        self.used_shields.empty()
 
 
 class BossStage(BaseStage):
 
-    def __init__(self, ship: "Ship", name: str) -> None:
+    def __init__(self, ship: "Ship", boss_shields, name: str) -> None:
         super().__init__(name)
 
         self.ship = ship
+        self.boss_shields = boss_shields
 
     def set_up(self) -> None:
         log.debug("%s: set_up()", self)
@@ -106,16 +109,17 @@ class BossStage(BaseStage):
         rt.rotate_to_up(self.ship)
 
     def tear_down(self) -> None:
-        log.debug("%s: tear_down()", self)
+        self.boss_shields.empty()
 
 
 class BlueBossStage(BossStage):
 
     def __init__(self,
                  ship: "Ship",
+                 boss_shields,
                  black_holes,
                  name: str) -> None:
-        super().__init__(ship=ship, name=name)
+        super().__init__(ship=ship, boss_shields=boss_shields, name=name)
 
         self.black_holes = black_holes
 
@@ -136,6 +140,8 @@ class Stages(list[Stage | BossStage]):
                  ammo,
                  bullets,
                  alien_bullets,
+                 used_shields,
+                 boss_shields,
                  black_holes) -> None:
         self.settings = settings
         self.screen = screen
@@ -146,6 +152,8 @@ class Stages(list[Stage | BossStage]):
         self.ammo = ammo
         self.bullets = bullets
         self.alien_bullets = alien_bullets
+        self.used_shields = used_shields
+        self.boss_shields = boss_shields
         self.black_holes = black_holes
 
         super().__init__(self.create_stages())
@@ -163,13 +171,15 @@ class Stages(list[Stage | BossStage]):
                      ammo=self.ammo,
                      bullets=self.bullets,
                      alien_bullets=self.alien_bullets,
+                     used_shields=self.used_shields,
                      name=name)
 
     def create_boss_stage(self, name: str) -> BossStage:
-        return BossStage(ship=self.ship, name=name)
+        return BossStage(ship=self.ship, boss_shields=self.boss_shields, name=name)
 
     def create_blue_boss_stage(self) -> None:
         return BlueBossStage(ship=self.ship,
+                             boss_shields=self.boss_shields,
                              black_holes=self.black_holes,
                              name="blue_boss")
 
@@ -199,13 +209,16 @@ class Stages(list[Stage | BossStage]):
 
     def select(self, name: str) -> None:
         # TODO: "Rotate" calling set up
-        self.current = self.get_by_name(name)
+        stage = self.get_by_name(name)
+        self.current = stage
+        stage.set_up()
 
     def next_stage(self) -> Stage:
         prev_stage = self.current
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
         prev_stage.tear_down()
+        self.settings.increase_aliens_speed()
         next_stage.set_up()
         log.info("%s -> %s", prev_stage, next_stage)
         return next_stage
