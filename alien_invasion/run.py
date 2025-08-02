@@ -109,7 +109,7 @@ def run_game() -> None:
             ship.update()
 
             if not (aliens or bosses) and stats.ships_left:
-                stages.next_stage()
+                stages.load_next_stage()
 
             gf.update_ship_shield(alien_bullets, used_shields, boss_bullets)
             gf.update_bullets(settings, stages, hud, ship, aliens, bullets, bosses, boss_bullets)

@@ -101,7 +101,12 @@ class Stage(BaseStage):
 
     def transit(self) -> None:
         super().transit()
-        self.settings.increase_aliens_speed()
+        # do not increase speed if next stage is a boss stage
+        # TODO: self.stages.current is confusing
+        #       (we set current to early),
+        #       change to self.stages.next
+        if not isinstance(self.stages.current, BossStage):
+            self.settings.increase_aliens_speed()
 
     def tear_down(self) -> None:
         super().tear_down()
@@ -336,7 +341,7 @@ class Stages(list[Stage | BossStage]):
         # TODO: Raise proper error
         raise AssertionError
 
-    def next_stage(self) -> Stage:
+    def load_next_stage(self) -> Stage:
         prev_stage = self.current
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
