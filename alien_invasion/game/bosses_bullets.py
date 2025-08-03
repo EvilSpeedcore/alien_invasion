@@ -7,7 +7,6 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.rect import Rect
     from pygame.sprite import Group
     from pygame.surface import Surface
 
@@ -18,11 +17,11 @@ if TYPE_CHECKING:
 
 class BossBullet(Sprite):
 
-    def __init__(self, screen: "Surface", image: "Surface", rect: "Rect") -> None:
+    def __init__(self, screen: "Surface", image: "Surface") -> None:
         super().__init__()
         self.screen = screen
         self.image = image
-        self.rect = rect
+        self.rect = image.get_rect()
 
     def draw_bullet(self) -> None:
         """Draw bullet on screen."""
@@ -33,8 +32,7 @@ class GreenBossBullet(BossBullet):
 
     def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
         image = load_image("alien_bullet.png")
-        rect = image.get_rect()
-        super().__init__(screen, image=image, rect=rect)
+        super().__init__(screen, image=image)
 
         # Rectangular area of the screen.
         self.screen_rect = self.screen.get_rect()
@@ -88,8 +86,7 @@ class RedBossBullet(BossBullet):
 
     def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
         image = load_image("red_alien_bullet.png")
-        rect = image.get_rect()
-        super().__init__(screen=screen, image=image, rect=rect)
+        super().__init__(screen=screen, image=image)
 
         # Rectangular area of the screen.
         self.screen_rect = self.screen.get_rect()
@@ -216,8 +213,7 @@ class BlueBossBullet(BossBullet):
                  boss: "BossTypes",
                  angle: int) -> None:
         image = load_image("blue_alien_bullet.png")
-        rect = image.get_rect()
-        super().__init__(screen=screen, image=image, rect=rect)
+        super().__init__(screen=screen, image=image)
 
         # Rectangular area of the screen.
         self.screen_rect = self.screen.get_rect()

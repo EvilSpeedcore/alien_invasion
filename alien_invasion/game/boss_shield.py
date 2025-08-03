@@ -12,27 +12,23 @@ if TYPE_CHECKING:
 
 class BossShield(Sprite):
 
-    def __init__(self, screen: "Surface") -> None:
+    def __init__(self, screen: "Surface", shield: "Surface") -> None:
         super().__init__()
-
         self.screen = screen
-        self.spawned_boss_shield = None
-        self.rect = None
+        self.shield = shield
+        self.rect = shield.get_rect()
 
     def draw_boss_shield(self) -> None:
         """Draw boss shield on screen."""
-        self.screen.blit(self.spawned_boss_shield, self.rect)
+        self.screen.blit(self.shield, self.rect)
 
 
 class GreenBossShield(BossShield):
 
     def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
-        super().__init__(screen)
+        shield = load_image("spawned_green_boss_shield.png")
+        super().__init__(screen=screen, shield=shield)
         self.boss = boss
-
-        self.spawned_boss_shield = load_image("spawned_green_boss_shield.png")
-        # Get the rectangular area of the image.
-        self.rect = self.spawned_boss_shield.get_rect()
 
         # Set starting position of shield.
         self.rect.centerx = boss.rect.centerx
@@ -49,12 +45,9 @@ class GreenBossShield(BossShield):
 class RedBossShield(BossShield):
 
     def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
-        super().__init__(screen)
+        shield = load_image("spawned_red_boss_shield.png")
+        super().__init__(screen=screen, shield=shield)
         self.boss = boss
-
-        self.spawned_boss_shield = load_image("spawned_red_boss_shield.png")
-        # Get the rectangular area of the image.
-        self.rect = self.spawned_boss_shield.get_rect()
 
         # Set starting position of shield.
         self.rect.centerx = boss.rect.centerx
@@ -78,12 +71,9 @@ class RedBossShield(BossShield):
 class BlueBossShield(BossShield):
 
     def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
-        super().__init__(screen)
+        shield = load_image("spawned_blue_boss_shield.png")
+        super().__init__(screen=screen, shield=shield)
         self.boss = boss
-
-        self.spawned_boss_shield = load_image("spawned_blue_boss_shield.png")
-        # Get the rectangular area of the image.
-        self.rect = self.spawned_boss_shield.get_rect()
 
         # Set position of shield.
         self.rect.centerx = boss.rect.centerx
