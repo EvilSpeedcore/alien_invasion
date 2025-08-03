@@ -6,12 +6,12 @@ import pygame
 import game.game_functions as gf
 from game.button import Button
 from game.collections import Sprites
-from game.game_stats import GameStats
 from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
 from game.stages import Stages
 from game.state import GameState, State
+from game.stats import Stats
 
 
 def run_game() -> None:
@@ -24,7 +24,7 @@ def run_game() -> None:
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
-    stats = GameStats(settings)
+    stats = Stats(settings)
     play_button = Button(screen, "Start")
     sprites = Sprites()
 

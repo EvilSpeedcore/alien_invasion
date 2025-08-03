@@ -9,9 +9,9 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.collections import Sprites
-    from game.game_stats import GameStats
     from game.settings import Settings
     from game.ship import Ship
+    from game.stats import Stats
 
 
 class Hud:
@@ -19,7 +19,7 @@ class Hud:
     def __init__(self,
                  settings: "Settings",
                  screen: "Surface",
-                 stats: "GameStats",
+                 stats: "Stats",
                  ship: "Ship",
                  sprites: "Sprites") -> None:
         self.screen = screen

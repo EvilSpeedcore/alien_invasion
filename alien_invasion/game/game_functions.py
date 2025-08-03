@@ -22,10 +22,10 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.collections import Sprites
-    from game.game_stats import GameStats
     from game.settings import Settings
     from game.ship import Ship
     from game.stages import Stages
+    from game.stats import Stats
 
 
 @dataclass
@@ -848,7 +848,7 @@ def quit_game() -> None:
     sys.exit(0)
 
 
-def check_game_end(stages: "Stages", stats: "GameStats") -> bool:
+def check_game_end(stages: "Stages", stats: "Stats") -> bool:
     if stages.current.name == "end":
         return True
 

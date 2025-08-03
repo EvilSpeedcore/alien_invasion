@@ -4,7 +4,7 @@ if TYPE_CHECKING:
     from game.settings import Settings
 
 
-class GameStats:
+class Stats:
 
     def __init__(self, settings: "Settings") -> None:
         self.settings = settings

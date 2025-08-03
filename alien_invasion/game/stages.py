@@ -16,10 +16,10 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.collections import Sprites
-    from game.game_stats import GameStats
     from game.hud import Hud
     from game.settings import Settings
     from game.ship import Ship
+    from game.stats import Stats
 
 
 class BaseStage:
@@ -66,7 +66,7 @@ class Stage(BaseStage):
                  stages: "Stages",
                  settings: "Settings",
                  screen: "Surface",
-                 stats: "GameStats",
+                 stats: "Stats",
                  ship: "Ship",
                  sprites: "Sprites",
                  name: str) -> None:
@@ -199,7 +199,7 @@ class Stages(list[Stage | BossStage]):
     def __init__(self,
                  settings: "Settings",
                  screen: "Surface",
-                 stats: "GameStats",
+                 stats: "Stats",
                  hud: "Hud",
                  ship: "Ship",
                  sprites: "Sprites") -> None:
@@ -301,7 +301,7 @@ class Stages(list[Stage | BossStage]):
 
 def maybe_spawn_extra_health(settings: "Settings",
                              screen: "Surface",
-                             stats: "GameStats",
+                             stats: "Stats",
                              ship: "Ship",
                              health: "GroupSingle") -> bool:
     # Flag, which shows the fact, that extra health not yet spawned.
@@ -331,7 +331,7 @@ def maybe_spawn_extra_health(settings: "Settings",
 
 def maybe_spawn_extra_ammo(settings: "Settings",
                            screen: "Surface",
-                           stats: "GameStats",
+                           stats: "Stats",
                            ship: "Ship",
                            ammo: "Group") -> bool:
     # Extra ammo spawn.
