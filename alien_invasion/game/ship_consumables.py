@@ -5,52 +5,52 @@ from pygame.sprite import Sprite
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
     from pygame.surface import Surface
 
-    from game.settings import Settings
     from game.ship import Ship
 
 
 class ShipConsumable(Sprite):
 
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, screen: "Surface", item: "Surface", rect: "Rect") -> None:
         super().__init__()
-        self.settings = settings
         self.screen = screen
-        self.spawned_item = None
-        self.rect = None
+        self.item = item
+        self.rect = rect
 
     def draw_item(self) -> None:
         """Draw item on screen."""
-        self.screen.blit(self.spawned_item, self.rect)
+        self.screen.blit(self.item, self.rect)
 
 
 class ShipHealth(ShipConsumable):
 
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
-        super().__init__(settings, screen)
+    def __init__(self, screen: "Surface") -> None:
         self.image = load_image("stats_health.png")
-        self.spawned_item = load_image("spawned_health.png")
-        self.rect = self.image.get_rect()
+        rect = self.image.get_rect()
+        item = load_image("spawned_health.png")
+        super().__init__(screen=screen, item=item, rect=rect)
 
 
 class ShipAmmo(ShipConsumable):
 
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
-        super().__init__(settings, screen)
+    def __init__(self, screen: "Surface") -> None:
         self.image = load_image("stats_ammo.png")
-        self.spawned_item = load_image("spawned_ammo.png")
-        self.rect = self.image.get_rect()
+        rect = self.image.get_rect()
+        item = load_image("spawned_ammo.png")
+        super().__init__(screen=screen, item=item, rect=rect)
 
 
 class ShipShield(ShipConsumable):
 
-    def __init__(self, settings: "Settings", screen: "Surface", ship: "Ship") -> None:
-        super().__init__(settings, screen)
-        self.ship = ship
+    def __init__(self, screen: "Surface", ship: "Ship") -> None:
         self.image = load_image("stats_shield.png")
-        self.spawned_item = load_image("spawned_shield.png")
-        self.rect = self.spawned_item.get_rect()
+        item = load_image("spawned_shield.png")
+        rect = item.get_rect()
+        super().__init__(screen=screen, item=item, rect=rect)
+        self.ship = ship
+
         self.rect.centerx = self.ship.centerx
         self.rect.centery = self.ship.centery
         self.centerx = float(self.rect.centerx)

@@ -73,7 +73,6 @@ class Stage(BaseStage):
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(sprites=sprites, name=name)
-
         self.stages = stages
         self.settings = settings
         self.screen = screen
@@ -84,13 +83,11 @@ class Stage(BaseStage):
         super().setup()
         self.ship.center_ship()
 
-        if not maybe_spawn_extra_health(settings=self.settings,
-                                        screen=self.screen,
+        if not maybe_spawn_extra_health(screen=self.screen,
                                         stats=self.stats,
                                         ship=self.ship,
                                         health=self.sprites.ship_health):
-            maybe_spawn_extra_ammo(settings=self.settings,
-                                   screen=self.screen,
+            maybe_spawn_extra_ammo(screen=self.screen,
                                    stats=self.stats,
                                    ship=self.ship,
                                    ammo=self.sprites.ship_ammo)
@@ -119,7 +116,6 @@ class BossStage(BaseStage):
 
     def __init__(self, ship: "Ship", sprites: "Sprites", name: str) -> None:
         super().__init__(sprites=sprites, name=name)
-
         self.ship = ship
 
     def setup(self) -> None:
@@ -145,7 +141,6 @@ class GreenBossStage(BossStage):
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
-
         self.screen = screen
         self.hud = hud
 
@@ -167,7 +162,6 @@ class RedBossStage(BossStage):
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
-
         self.settings = settings
         self.screen = screen
         self.hud = hud
@@ -190,7 +184,6 @@ class BlueBossStage(BossStage):
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
-
         self.screen = screen
         self.hud = hud
 
@@ -325,8 +318,7 @@ class Stages(list[StageTypes]):
         return next_stage
 
 
-def maybe_spawn_extra_health(settings: "Settings",
-                             screen: "Surface",
+def maybe_spawn_extra_health(screen: "Surface",
                              stats: "Stats",
                              ship: "Ship",
                              health: "GroupSingle") -> bool:
@@ -338,7 +330,7 @@ def maybe_spawn_extra_health(settings: "Settings",
 
     random_number = random.choice(range(1, 6))
     if random_number == 1:
-        new_health = ShipHealth(settings, screen)
+        new_health = ShipHealth(screen)
         banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
         available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
                                    x not in banned_coordinates_x]
@@ -355,8 +347,7 @@ def maybe_spawn_extra_health(settings: "Settings",
     return health_spawned
 
 
-def maybe_spawn_extra_ammo(settings: "Settings",
-                           screen: "Surface",
+def maybe_spawn_extra_ammo(screen: "Surface",
                            stats: "Stats",
                            ship: "Ship",
                            ammo: "Group") -> bool:
@@ -367,7 +358,7 @@ def maybe_spawn_extra_ammo(settings: "Settings",
 
     random_number = random.choice(range(1, 6))
     if random_number == 1:
-        new_ammo = ShipAmmo(settings, screen)
+        new_ammo = ShipAmmo(screen)
         _banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
         _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
                                     x not in _banned_coordinates_x]

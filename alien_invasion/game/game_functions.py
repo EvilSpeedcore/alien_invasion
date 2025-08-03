@@ -99,7 +99,7 @@ def check_active_game_keydown_events(event: "Event",
     if event.key == pygame.K_SPACE:
         events.update(ActiveGameEvents(pause=True))
     if event.key == pygame.K_d:
-        use_ship_shield(settings, screen, stats, hud, ship, sprites.ship_shields)
+        use_ship_shield(screen, stats, hud, ship, sprites.ship_shields)
     return events
 
 
@@ -668,8 +668,7 @@ def update_alien_bullets(settings: "Settings",
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def use_ship_shield(settings: "Settings",
-                    screen: "Surface",
+def use_ship_shield(screen: "Surface",
                     stats: "Stats",
                     hud: "Hud",
                     ship: "Ship",
@@ -678,7 +677,7 @@ def use_ship_shield(settings: "Settings",
     if stats.shields_left:
         effect = pygame.mixer.Sound(Paths.effects() / "1.ogg")
         effect.play()
-        used_shield = ShipShield(settings, screen, ship)
+        used_shield = ShipShield(screen, ship)
         used_shields.add(used_shield)
         stats.shields_left -= 1
         hud.prep_shield()

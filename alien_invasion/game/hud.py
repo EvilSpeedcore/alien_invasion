@@ -42,7 +42,7 @@ class Hud:
         """Prepare to drawn ship health."""
         self.health: Group[ShipHealth] = Group()
         for ship_number in range(self.stats.ships_left):
-            ship_health = ShipHealth(self.settings, self.screen)
+            ship_health = ShipHealth(self.screen)
             ship_health.rect.x = 20 + ship_number * (ship_health.rect.width + 10)
             ship_health.rect.y = 28
             self.health.add(ship_health)
@@ -78,7 +78,7 @@ class Hud:
         """Prepare to drawn ship ammo."""
         self.ammo: Group[ShipAmmo] = Group()
         for ammo in range(self.stats.ammo):
-            ship_ammo = ShipAmmo(self.settings, self.screen)
+            ship_ammo = ShipAmmo(self.screen)
             ship_ammo.rect.x = 20 + ammo * (ship_ammo.rect.width + 10)
             ship_ammo.rect.y = 60
             self.ammo.add(ship_ammo)
@@ -87,7 +87,7 @@ class Hud:
         """Prepare to drawn ship shield."""
         self.shield: Group[ShipShield] = Group()
         for _ in range(self.stats.shields_left):
-            stats_shield = ShipShield(self.settings, self.screen, self.ship)
+            stats_shield = ShipShield(self.screen, self.ship)
             stats_shield.rect.x = 20
             stats_shield.rect.y = 750
             self.shield.add(stats_shield)
