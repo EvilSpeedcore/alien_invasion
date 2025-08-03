@@ -7,20 +7,22 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
+    from pygame.sprite import Group
     from pygame.surface import Surface
 
+    from game.bosses import BossTypes
     from game.settings import Settings
+    from game.ship import Ship
 
 
 class BossBullet(Sprite):
 
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, screen: "Surface", image: "Surface", rect: "Rect") -> None:
         super().__init__()
-        self.settings = settings
         self.screen = screen
-        self.screen_rect = self.screen.get_rect()
-        self.image = None
-        self.rect = None
+        self.image = image
+        self.rect = rect
 
     def draw_bullet(self) -> None:
         """Draw bullet on screen."""
@@ -29,12 +31,13 @@ class BossBullet(Sprite):
 
 class GreenBossBullet(BossBullet):
 
-    def __init__(self, settings, screen, boss) -> None:
-        super().__init__(settings, screen)
-        self.image = load_image("alien_bullet.png")
+    def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
+        image = load_image("alien_bullet.png")
+        rect = image.get_rect()
+        super().__init__(screen, image=image, rect=rect)
 
-        # Rectangular area of the image.
-        self.rect = self.image.get_rect()
+        # Rectangular area of the screen.
+        self.screen_rect = self.screen.get_rect()
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx
@@ -48,7 +51,7 @@ class GreenBossBullet(BossBullet):
         self.speed_factor = settings.green_boss_bullet_speed_factor
 
         # Angle of bullet direction.
-        self.shooting_angle_up = None
+        self.shooting_angle_up = 0
 
         # Counter of bounces bullets make, when they collide with screen borders.
         self.bounces = 0
@@ -63,13 +66,8 @@ class GreenBossBullet(BossBullet):
         self.rect.centery = self.y
         self.rect.centerx = self.x
 
-    def change_direction(self, boss_bullets) -> None:
-        """Change bullet direction after it reaching screen borders.
-
-        Args:
-            :param boss_bullets: Group of boss_bullets sprites.
-
-        """
+    def change_direction(self, boss_bullets: "Group") -> None:
+        """Change bullet direction after it reaching screen borders."""
         if self.bounces > 3:
             boss_bullets.remove(self)
         elif self.rect.top <= 0:
@@ -88,12 +86,13 @@ class GreenBossBullet(BossBullet):
 
 class RedBossBullet(BossBullet):
 
-    def __init__(self, settings, screen, boss) -> None:
-        super().__init__(settings, screen)
-        self.image = load_image("red_alien_bullet.png")
+    def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
+        image = load_image("red_alien_bullet.png")
+        rect = image.get_rect()
+        super().__init__(screen=screen, image=image, rect=rect)
 
-        # Rectangular area of the image.
-        self.rect = self.image.get_rect()
+        # Rectangular area of the screen.
+        self.screen_rect = self.screen.get_rect()
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx
@@ -104,9 +103,9 @@ class RedBossBullet(BossBullet):
         self.y = float(self.rect.centery)
 
         self.speed_factor = settings.red_boss_bullet_speed_factor
-        self.ship_position = None
-        self.shooting_angle_cos = None
-        self.shooting_angle = None
+        self.ship_position = ""
+        self.shooting_angle_cos = 0
+        self.shooting_angle = 0
         self.angles = (180, 360)
 
     def update(self) -> None:
@@ -168,7 +167,7 @@ class RedBossBullet(BossBullet):
             self.rect.centery = self.y
             self.rect.centerx = self.x
 
-    def define_angle(self, ship) -> None:
+    def define_angle(self, ship: "Ship") -> None:
         """Define shooting angle of bullet depending on ship current position.
 
         Args:
@@ -181,7 +180,7 @@ class RedBossBullet(BossBullet):
         self.shooting_angle_cos = ac / bc
         self.shooting_angle = fa.find_angle_with_cos(self.shooting_angle_cos)
 
-    def define_position(self, ship) -> None:
+    def define_position(self, ship: "Ship") -> None:
         """Define ship position relatively bullet position."""
         if self.x < ship.centerx and self.y < ship.centery:
             self.ship_position = "4"
@@ -211,12 +210,17 @@ class RedBossBullet(BossBullet):
 
 class BlueBossBullet(BossBullet):
 
-    def __init__(self, settings, screen, boss, angle) -> None:
-        super().__init__(settings, screen)
-        self.image = load_image("blue_alien_bullet.png")
+    def __init__(self,
+                 settings: "Settings",
+                 screen: "Surface",
+                 boss: "BossTypes",
+                 angle: int) -> None:
+        image = load_image("blue_alien_bullet.png")
+        rect = image.get_rect()
+        super().__init__(screen=screen, image=image, rect=rect)
 
-        # Rectangular area of the image.
-        self.rect = self.image.get_rect()
+        # Rectangular area of the screen.
+        self.screen_rect = self.screen.get_rect()
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx

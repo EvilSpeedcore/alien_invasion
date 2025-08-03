@@ -7,10 +7,7 @@ from game.images import load_image
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
-    from game.bosses import BlueBoss, GreenBoss, RedBoss
-
-
-type Bosses = BlueBoss | GreenBoss | RedBoss
+    from game.bosses import BossTypes
 
 
 class BossShield(Sprite):
@@ -29,7 +26,7 @@ class BossShield(Sprite):
 
 class GreenBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
         super().__init__(screen)
         self.boss = boss
 
@@ -51,7 +48,7 @@ class GreenBossShield(BossShield):
 
 class RedBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
         super().__init__(screen)
         self.boss = boss
 
@@ -80,7 +77,7 @@ class RedBossShield(BossShield):
 
 class BlueBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
         super().__init__(screen)
         self.boss = boss
 
