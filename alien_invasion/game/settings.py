@@ -1,6 +1,9 @@
+from argparse import Namespace
+
+
 class Settings:
 
-    def __init__(self) -> None:
+    def __init__(self, args: Namespace) -> None:
         # Screen settings.
         self.screen_width = 1200
         self.screen_height = 800
@@ -8,7 +11,7 @@ class Settings:
 
         # Ship settings.
         self.bullets_allowed = 1
-        self.ships_limit = 3
+        self.ships_limit = args.ships or 3
         self.ship_speed_factor = 0.75
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1

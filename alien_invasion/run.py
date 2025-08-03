@@ -1,4 +1,5 @@
 import logging
+from argparse import ArgumentParser, Namespace
 from time import sleep
 
 import pygame
@@ -14,13 +15,13 @@ from game.state import GameState, State
 from game.stats import Stats
 
 
-def run_game() -> None:
+def run_game(args: Namespace) -> None:
     logging.basicConfig(filename="app.log", level=logging.DEBUG)
 
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
     pygame.init()
-    settings = Settings()
+    settings = Settings(args)
     screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
@@ -58,7 +59,7 @@ def run_game() -> None:
 
             if menu_events.play:
                 gf.initialize_game_from_main_menu(settings, stats, hud, ship)
-                stages.select("1_1")
+                stages.select(args.stage or "1_1")
                 state.set(State.ACTIVE)
             if menu_events.quit:
                 gf.quit_game()
@@ -116,4 +117,8 @@ def run_game() -> None:
 
 
 if __name__ == "__main__":
-    run_game()
+    parser = ArgumentParser()
+    parser.add_argument("--stage", type=str)
+    parser.add_argument("--ships", type=int)
+    args = parser.parse_args()
+    run_game(args)
