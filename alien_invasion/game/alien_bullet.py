@@ -40,8 +40,8 @@ class AlienBullet(Sprite):
 
         self.speed_factor = settings.alien_bullet_speed_factor  # Bullet speed.
         self.ship_position = ""
-        self.shooting_angle_cos = None
-        self.shooting_angle = None
+        self.shooting_angle_cos = 0
+        self.shooting_angle = 0
         self.angles = (180, 360)
 
     def update(self) -> None:

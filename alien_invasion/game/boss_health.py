@@ -22,10 +22,10 @@ class BossHealth(Sprite):
         self.screen = screen
 
         # List, which will contain loaded images.
-        self.hp_images = []
+        self.hp_images: list[Surface] = []
 
         # List for names of images in directory.
-        self.hp_list = []
+        self.hp_list: list[str] = []
 
     def prepare_images(self) -> None:
         """Add loaded images to list."""
