@@ -10,6 +10,8 @@ from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
 
+type StagesType = "BaseStage" | "BossStage" | "Stage"
+
 
 if TYPE_CHECKING:
     from pygame.sprite import Group, GroupSingle
@@ -35,7 +37,7 @@ class BaseStage:
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(name={self.name})"
 
-    def __eq__(self, other) -> None:
+    def __eq__(self, other: object) -> bool:
         if isinstance(other, BaseStage):
             return self.name == other.name
         return False
@@ -125,6 +127,9 @@ class BossStage(BaseStage):
         self.ship.prepare_for_boss()
         rt.rotate_to_up(self.ship)
 
+    def transit(self) -> None:
+        super().transit()
+
     def teardown(self) -> None:
         super().teardown()
         self.sprites.boss_health.empty()
@@ -201,7 +206,7 @@ class BlueBossStage(BossStage):
         self.sprites.boss_black_holes.empty()
 
 
-class Stages(list[Stage | BossStage]):
+class Stages(list[StagesType]):
 
     def __init__(self,
                  settings: "Settings",
@@ -240,7 +245,7 @@ class Stages(list[Stage | BossStage]):
                               sprites=self.sprites,
                               name=name)
 
-    def create_red_boss_stage(self, name: str) -> GreenBossStage:
+    def create_red_boss_stage(self, name: str) -> RedBossStage:
         return RedBossStage(settings=self.settings,
                             screen=self.screen,
                             hud=self.hud,
@@ -248,7 +253,7 @@ class Stages(list[Stage | BossStage]):
                             sprites=self.sprites,
                             name=name)
 
-    def create_blue_boss_stage(self, name: str) -> None:
+    def create_blue_boss_stage(self, name: str) -> BlueBossStage:
         return BlueBossStage(screen=self.screen,
                              hud=self.hud,
                              ship=self.ship,
@@ -258,7 +263,7 @@ class Stages(list[Stage | BossStage]):
     def create_end_stage(self, name: str) -> BaseStage:
         return BaseStage(sprites=self.sprites, name=name)
 
-    def create_stages(self) -> list[Stage | BossStage]:
+    def create_stages(self) -> list[StagesType]:
         return [
             self.create_stage(name="1_1"),
             self.create_stage(name="1_2"),
@@ -275,7 +280,7 @@ class Stages(list[Stage | BossStage]):
             self.create_end_stage("end"),  # TODO: Fix. Not really a stage
         ]
 
-    def get_by_name(self, name: str) -> Stage | BossStage:
+    def get_by_name(self, name: str) -> StagesType:
         for stage in self:
             if stage.name == name:
                 return stage
