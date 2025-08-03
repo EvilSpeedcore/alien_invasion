@@ -1,15 +1,23 @@
 import math
+from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
 import game.find_angle as fa
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.alien import Alien
+    from game.settings import Settings
+    from game.ship import Ship
+
 
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
 
-    def __init__(self, settings, screen, alien) -> None:
+    def __init__(self, settings: "Settings", screen: "Surface", alien: "Alien") -> None:
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
@@ -31,7 +39,7 @@ class AlienBullet(Sprite):
         self.y = float(self.rect.centery)
 
         self.speed_factor = settings.alien_bullet_speed_factor  # Bullet speed.
-        self.ship_position = None
+        self.ship_position = ""
         self.shooting_angle_cos = None
         self.shooting_angle = None
         self.angles = (180, 360)
@@ -100,7 +108,7 @@ class AlienBullet(Sprite):
         """Draw alien bullet on screen."""
         self.screen.blit(self.image, self.rect)
 
-    def define_angle(self, ship) -> None:
+    def define_angle(self, ship: "Ship") -> None:
         """Define direction of bullet."""
         ab = abs(self.y - ship.centery)
         ac = abs(self.x - ship.centerx)
@@ -108,7 +116,7 @@ class AlienBullet(Sprite):
         self.shooting_angle_cos = ac / bc
         self.shooting_angle = fa.find_angle_with_cos(self.shooting_angle_cos)
 
-    def define_position(self, ship) -> None:
+    def define_position(self, ship: "Ship") -> None:
         """Define position of ship."""
         if self.x < ship.centerx and self.y < ship.centery:
             self.ship_position = "4"

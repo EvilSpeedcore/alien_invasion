@@ -1,6 +1,13 @@
+from typing import TYPE_CHECKING
+
 from pygame.sprite import Sprite
 
 from game.images import load_image
+
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.settings import Settings
 
 
 class BossHealth(Sprite):
@@ -8,7 +15,7 @@ class BossHealth(Sprite):
 
     IMAGE_DIR: str | None = None
 
-    def __init__(self, settings, screen) -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         """Initialize boss health."""
         super().__init__()
         self.settings = settings
@@ -31,7 +38,7 @@ class GreenBossHealth(BossHealth):
 
     IMAGE_DIR = "green_boss_hp"
 
-    def __init__(self, settings, screen) -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
@@ -54,7 +61,7 @@ class RedBossHealth(BossHealth):
 
     IMAGE_DIR = "red_boss_hp"
 
-    def __init__(self, settings, screen) -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
@@ -69,7 +76,7 @@ class BlueBossHealth(BossHealth):
 
     IMAGE_DIR = "blue_boss_hp"
 
-    def __init__(self, settings, screen) -> None:
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
         super().__init__(settings, screen)
         self.hp_list = ["1_hp.png", "2_hp.png", "3_hp.png", "4_hp.png", "5_hp.png",
                         "6_hp.png", "7_hp.png", "8_hp.png", "9_hp.png", "10_hp.png",
