@@ -134,7 +134,6 @@ class BossStage(BaseStage):
 class GreenBossStage(BossStage):
 
     def __init__(self,
-                 settings: "Settings",
                  screen: "Surface",
                  hud: "Hud",
                  ship: "Ship",
@@ -142,31 +141,18 @@ class GreenBossStage(BossStage):
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
 
-        self.settings = settings
         self.screen = screen
         self.hud = hud
 
     def setup(self) -> None:
         super().setup()
-        gf.create_green_boss(settings=self.settings,
-                             screen=self.screen,
+        gf.create_green_boss(screen=self.screen,
                              hud=self.hud,
                              bosses=self.sprites.bosses,
                              boss_shields=self.sprites.boss_shields)
 
 
-class RedBossStage(GreenBossStage):
-
-    def setup(self) -> None:
-        super(GreenBossStage, self).setup()
-        gf.create_red_boss(settings=self.settings,
-                           screen=self.screen,
-                           hud=self.hud,
-                           bosses=self.sprites.bosses,
-                           boss_shields=self.sprites.boss_shields)
-
-
-class BlueBossStage(BossStage):
+class RedBossStage(BossStage):
 
     def __init__(self,
                  settings: "Settings",
@@ -183,8 +169,29 @@ class BlueBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_blue_boss(settings=self.settings,
-                            screen=self.screen,
+        gf.create_red_boss(settings=self.settings,
+                           screen=self.screen,
+                           hud=self.hud,
+                           bosses=self.sprites.bosses,
+                           boss_shields=self.sprites.boss_shields)
+
+
+class BlueBossStage(BossStage):
+
+    def __init__(self,
+                 screen: "Surface",
+                 hud: "Hud",
+                 ship: "Ship",
+                 sprites: "Sprites",
+                 name: str) -> None:
+        super().__init__(ship=ship, sprites=sprites, name=name)
+
+        self.screen = screen
+        self.hud = hud
+
+    def setup(self) -> None:
+        super().setup()
+        gf.create_blue_boss(screen=self.screen,
                             hud=self.hud,
                             bosses=self.sprites.bosses,
                             boss_shields=self.sprites.boss_shields)
@@ -227,8 +234,7 @@ class Stages(list[Stage | BossStage]):
         return BossStage(ship=self.ship, sprites=self.sprites, name=name)
 
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
-        return GreenBossStage(settings=self.settings,
-                              screen=self.screen,
+        return GreenBossStage(screen=self.screen,
                               hud=self.hud,
                               ship=self.ship,
                               sprites=self.sprites,
@@ -243,8 +249,7 @@ class Stages(list[Stage | BossStage]):
                             name=name)
 
     def create_blue_boss_stage(self, name: str) -> None:
-        return BlueBossStage(settings=self.settings,
-                             screen=self.screen,
+        return BlueBossStage(screen=self.screen,
                              hud=self.hud,
                              ship=self.ship,
                              sprites=self.sprites,

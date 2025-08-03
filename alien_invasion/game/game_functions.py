@@ -514,7 +514,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
         sprites.ship_shields.empty()
 
         if stats.ships_left:
-            create_green_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
+            create_green_boss(screen, hud, sprites.bosses, sprites.boss_shields)
             ship.prepare_for_boss()
             sleep(settings.game_sleep_time)
 
@@ -558,7 +558,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
 
         if stats.ships_left:
             sprites.boss_black_holes.empty()
-            create_blue_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
+            create_blue_boss(screen, hud, sprites.bosses, sprites.boss_shields)
             ship.prepare_for_boss()
             sleep(settings.game_sleep_time)
 
@@ -691,28 +691,26 @@ def update_ship_shield(alien_bullets: "Group", used_shields: "Group", boss_bulle
     pygame.sprite.groupcollide(used_shields, boss_bullets, dokilla=False, dokillb=True)
 
 
-def create_green_boss(settings: "Settings",
-                      screen: "Surface",
+def create_green_boss(screen: "Surface",
                       hud: "Hud",
                       bosses: "GroupSingle",
                       boss_shields: "GroupSingle") -> None:
     """Create green boss."""
-    green_boss = GreenBoss(settings, screen)
-    boss_shield = GreenBossShield(settings, screen, green_boss)
+    green_boss = GreenBoss(screen)
+    boss_shield = GreenBossShield(screen, green_boss)
     hud.green_boss_hp = 19
     hud.prep_green_boss_health()
     bosses.add(green_boss)
     boss_shields.add(boss_shield)
 
 
-def create_blue_boss(settings: "Settings",
-                     screen: "Surface",
+def create_blue_boss(screen: "Surface",
                      hud: "Hud",
                      bosses: "GroupSingle",
                      boss_shields: "GroupSingle") -> None:
     """Create blue boss."""
-    blue_boss = BlueBoss(settings, screen)
-    boss_shield = BlueBossShield(settings, screen, blue_boss)
+    blue_boss = BlueBoss(screen)
+    boss_shield = BlueBossShield(screen, blue_boss)
     hud.blue_boss_hp = 19
     hud.prep_blue_boss_health()
     bosses.add(blue_boss)
@@ -744,7 +742,7 @@ def create_red_boss(settings: "Settings",
                     boss_shields: "Group") -> None:
     """Create red boss."""
     red_boss = RedBoss(settings, screen)
-    boss_shield = RedBossShield(settings, screen, red_boss)
+    boss_shield = RedBossShield(screen, red_boss)
     hud.red_boss_hp = 14
     hud.prep_red_boss_health()
     bosses.add(red_boss)

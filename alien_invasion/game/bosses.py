@@ -1,46 +1,45 @@
 import random
+from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
 
-class Boss(Sprite):
+    from game.settings import Settings
 
-    def __init__(self, settings, screen) -> None:
+
+class GreenBoss(Sprite):
+
+    def __init__(self, screen: "Surface") -> None:
         super().__init__()
-        self.settings = settings
-        self.screen = screen
-        self.screen_rect = screen.get_rect()
-
-
-class GreenBoss(Boss):
-
-    def __init__(self, settings, screen) -> None:
-        super().__init__(settings, screen)
         self.image = load_image("green_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
 
         # Set starting position of boss.
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.centery = self.screen_rect.centery
+        screen_rect = screen.get_rect()
+        self.rect.centerx = screen_rect.centerx
+        self.rect.centery = screen_rect.centery
 
         # Boss hit points.
         self.hit_points = 10
 
 
-class RedBoss(Boss):
+class RedBoss(Sprite):
 
-    def __init__(self, settings, screen) -> None:
-        super().__init__(settings, screen)
+    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+        super().__init__()
         self.image = load_image("red_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
 
         # Set starting position of boss.
+        self.screen_rect = screen.get_rect()
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
 
@@ -276,18 +275,19 @@ class RedBoss(Boss):
         self.random_direction = random.choice(range(1, 3))
 
 
-class BlueBoss(Boss):
+class BlueBoss(Sprite):
 
-    def __init__(self, settings, screen) -> None:
-        super().__init__(settings, screen)
+    def __init__(self, screen: "Surface") -> None:
+        super().__init__()
         self.image = load_image("blue_alien.png")
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
 
         # Set starting position of boss.
-        self.rect.centerx = self.screen_rect.centerx
-        self.rect.centery = self.screen_rect.centery
+        screen_rect = screen.get_rect()
+        self.rect.centerx = screen_rect.centerx
+        self.rect.centery = screen_rect.centery
 
         # Current position of bullet.
         self.x = float(self.rect.centerx)

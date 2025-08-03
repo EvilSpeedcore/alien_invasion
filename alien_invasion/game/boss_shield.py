@@ -1,15 +1,24 @@
+from typing import TYPE_CHECKING
+
 from pygame.sprite import Sprite
 
 from game.images import load_image
 
+if TYPE_CHECKING:
+    from pygame.surface import Surface
+
+    from game.bosses import BlueBoss, GreenBoss, RedBoss
+
+
+type Bosses = BlueBoss | GreenBoss | RedBoss
+
 
 class BossShield(Sprite):
 
-    def __init__(self, settings, screen, boss) -> None:
+    def __init__(self, screen: "Surface") -> None:
         super().__init__()
-        self.settings = settings
+
         self.screen = screen
-        self.boss = boss
         self.spawned_boss_shield = None
         self.rect = None
 
@@ -20,8 +29,10 @@ class BossShield(Sprite):
 
 class GreenBossShield(BossShield):
 
-    def __init__(self, settings, screen, boss) -> None:
-        super().__init__(settings, screen, boss)
+    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+        super().__init__(screen)
+        self.boss = boss
+
         self.spawned_boss_shield = load_image("spawned_green_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()
@@ -40,8 +51,10 @@ class GreenBossShield(BossShield):
 
 class RedBossShield(BossShield):
 
-    def __init__(self, settings, screen, boss) -> None:
-        super().__init__(settings, screen, boss)
+    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+        super().__init__(screen)
+        self.boss = boss
+
         self.spawned_boss_shield = load_image("spawned_red_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()
@@ -67,8 +80,10 @@ class RedBossShield(BossShield):
 
 class BlueBossShield(BossShield):
 
-    def __init__(self, settings, screen, boss) -> None:
-        super().__init__(settings, screen, boss)
+    def __init__(self, screen: "Surface", boss: Bosses) -> None:
+        super().__init__(screen)
+        self.boss = boss
+
         self.spawned_boss_shield = load_image("spawned_blue_boss_shield.png")
         # Get the rectangular area of the image.
         self.rect = self.spawned_boss_shield.get_rect()
