@@ -10,7 +10,7 @@ from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
 
-type StagesType = "BaseStage" | "BossStage" | "Stage"
+type StageTypes = "BossStage" | "Stage" | "EndStage"
 
 
 if TYPE_CHECKING:
@@ -206,7 +206,19 @@ class BlueBossStage(BossStage):
         self.sprites.boss_black_holes.empty()
 
 
-class Stages(list[StagesType]):
+class EndStage(BaseStage):
+
+    def setup(self) -> None:
+        pass
+
+    def transit(self) -> None:
+        pass
+
+    def teardown(self) -> None:
+        pass
+
+
+class Stages(list[StageTypes]):
 
     def __init__(self,
                  settings: "Settings",
@@ -224,7 +236,11 @@ class Stages(list[StagesType]):
 
         super().__init__(self.create_stages())
 
-        self.current = None
+        self.current: StageTypes = self[0]
+
+    @property
+    def end(self) -> bool:
+        return self.current == self[-1] if self.current else False
 
     def create_stage(self, name: str) -> Stage:
         return Stage(stages=self,
@@ -260,10 +276,10 @@ class Stages(list[StagesType]):
                              sprites=self.sprites,
                              name=name)
 
-    def create_end_stage(self, name: str) -> BaseStage:
-        return BaseStage(sprites=self.sprites, name=name)
+    def create_end_stage(self, name: str) -> EndStage:
+        return EndStage(sprites=self.sprites, name=name)
 
-    def create_stages(self) -> list[StagesType]:
+    def create_stages(self) -> list[StageTypes]:
         return [
             self.create_stage(name="1_1"),
             self.create_stage(name="1_2"),
@@ -277,10 +293,10 @@ class Stages(list[StagesType]):
             self.create_stage(name="3_2"),
             self.create_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
-            self.create_end_stage("end"),  # TODO: Fix. Not really a stage
+            self.create_end_stage("end"),
         ]
 
-    def get_by_name(self, name: str) -> StagesType:
+    def get_by_name(self, name: str) -> StageTypes:
         for stage in self:
             if stage.name == name:
                 return stage
@@ -298,7 +314,7 @@ class Stages(list[StagesType]):
         # TODO: Raise proper error
         raise AssertionError
 
-    def load_next_stage(self) -> Stage:
+    def load_next_stage(self) -> StageTypes:
         prev_stage = self.current
         next_stage = self[prev_stage.index + 1]
         self.current = next_stage
