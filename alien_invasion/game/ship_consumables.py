@@ -53,8 +53,8 @@ class ShipShield(ShipConsumable):
 
         self.rect.centerx = self.ship.centerx
         self.rect.centery = self.ship.centery
-        self.centerx = float(self.rect.centerx)
-        self.centery = float(self.rect.centery)
+        self.centerx = self.rect.centerx
+        self.centery = self.rect.centery
 
     def update(self) -> None:
         """Update position of used shield relatively ship position."""
@@ -64,27 +64,27 @@ class ShipShield(ShipConsumable):
             self.centery = self.ship.centery
             self.rect.centery = self.centery
         elif self.ship.current_ship_rotation in ("left", "right"):
-            self.centerx = self.ship.centerx - 8.0
+            self.centerx = self.ship.centerx - 8
             self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 3.0
+            self.centery = self.ship.centery + 3
             self.rect.centery = self.centery
         elif self.ship.current_ship_rotation == "up-left":
-            self.centerx = self.ship.centerx - 9.0
+            self.centerx = self.ship.centerx - 9
             self.rect.centerx = self.centerx
-            self.centery = self.ship.centery - 5.0
+            self.centery = self.ship.centery - 5
             self.rect.centery = self.centery
         elif self.ship.current_ship_rotation == "up-right":
             self.centerx = self.ship.centerx
             self.rect.centerx = self.centerx
-            self.centery = self.ship.centery - 5.0
+            self.centery = self.ship.centery - 5
             self.rect.centery = self.centery
         elif self.ship.current_ship_rotation == "down-left":
-            self.centerx = self.ship.centerx - 9.0
+            self.centerx = self.ship.centerx - 9
             self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 1.0
-            self.rect.centery = self.centery + 1.0
+            self.centery = self.ship.centery + 1
+            self.rect.centery = self.centery + 1
         elif self.ship.current_ship_rotation == "down-right":
-            self.centerx = self.ship.centerx - 1.0
+            self.centerx = self.ship.centerx - 1
             self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 2.0
+            self.centery = self.ship.centery + 2
             self.rect.centery = self.centery

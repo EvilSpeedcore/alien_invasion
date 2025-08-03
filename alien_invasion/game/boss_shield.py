@@ -35,8 +35,8 @@ class GreenBossShield(BossShield):
         self.rect.centery = boss.rect.centery
 
         # Save shield position.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         # Shield hit points.
         self.points = 10
@@ -54,8 +54,8 @@ class RedBossShield(BossShield):
         self.rect.centery = boss.rect.centery
 
         # Save shield position.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         # Shield hit points.
         self.points = 5
@@ -80,8 +80,8 @@ class BlueBossShield(BossShield):
         self.rect.centery = boss.rect.centery
 
         # Current shield position .
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         # Shield hit points.
         self.points = 10

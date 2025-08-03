@@ -42,8 +42,8 @@ class GreenBossBullet(BossBullet):
         self.rect.centery = boss.rect.centery
 
         # Current position of bullet.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         # Bullet speed.
         self.speed_factor = settings.green_boss_bullet_speed_factor
@@ -96,8 +96,8 @@ class RedBossBullet(BossBullet):
         self.rect.centery = boss.rect.centery
 
         # Current position of bullet.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         self.speed_factor = settings.red_boss_bullet_speed_factor
         self.ship_position = ""
@@ -223,8 +223,8 @@ class BlueBossBullet(BossBullet):
         self.rect.centery = boss.rect.centery
 
         # Current position of bullet.
-        self.x = float(self.rect.centerx)
-        self.y = float(self.rect.centery)
+        self.x = self.rect.centerx
+        self.y = self.rect.centery
 
         self.speed_factor = settings.blue_boss_bullet_speed_factor
         self.angle = angle
