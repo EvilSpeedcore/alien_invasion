@@ -65,7 +65,7 @@ ignore = [
 
 [tool.mypy]
 disallow_untyped_defs = true
-ignore_missing_imports = true  # (fix)
+mypy_path = "./alien_invasion"
 
 [tool.tox]
 requires = ["tox>=4.19"]
@@ -81,4 +81,4 @@ commands = [["isort", "."], ["ruff", "check"]]
 runner = "uv-venv-lock-runner"
 description = "run mypy"
 dependency_groups = ["type"]
-commands = [["mypy", "."]]
+commands = [["mypy", ".", "--explicit-package-bases"]]

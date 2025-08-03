@@ -23,10 +23,10 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.button import Button
-    from game.collections import Sprites
     from game.hud import Hud
     from game.settings import Settings
     from game.ship import Ship
+    from game.sprites import Sprites
     from game.stages import Stages
     from game.stats import Stats
 

@@ -8,9 +8,9 @@ from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
-    from game.collections import Sprites
     from game.settings import Settings
     from game.ship import Ship
+    from game.sprites import Sprites
     from game.stats import Stats
 
 

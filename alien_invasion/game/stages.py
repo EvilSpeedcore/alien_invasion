@@ -17,10 +17,10 @@ if TYPE_CHECKING:
     from pygame.sprite import Group, GroupSingle
     from pygame.surface import Surface
 
-    from game.collections import Sprites
     from game.hud import Hud
     from game.settings import Settings
     from game.ship import Ship
+    from game.sprites import Sprites
     from game.stats import Stats
 
 

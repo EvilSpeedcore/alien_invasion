@@ -6,10 +6,10 @@ import pygame
 
 import game.game_functions as gf
 from game.button import Button
-from game.collections import Sprites
 from game.hud import Hud
 from game.settings import Settings
 from game.ship import Ship
+from game.sprites import Sprites
 from game.stages import Stages
 from game.state import GameState, State
 from game.stats import Stats
