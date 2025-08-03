@@ -10,7 +10,7 @@ class Sprites:
     alien_bullets: Group          = field(default_factory=Group)
     # TODO: How to type GroupSingle?
     bosses: GroupSingle           = field(default_factory=GroupSingle)
-    boss_bullets: GroupSingle     = field(default_factory=Group)
+    boss_bullets: Group           = field(default_factory=Group)
     boss_shields: GroupSingle     = field(default_factory=GroupSingle)
     boss_health: GroupSingle      = field(default_factory=GroupSingle)
     boss_black_holes: GroupSingle = field(default_factory=GroupSingle)
