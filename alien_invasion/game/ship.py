@@ -1,5 +1,7 @@
 from typing import TYPE_CHECKING
 
+from pygame.sprite import Sprite
+
 from game.images import load_image
 
 if TYPE_CHECKING:
@@ -8,9 +10,10 @@ if TYPE_CHECKING:
     from game.settings import Settings
 
 
-class Ship:
+class Ship(Sprite):
 
     def __init__(self, settings: "Settings", screen: "Surface") -> None:
+        super().__init__()
         self.screen = screen
         self.settings = settings
 
