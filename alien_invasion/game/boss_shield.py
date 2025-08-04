@@ -7,7 +7,7 @@ from game.images import load_image
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
-    from game.bosses import BossTypes
+    from game.bosses import BlueBoss, GreenBoss, RedBoss
 
 
 class BossShield(Sprite):
@@ -25,7 +25,7 @@ class BossShield(Sprite):
 
 class GreenBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
+    def __init__(self, screen: "Surface", boss: "GreenBoss") -> None:
         shield = load_image("spawned_green_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss
@@ -44,7 +44,7 @@ class GreenBossShield(BossShield):
 
 class RedBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
+    def __init__(self, screen: "Surface", boss: "RedBoss") -> None:
         shield = load_image("spawned_red_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss
@@ -70,7 +70,7 @@ class RedBossShield(BossShield):
 
 class BlueBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "BossTypes") -> None:
+    def __init__(self, screen: "Surface", boss: "BlueBoss") -> None:
         shield = load_image("spawned_blue_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss
@@ -79,7 +79,7 @@ class BlueBossShield(BossShield):
         self.rect.centerx = boss.rect.centerx
         self.rect.centery = boss.rect.centery
 
-        # Current shield position .
+        # Current shield position.
         self.x = self.rect.centerx
         self.y = self.rect.centery
 

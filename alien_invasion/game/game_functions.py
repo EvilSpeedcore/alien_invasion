@@ -529,7 +529,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
         settings.time_elapsed_since_shield = 0
         settings.time_elapsed_since_boss_shield = 0
 
-        sprites.bullets.empty()
+        sprites.ship_bullets.empty()
         sprites.bosses.empty()
         sprites.boss_bullets.empty()
         sprites.ship_shields.empty()
@@ -738,7 +738,7 @@ def create_red_boss(settings: "Settings",
                     screen: "Surface",
                     hud: "Hud",
                     bosses: "GroupSingle",
-                    boss_shields: "Group") -> None:
+                    boss_shields: "GroupSingle") -> None:
     """Create red boss."""
     red_boss = RedBoss(settings, screen)
     boss_shield = RedBossShield(screen, red_boss)

@@ -14,7 +14,7 @@ type StageTypes = "BossStage" | "Stage" | "EndStage"
 
 
 if TYPE_CHECKING:
-    from pygame.sprite import Group, GroupSingle
+    from pygame.sprite import Group
     from pygame.surface import Surface
 
     from game.hud import Hud
@@ -321,7 +321,7 @@ class Stages(list[StageTypes]):
 def maybe_spawn_extra_health(screen: "Surface",
                              stats: "Stats",
                              ship: "Ship",
-                             health: "GroupSingle") -> bool:
+                             health: "Group") -> bool:
     # Flag, which shows the fact, that extra health not yet spawned.
     health_spawned = False
     # Extra health spawn.

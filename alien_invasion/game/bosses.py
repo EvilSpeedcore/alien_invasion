@@ -11,9 +11,6 @@ if TYPE_CHECKING:
     from game.settings import Settings
 
 
-type BossTypes = BlueBoss | GreenBoss | RedBoss
-
-
 class GreenBoss(Sprite):
 
     def __init__(self, screen: "Surface") -> None:

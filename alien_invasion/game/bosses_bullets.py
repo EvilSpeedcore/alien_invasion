@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pygame.sprite import Group
     from pygame.surface import Surface
 
-    from game.bosses import BossTypes
+    from game.bosses import BlueBoss, GreenBoss, RedBoss
     from game.settings import Settings
     from game.ship import Ship
 
@@ -30,7 +30,7 @@ class BossBullet(Sprite):
 
 class GreenBossBullet(BossBullet):
 
-    def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface", boss: "GreenBoss") -> None:
         image = load_image("alien_bullet.png")
         super().__init__(screen, image=image)
 
@@ -84,7 +84,7 @@ class GreenBossBullet(BossBullet):
 
 class RedBossBullet(BossBullet):
 
-    def __init__(self, settings: "Settings", screen: "Surface", boss: "BossTypes") -> None:
+    def __init__(self, settings: "Settings", screen: "Surface", boss: "RedBoss") -> None:
         image = load_image("red_alien_bullet.png")
         super().__init__(screen=screen, image=image)
 
@@ -210,7 +210,7 @@ class BlueBossBullet(BossBullet):
     def __init__(self,
                  settings: "Settings",
                  screen: "Surface",
-                 boss: "BossTypes",
+                 boss: "BlueBoss",
                  angle: int) -> None:
         image = load_image("blue_alien_bullet.png")
         super().__init__(screen=screen, image=image)
