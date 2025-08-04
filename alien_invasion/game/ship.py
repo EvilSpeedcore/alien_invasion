@@ -38,8 +38,8 @@ class Ship(Sprite):
         self.rect.centery = self.screen_rect.centery
 
         # Current ship position.
-        self.centerx = float(self.rect.centerx)
-        self.centery = float(self.rect.centery)
+        self.centerx = self.rect.centerx
+        self.centery = self.rect.centery
 
         self.set_default_movement()
 
@@ -72,6 +72,7 @@ class Ship(Sprite):
 
     def set_default_movement(self) -> None:
         # Flags to check if ship moving in one or another direction.
+        # TODO: Move all of this to init?
         self.moving_right = False
         self.moving_left = False
         self.moving_up = False
