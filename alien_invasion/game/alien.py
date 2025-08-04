@@ -1,4 +1,4 @@
-from random import choice
+import secrets
 from typing import TYPE_CHECKING
 
 import pygame
@@ -44,7 +44,7 @@ class Alien(Sprite):
         self.banned_coordinates = list(range(int(ship.centery - 200.0), int(ship.centery + 206.0)))
         self.available_coordinates = [y for y in range(60, self.screen_rect.bottom - self.rect.height) if
                                       y not in self.banned_coordinates]
-        self.rect.centery = choice(self.available_coordinates)
+        self.rect.centery = secrets.choice(self.available_coordinates)
 
         # Current position of alien.
         self.x = self.rect.centerx

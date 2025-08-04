@@ -1,4 +1,4 @@
-import random
+import secrets
 from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
@@ -57,8 +57,8 @@ class BlackHole(Sprite):
         self.banned_coordinates_y = list(set(self.banned_coordinates_y_1 + self.banned_coordinates_y_2))
         self.available_coordinates_y = [y for y in range(100, self.screen_rect.bottom - 100) if
                                         y not in self.banned_coordinates_y]
-        self.rect.centerx = random.choice(self.available_coordinates_x)
-        self.rect.centery = random.choice(self.available_coordinates_y)
+        self.rect.centerx = secrets.choice(self.available_coordinates_x)
+        self.rect.centery = secrets.choice(self.available_coordinates_y)
 
         # Black hole animation step counter.
         self.rt_image_number = 0

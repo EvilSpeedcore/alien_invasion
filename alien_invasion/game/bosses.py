@@ -1,4 +1,4 @@
-import random
+import secrets
 from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
@@ -264,15 +264,15 @@ class RedBoss(Sprite):
 
     def define_start_direction(self) -> None:
         """Define start direction of boss: left, right, top and bottom."""
-        self.random_direction = random.choice(range(1, 5))
+        self.random_direction = secrets.choice(range(1, 5))
 
     def define_direction_1(self) -> None:
         """Define direction of boss from following positions: midleft, midright, midtop and midbottom."""
-        self.random_direction = random.choice(range(1, 4))
+        self.random_direction = secrets.choice(range(1, 4))
 
     def define_direction_2(self) -> None:
         """Define follow up direction of boss from following positions: topright, bottomright, bottomleft, topleft."""
-        self.random_direction = random.choice(range(1, 3))
+        self.random_direction = secrets.choice(range(1, 3))
 
 
 class BlueBoss(Sprite):

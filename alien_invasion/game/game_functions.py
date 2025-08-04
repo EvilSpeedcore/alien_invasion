@@ -1,4 +1,4 @@
-import random
+import secrets
 import sys
 from dataclasses import dataclass
 from time import sleep
@@ -626,19 +626,19 @@ def fire_green_boss_bullets(settings: "Settings",
     if settings.time_elapsed_since_last_boss_bullet > settings.green_boss_bullet_timer:
         for boss in bosses:
             green_boss_bullet_1 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_1.shooting_angle_up = random.choice(range(180))
+            green_boss_bullet_1.shooting_angle_up = secrets.choice(range(180))
             green_boss_bullet_1.add(boss_bullets)
 
             green_boss_bullet_2 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_2.shooting_angle_up = random.choice(range(90, 270))
+            green_boss_bullet_2.shooting_angle_up = secrets.choice(range(90, 270))
             green_boss_bullet_2.add(boss_bullets)
 
             green_boss_bullet_3 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_3.shooting_angle_up = random.choice(range(180, 360))
+            green_boss_bullet_3.shooting_angle_up = secrets.choice(range(180, 360))
             green_boss_bullet_3.add(boss_bullets)
 
             green_boss_bullet_4 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_4.shooting_angle_up = random.choice(range(270, 450))
+            green_boss_bullet_4.shooting_angle_up = secrets.choice(range(270, 450))
             green_boss_bullet_4.add(boss_bullets)
 
         settings.time_elapsed_since_last_boss_bullet = 0
