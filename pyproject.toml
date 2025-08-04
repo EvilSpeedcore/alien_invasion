@@ -39,7 +39,6 @@ select = [
     "ALL"
 ]
 ignore = [
-    "ANN001",    # missing-type-annotation (fix)
     "D100",
     "D101",
     "D102",
