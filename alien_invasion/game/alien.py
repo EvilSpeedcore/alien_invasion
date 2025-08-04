@@ -51,10 +51,10 @@ class Alien(Sprite):
         self.y = self.rect.centery
 
         # Fleet creation time.
-        self.fleet_creation_time = None
+        self.fleet_creation_time = 0
 
         # Alien color.
-        self.alien_color = None
+        self.alien_color = ""
 
     def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens."""
@@ -63,14 +63,14 @@ class Alien(Sprite):
             aliens.remove(aliens_collision[0])
         else:
             if self.x > ship.centerx:
-                self.x -= self.settings.alien_speed_factor
+                self.x -= self.settings.alien_speed_factor  # type: ignore[assignment]
                 self.rect.centerx = self.x
             if self.y > ship.centery:
-                self.y -= self.settings.alien_speed_factor
+                self.y -= self.settings.alien_speed_factor  # type: ignore[assignment]
                 self.rect.centery = self.y
             if self.x < ship.centerx:
-                self.x += self.settings.alien_speed_factor
+                self.x += self.settings.alien_speed_factor  # type: ignore[assignment]
                 self.rect.centerx = self.x
             if self.y < ship.centery:
-                self.y += self.settings.alien_speed_factor
+                self.y += self.settings.alien_speed_factor  # type: ignore[assignment]
                 self.rect.centery = self.y

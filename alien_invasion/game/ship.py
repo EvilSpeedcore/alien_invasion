@@ -46,13 +46,13 @@ class Ship(Sprite):
     def update(self) -> None:
         """Update ship position depending on movement flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.centerx += self.settings.ship_speed_factor
+            self.centerx += self.settings.ship_speed_factor  # type: ignore[assignment]
         if self.moving_left and self.rect.left > 0:
-            self.centerx -= self.settings.ship_speed_factor
+            self.centerx -= self.settings.ship_speed_factor  # type: ignore[assignment]
         if self.moving_up and self.rect.top > self.screen_rect.top:
-            self.centery -= self.settings.ship_speed_factor
+            self.centery -= self.settings.ship_speed_factor  # type: ignore[assignment]
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.centery += self.settings.ship_speed_factor
+            self.centery += self.settings.ship_speed_factor  # type: ignore[assignment]
         self.rect.centerx = self.centerx
         self.rect.centery = self.centery
 
@@ -72,7 +72,6 @@ class Ship(Sprite):
 
     def set_default_movement(self) -> None:
         # Flags to check if ship moving in one or another direction.
-        # TODO: Move all of this to init?
         self.moving_right = False
         self.moving_left = False
         self.moving_up = False
@@ -82,4 +81,4 @@ class Ship(Sprite):
         self.current_ship_rotation = "up"
 
         # Direction in which ship currently moving.
-        self.desirable_ship_rotation = None
+        self.desirable_ship_rotation = ""

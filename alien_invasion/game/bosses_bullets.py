@@ -59,8 +59,8 @@ class GreenBossBullet(BossBullet):
         angle = self.shooting_angle_up
         bullet_move_x = self.speed_factor * math.cos(math.radians(angle))
         bullet_move_y = -self.speed_factor * math.sin(math.radians(angle))
-        self.x += bullet_move_x
-        self.y += bullet_move_y
+        self.x += bullet_move_x  # type: ignore[assignment]
+        self.y += bullet_move_y  # type: ignore[assignment]
         self.rect.centery = self.y
         self.rect.centerx = self.x
 
@@ -101,8 +101,8 @@ class RedBossBullet(BossBullet):
 
         self.speed_factor = settings.red_boss_bullet_speed_factor
         self.ship_position = ""
-        self.shooting_angle_cos = 0
-        self.shooting_angle = 0
+        self.shooting_angle_cos = 0.0
+        self.shooting_angle = 0.0
         self.angles = (180, 360)
 
     def update(self) -> None:
@@ -110,57 +110,57 @@ class RedBossBullet(BossBullet):
         if self.ship_position == "4":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[1] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[1] - self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "1":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "2":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] - self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "3":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] + self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] + self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "4-1":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[1] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[1] - self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "2-3":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] - self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         elif self.ship_position == "1-2":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
         if self.ship_position == "3-4":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] + self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] + self.shooting_angle))
-            self.x += bullet_move_x
-            self.y += bullet_move_y
+            self.x += bullet_move_x  # type: ignore[assignment]
+            self.y += bullet_move_y  # type: ignore[assignment]
             self.rect.centery = self.y
             self.rect.centerx = self.x
 
@@ -233,7 +233,7 @@ class BlueBossBullet(BossBullet):
         """Update bullet position."""
         bullet_move_x = self.speed_factor * math.cos(math.radians(self.angle))
         bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angle))
-        self.x += bullet_move_x
-        self.y += bullet_move_y
+        self.x += bullet_move_x  # type: ignore[assignment]
+        self.y += bullet_move_y  # type: ignore[assignment]
         self.rect.centery = self.y
         self.rect.centerx = self.x

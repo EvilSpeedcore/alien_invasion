@@ -64,32 +64,32 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.rect.top > self.screen_rect.top + 150:
                     self.y -= self.speed_factor
-                    self.rect.centery = self.y
-                    self.rect.centerx = self.x
+                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.rect.centerx = self.x  # type: ignore[assignment]
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
                     self.y += self.speed_factor
-                    self.rect.centery = self.y
-                    self.rect.centerx = self.x
+                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.rect.centerx = self.x  # type: ignore[assignment]
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 4:
                 if self.rect.right < self.screen_rect.right - 150:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midright"
                     self.define_direction_1()
@@ -97,24 +97,24 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.rect.top < self.screen_rect.centery:
                     self.y += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "topright"
                     self.define_direction_2()
@@ -122,24 +122,24 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.rect.left < self.screen_rect.centerx:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
                     self.y -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
                     self.y += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
@@ -147,24 +147,24 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.rect.bottom > self.screen_rect.centery:
                     self.y -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
@@ -172,24 +172,24 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.rect.right > self.screen_rect.centerx:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
                     self.y -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "topright"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
                     self.y += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
@@ -197,16 +197,16 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
                     self.y += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
@@ -214,16 +214,16 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
                     self.x += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
                     self.y -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
@@ -231,16 +231,16 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
                     self.y -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midright"
                     self.define_direction_1()
@@ -248,16 +248,16 @@ class RedBoss(Sprite):
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
                     self.x -= self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
                     self.y += self.speed_factor
-                    self.rect.centerx = self.x
-                    self.rect.centery = self.y
+                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.rect.centery = self.y  # type: ignore[assignment]
                 else:
                     self.position = "midright"
                     self.define_direction_1()

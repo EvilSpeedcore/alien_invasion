@@ -62,9 +62,9 @@ class RedBossShield(BossShield):
 
     def update(self) -> None:
         """Update position shield depending on boss current position."""
-        self.x = self.boss.x
+        self.x = self.boss.x  # type: ignore[assignment]
         self.rect.centerx = self.x
-        self.y = self.boss.y
+        self.y = self.boss.y  # type: ignore[assignment]
         self.rect.centery = self.y
 
 
@@ -88,7 +88,7 @@ class BlueBossShield(BossShield):
 
     def update(self) -> None:
         """Update position shield depending on boss current position."""
-        self.x = self.boss.x
+        self.x = self.boss.x  # type: ignore[assignment]
         self.rect.centerx = self.x
-        self.y = self.boss.y
+        self.y = self.boss.y  # type: ignore[assignment]
         self.rect.centery = self.y

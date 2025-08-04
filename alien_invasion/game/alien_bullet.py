@@ -40,8 +40,8 @@ class AlienBullet(Sprite):
 
         self.speed_factor = settings.alien_bullet_speed_factor  # Bullet speed.
         self.ship_position = ""
-        self.shooting_angle_cos = 0
-        self.shooting_angle = 0
+        self.shooting_angle_cos = 0.0
+        self.shooting_angle = 0.0
         self.angles = (180, 360)
 
     def update(self) -> None:
@@ -51,58 +51,57 @@ class AlienBullet(Sprite):
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[1] - self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            self.rect.centerx = self.x  # type: ignore[assignment]
+            self.rect.centery = self.y  # type: ignore[assignment]
         elif self.ship_position == "1":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            self.rect.centerx = self.x  # type: ignore[assignment]
+            self.rect.centery = self.y  # type: ignore[assignment]
         elif self.ship_position == "2":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] - self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            self.rect.centerx = self.x  # type: ignore[assignment]
+            self.rect.centery = self.y  # type: ignore[assignment]
         elif self.ship_position == "3":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] + self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] + self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centerx = self.x
-            self.rect.centery = self.y
+            self.rect.centerx = self.x  # type: ignore[assignment]
+            self.rect.centery = self.y  # type: ignore[assignment]
         elif self.ship_position == "4-1":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[1] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[1] - self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centery = self.y
-            self.rect.centerx = self.x
+            self.rect.centery = self.y  # type: ignore[assignment]
+            self.rect.centerx = self.x  # type: ignore[assignment]
         elif self.ship_position == "2-3":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] - self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] - self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centery = self.y
-            self.rect.centerx = self.x
-            self.rect.centerx = self.x
+            self.rect.centery = self.y  # type: ignore[assignment]
+            self.rect.centerx = self.x  # type: ignore[assignment]
         elif self.ship_position == "1-2":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centery = self.y
-            self.rect.centerx = self.x
+            self.rect.centery = self.y  # type: ignore[assignment]
+            self.rect.centerx = self.x  # type: ignore[assignment]
         elif self.ship_position == "3-4":
             bullet_move_x = self.speed_factor * math.cos(math.radians(self.angles[0] + self.shooting_angle))
             bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angles[0] + self.shooting_angle))
             self.x += bullet_move_x
             self.y += bullet_move_y
-            self.rect.centery = self.y
-            self.rect.centerx = self.x
+            self.rect.centery = self.y  # type: ignore[assignment]
+            self.rect.centerx = self.x  # type: ignore[assignment]
 
     def draw_alien_bullet(self) -> None:
         """Draw alien bullet on screen."""

@@ -70,40 +70,40 @@ class Bullet(Sprite):
         """
         if self.bullet_rotation == "up":
             self.y_up -= self.speed_factor
-            self.rect.centery = self.y_up
-            self.rect.centerx = self.x_up
+            self.rect.centery = self.y_up  # type: ignore[assignment]
+            self.rect.centerx = self.x_up  # type: ignore[assignment]
         if self.bullet_rotation == "right":
             self.x_right += self.speed_factor
-            self.rect.centerx = self.x_right
-            self.rect.centery = self.y_right
+            self.rect.centerx = self.x_right  # type: ignore[assignment]
+            self.rect.centery = self.y_right  # type: ignore[assignment]
         if self.bullet_rotation == "left":
             self.x_left -= self.speed_factor
-            self.rect.centerx = self.x_left
-            self.rect.centery = self.y_left
+            self.rect.centerx = self.x_left  # type: ignore[assignment]
+            self.rect.centery = self.y_left  # type: ignore[assignment]
         if self.bullet_rotation == "down":
             self.y_down += self.speed_factor
-            self.rect.centery = self.y_down
-            self.rect.centerx = self.x_down
+            self.rect.centery = self.y_down  # type: ignore[assignment]
+            self.rect.centerx = self.x_down  # type: ignore[assignment]
         if self.bullet_rotation == "up-right":
             self.y_up_right -= self.speed_factor
             self.x_up_right += self.speed_factor
-            self.rect.centery = self.y_up_right
-            self.rect.centerx = self.x_up_right
+            self.rect.centery = self.y_up_right  # type: ignore[assignment]
+            self.rect.centerx = self.x_up_right  # type: ignore[assignment]
         if self.bullet_rotation == "up-left":
             self.y_up_left -= self.speed_factor
             self.x_up_left -= self.speed_factor
-            self.rect.centery = self.y_up_left
-            self.rect.centerx = self.x_up_left
+            self.rect.centery = self.y_up_left  # type: ignore[assignment]
+            self.rect.centerx = self.x_up_left  # type: ignore[assignment]
         if self.bullet_rotation == "down-left":
             self.y_down_left += self.speed_factor
             self.x_down_left -= self.speed_factor
-            self.rect.centery = self.y_down_left
-            self.rect.centerx = self.x_down_left
+            self.rect.centery = self.y_down_left  # type: ignore[assignment]
+            self.rect.centerx = self.x_down_left  # type: ignore[assignment]
         if self.bullet_rotation == "down-right":
             self.y_down_right += self.speed_factor
             self.x_down_right += self.speed_factor
-            self.rect.centery = self.y_down_right
-            self.rect.centerx = self.x_down_right
+            self.rect.centery = self.y_down_right  # type: ignore[assignment]
+            self.rect.centerx = self.x_down_right  # type: ignore[assignment]
 
     def draw_bullet(self) -> None:
         """Draw bullet on screen depending on ship current rotation."""
