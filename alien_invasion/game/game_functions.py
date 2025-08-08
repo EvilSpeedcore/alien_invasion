@@ -442,7 +442,6 @@ def create_alien(settings: "Settings",
     alien_width = alien.rect.width
     alien.x = alien_width + 2 * alien_width * alien_number
     alien.rect.x = alien.x
-    alien.fleet_creation_time = round(pygame.time.get_ticks()/1000) + 1
     if stages.current.index < stages.get_by_name("green_boss").index:
         pass
     elif stages.current.index < stages.get_by_name("red_boss").index:

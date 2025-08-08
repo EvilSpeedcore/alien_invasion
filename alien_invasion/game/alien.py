@@ -50,9 +50,6 @@ class Alien(Sprite):
         self.x = self.rect.centerx
         self.y = self.rect.centery
 
-        # Fleet creation time.
-        self.fleet_creation_time = 0
-
     def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens."""
         aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
