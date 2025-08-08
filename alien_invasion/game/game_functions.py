@@ -444,13 +444,11 @@ def create_alien(settings: "Settings",
     alien.rect.x = alien.x
     alien.fleet_creation_time = round(pygame.time.get_ticks()/1000) + 1
     if stages.current.index < stages.get_by_name("green_boss").index:
-        alien.alien_color = "green"
+        pass
     elif stages.current.index < stages.get_by_name("red_boss").index:
         alien.image = alien.red_alien
-        alien.alien_color = "red"
     elif stages.current.index < stages.get_by_name("blue_boss").index:
         alien.image = alien.blue_alien
-        alien.alien_color = "blue"
     aliens.add(alien)
 
 
