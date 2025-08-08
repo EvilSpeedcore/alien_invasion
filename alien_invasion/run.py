@@ -80,7 +80,8 @@ def run_game(args: Namespace) -> None:
                 stages.load_next_stage()
 
             gf.update_ship_shield(sprites.alien_bullets, sprites.ship_shields, sprites.boss_bullets)
-            gf.update_bullets(settings, stages, hud, ship, sprites)
+            gf.update_bullets(ship, sprites)
+            stages.current.check_collision()
             gf.update_aliens(settings, screen, stats, stages, hud, ship, sprites)
             gf.fire_alien_bullets(settings, screen, stages, ship, dt, sprites)
             gf.update_alien_bullets(settings, screen, stats, stages, hud, ship, sprites)

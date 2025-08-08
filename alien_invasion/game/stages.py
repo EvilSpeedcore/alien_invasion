@@ -1,8 +1,11 @@
 import secrets
+import time
 from abc import abstractmethod
 from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
+
+import pygame
 
 import game.game_functions as gf
 import game.rotation as rt
@@ -52,6 +55,10 @@ class BaseStage:
     @abstractmethod
     def transit(self) -> None:
         log.debug("%s: transit()", self)
+
+    @abstractmethod
+    def check_collision(self) -> None:
+        pass
 
     @abstractmethod
     def teardown(self) -> None:
@@ -107,6 +114,9 @@ class Stage(BaseStage):
         if not isinstance(self.stages.current, BossStage):
             self.settings.increase_aliens_speed()
 
+    def check_collision(self) -> None:
+        pass
+
     def teardown(self) -> None:
         super().teardown()
         self.sprites.alien_bullets.empty()
@@ -126,6 +136,9 @@ class BossStage(BaseStage):
     def transit(self) -> None:
         super().transit()
 
+    def check_collision(self) -> None:
+        pass
+
     def teardown(self) -> None:
         super().teardown()
         self.sprites.boss_health.empty()
@@ -135,14 +148,34 @@ class BossStage(BaseStage):
 class GreenBossStage(BossStage):
 
     def __init__(self,
+                 settings: "Settings",
                  screen: "Surface",
                  hud: "Hud",
                  ship: "Ship",
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
+        self.settings = settings
         self.screen = screen
         self.hud = hud
+
+    def check_collision(self) -> None:
+        super().check_collision()
+        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
+                                                    self.sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
+        if not boss_collision:
+            return
+
+        boss = self.sprites.bosses.sprite
+        boss.hit_points -= 1
+        self.hud.green_boss_hp -= 1
+        self.hud.prep_green_boss_health()
+        if boss.hit_points < 1:
+            time.sleep(self.settings.game_sleep_time)
+            self.sprites.bosses.empty()
+            self.sprites.boss_bullets.empty()
 
     def setup(self) -> None:
         super().setup()
@@ -174,16 +207,35 @@ class RedBossStage(BossStage):
                            bosses=self.sprites.bosses,
                            boss_shields=self.sprites.boss_shields)
 
+    def check_collision(self) -> None:
+        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
+                                                    self.sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
+        if not boss_collision:
+            return
+
+        boss = self.sprites.bosses.sprite
+        boss.hit_points -= 1
+        self.hud.red_boss_hp -= 1
+        self.hud.prep_red_boss_health()
+        if boss.hit_points < 1:
+            time.sleep(self.settings.game_sleep_time)
+            self.sprites.bosses.empty()
+            self.sprites.boss_bullets.empty()
+
 
 class BlueBossStage(BossStage):
 
     def __init__(self,
+                 settings: "Settings",
                  screen: "Surface",
                  hud: "Hud",
                  ship: "Ship",
                  sprites: "Sprites",
                  name: str) -> None:
         super().__init__(ship=ship, sprites=sprites, name=name)
+        self.settings = settings
         self.screen = screen
         self.hud = hud
 
@@ -193,6 +245,23 @@ class BlueBossStage(BossStage):
                             hud=self.hud,
                             bosses=self.sprites.bosses,
                             boss_shields=self.sprites.boss_shields)
+
+    def check_collision(self) -> None:
+        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
+                                                    self.sprites.bosses,
+                                                    dokilla=True,
+                                                    dokillb=False)
+        if not boss_collision:
+            return
+
+        boss = self.sprites.bosses.sprite
+        boss.hit_points -= 1
+        self.hud.blue_boss_hp -= 1
+        self.hud.prep_blue_boss_health()
+        if boss.hit_points < 1:
+            time.sleep(self.settings.game_sleep_time)
+            self.sprites.bosses.empty()
+            self.sprites.boss_bullets.empty()
 
     def teardown(self) -> None:
         super().teardown()
@@ -205,6 +274,9 @@ class EndStage(BaseStage):
         pass
 
     def transit(self) -> None:
+        pass
+
+    def check_collision(self) -> None:
         pass
 
     def teardown(self) -> None:
@@ -248,7 +320,8 @@ class Stages(list[StageTypes]):
         return BossStage(ship=self.ship, sprites=self.sprites, name=name)
 
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
-        return GreenBossStage(screen=self.screen,
+        return GreenBossStage(settings=self.settings,
+                              screen=self.screen,
                               hud=self.hud,
                               ship=self.ship,
                               sprites=self.sprites,
@@ -263,7 +336,8 @@ class Stages(list[StageTypes]):
                             name=name)
 
     def create_blue_boss_stage(self, name: str) -> BlueBossStage:
-        return BlueBossStage(screen=self.screen,
+        return BlueBossStage(settings=self.settings,
+                             screen=self.screen,
                              hud=self.hud,
                              ship=self.ship,
                              sprites=self.sprites,

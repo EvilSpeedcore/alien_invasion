@@ -320,11 +320,7 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
-def update_bullets(settings: "Settings",
-                   stages: "Stages",
-                   hud: "Hud",
-                   ship: "Ship",
-                   sprites: "Sprites") -> None:
+def update_bullets(ship: "Ship", sprites: "Sprites") -> None:
     """Update ship bullets. Remove bullet from sprites, if it reach edge of the screen. Check for collisions."""
     bullets = sprites.ship_bullets
     bullets.update()
@@ -354,64 +350,8 @@ def update_bullets(settings: "Settings",
         if bullet.rect.top > ship.screen_rect.bottom or bullet.rect.left > ship.screen_rect.right:
             bullets.remove(bullet)
 
+    # TODO: Move to check_collision of regular stage?
     pygame.sprite.groupcollide(bullets, sprites.aliens, dokilla=True, dokillb=True)
-
-    # Check for collision between ship billet and boss.
-    check_bullet_boss_collision(settings, stages, hud, sprites)
-
-
-def check_bullet_boss_collision(settings: "Settings",
-                                stages: "Stages",
-                                hud: "Hud",
-                                sprites: "Sprites") -> None:
-    """Handle collisions between ship bullets and bosses."""
-    # Check collisions between ship and green boss.
-    if stages.current.name == "green_boss":
-        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
-                                                    sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if boss_collision:
-            for boss in sprites.bosses.sprites():
-                boss.hit_points -= 1
-                hud.green_boss_hp -= 1
-                hud.prep_green_boss_health()
-                if boss.hit_points < 1:
-                    sleep(settings.game_sleep_time)
-                    sprites.bosses.empty()
-                    sprites.boss_bullets.empty()
-
-    # Check collisions between ship and red boss.
-    elif stages.current.name == "red_boss":
-        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
-                                                    sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if boss_collision:
-            for boss in sprites.bosses.sprites():
-                boss.hit_points -= 1
-                hud.red_boss_hp -= 1
-                hud.prep_red_boss_health()
-                if boss.hit_points < 1:
-                    sleep(settings.game_sleep_time)
-                    sprites.bosses.empty()
-                    sprites.boss_bullets.empty()
-
-    # Check collisions between ship and blue boss.
-    elif stages.current.name == "blue_boss":
-        boss_collision = pygame.sprite.groupcollide(sprites.ship_bullets,
-                                                    sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if boss_collision:
-            for boss in sprites.bosses.sprites():
-                boss.hit_points -= 1
-                hud.blue_boss_hp -= 1
-                hud.prep_blue_boss_health()
-                if boss.hit_points < 1:
-                    sleep(settings.game_sleep_time)
-                    sprites.bosses.empty()
-                    sprites.boss_bullets.empty()
 
 
 def fire_bullet(settings: "Settings",
