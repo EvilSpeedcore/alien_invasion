@@ -191,6 +191,7 @@ class GreenBossStage(BossStage):
         if not boss_collision:
             return
 
+        # TODO: Repeating code
         boss = self.sprites.bosses.sprite
         boss.hit_points -= 1
         self.hud.green_boss_hp -= 1

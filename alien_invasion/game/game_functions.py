@@ -578,14 +578,14 @@ def update_alien_bullets(settings: "Settings",
     alien_bullets = sprites.alien_bullets
     alien_bullets.update()
     for alien_bullet in alien_bullets.copy():
-            if alien_bullet.rect.bottom <= 0:
-                alien_bullets.remove(alien_bullet)
-            if alien_bullet.rect.left > alien_bullet.screen_rect.right:
-                alien_bullets.remove(alien_bullet)
-            if alien_bullet.rect.right < alien_bullet.screen_rect.left:
-                alien_bullets.remove(alien_bullet)
-            if alien_bullet.rect.top > alien_bullet.screen_rect.bottom:
-                alien_bullets.remove(alien_bullet)
+        if alien_bullet.rect.bottom <= 0:
+            alien_bullets.remove(alien_bullet)
+        if alien_bullet.rect.left > alien_bullet.screen_rect.right:
+            alien_bullets.remove(alien_bullet)
+        if alien_bullet.rect.right < alien_bullet.screen_rect.left:
+            alien_bullets.remove(alien_bullet)
+        if alien_bullet.rect.top > alien_bullet.screen_rect.bottom:
+            alien_bullets.remove(alien_bullet)
     if pygame.sprite.spritecollideany(ship, alien_bullets):
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
@@ -603,11 +603,6 @@ def use_ship_shield(screen: "Surface",
         used_shields.add(used_shield)
         stats.shields_left -= 1
         hud.prep_shield()
-
-
-def update_ship_shield(ship_shields: "Group") -> None:
-    """Update ship shield position."""
-    ship_shields.update()
 
 
 def create_green_boss(screen: "Surface",
