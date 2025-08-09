@@ -320,38 +320,35 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
-def update_bullets(ship: "Ship", sprites: "Sprites") -> None:
-    """Update ship bullets. Remove bullet from sprites, if it reach edge of the screen. Check for collisions."""
-    bullets = sprites.ship_bullets
-    bullets.update()
-    for bullet in bullets.copy():
+def update_bullets(screen: "Surface", ship_bullets: "Group") -> None:
+    """Update ship bullets. Remove bullet from sprites, if it reaches edge of the screen."""
+    ship_bullets.update()
+    screen_rect = screen.get_rect()
+    for bullet in ship_bullets.copy():
         # For UP bullet direction.
         if bullet.rect.bottom <= 0:
-            bullets.remove(bullet)
+            ship_bullets.remove(bullet)
         # For RIGHT bullet direction.
-        if bullet.rect.left > ship.screen_rect.right:
-            bullets.remove(bullet)
+        if bullet.rect.left > screen_rect.right:
+            ship_bullets.remove(bullet)
         # For LEFT bullet direction.
-        if bullet.rect.right < ship.screen_rect.left:
-            bullets.remove(bullet)
+        if bullet.rect.right < screen_rect.left:
+            ship_bullets.remove(bullet)
         # For DOWN bullet direction.
-        if bullet.rect.top > ship.screen_rect.bottom:
-            bullets.remove(bullet)
+        if bullet.rect.top > screen_rect.bottom:
+            ship_bullets.remove(bullet)
         # For UP_RIGHT bullet direction.
-        if bullet.rect.bottom <= 0 or bullet.rect.left > ship.screen_rect.right:
-            bullets.remove(bullet)
+        if bullet.rect.bottom <= 0 or bullet.rect.left > screen_rect.right:
+            ship_bullets.remove(bullet)
         # For UP_LEFT bullet direction.
-        if bullet.rect.bottom <= 0 or bullet.rect.right < ship.screen_rect.left:
-            bullets.remove(bullet)
+        if bullet.rect.bottom <= 0 or bullet.rect.right < screen_rect.left:
+            ship_bullets.remove(bullet)
         # For DOWN_LEFT bullet direction.
-        if bullet.rect.top > ship.screen_rect.bottom or bullet.rect.right < ship.screen_rect.left:
-            bullets.remove(bullet)
+        if bullet.rect.top > screen_rect.bottom or bullet.rect.right < screen_rect.left:
+            ship_bullets.remove(bullet)
         # For DOWN_RIGHT bullet direction.
-        if bullet.rect.top > ship.screen_rect.bottom or bullet.rect.left > ship.screen_rect.right:
-            bullets.remove(bullet)
-
-    # TODO: Move to check_collision of regular stage?
-    pygame.sprite.groupcollide(bullets, sprites.aliens, dokilla=True, dokillb=True)
+        if bullet.rect.top > screen_rect.bottom or bullet.rect.left > screen_rect.right:
+            ship_bullets.remove(bullet)
 
 
 def fire_bullet(settings: "Settings",

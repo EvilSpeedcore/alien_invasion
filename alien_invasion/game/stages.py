@@ -115,6 +115,11 @@ class Stage(BaseStage):
             self.settings.increase_aliens_speed()
 
     def check_collision(self) -> None:
+        # Check for collisions between ship bullets and aliens
+        pygame.sprite.groupcollide(self.sprites.ship_bullets,
+                                   self.sprites.aliens,
+                                   dokilla=True, dokillb=True)
+
         # Check for collisions between ship shield and alien bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.alien_bullets,
