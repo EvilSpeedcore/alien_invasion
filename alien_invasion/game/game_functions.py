@@ -323,7 +323,6 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
 def update_bullets(screen: "Surface", ship_bullets: "Group") -> None:
     """Update ship bullets. Remove bullet from sprites, if it reaches edge of the screen."""
     ship_bullets.update()
-    # TODO: Do once?
     screen_rect = screen.get_rect()
     for bullet in ship_bullets.copy():
         # For UP bullet direction.
