@@ -160,6 +160,7 @@ class GreenBossStage(BossStage):
         self.hud = hud
 
     def check_collision(self) -> None:
+        # Chech collision between ship bullets and boss
         super().check_collision()
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
@@ -208,6 +209,7 @@ class RedBossStage(BossStage):
                            boss_shields=self.sprites.boss_shields)
 
     def check_collision(self) -> None:
+        # Chech collision between ship bullets and boss
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,
@@ -247,6 +249,7 @@ class BlueBossStage(BossStage):
                             boss_shields=self.sprites.boss_shields)
 
     def check_collision(self) -> None:
+        # Chech collision between ship bullets and boss
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,

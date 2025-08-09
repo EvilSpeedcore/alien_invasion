@@ -287,7 +287,7 @@ def update_screen(settings: "Settings",
         used_shield.draw_item()
 
     #  Display boss shield on hud.
-    for boss_shield in sprites.boss_shields:
+    if boss_shield := sprites.boss_shields.sprite:
         if boss_shield.points > 0:
             boss_shield.draw_boss_shield()
             boss_shield.update()
@@ -302,7 +302,7 @@ def update_screen(settings: "Settings",
         ammo_sprite.draw_item()
     sprites.aliens.draw(screen)
     sprites.bosses.draw(screen)
-    for black_hole in sprites.boss_black_holes.sprites():
+    if black_hole := sprites.boss_black_holes.sprite:
         black_hole.draw_black_hole()
 
     # Update screen.
@@ -434,6 +434,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
                            ship: "Ship",
                            sprites: "Sprites") -> None:
     """Handle collisions between ship and bosses."""
+    # TODO: Move this logic to check collision
     # Handle collisions between ship and green boss.
     if stages.current.name == "green_boss":
         stats.ships_left -= 1
@@ -818,10 +819,9 @@ def update_green_boss(settings: "Settings",
 def update_green_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
     """Update hit points of green boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        for boss_shield in boss_shields:
-            boss_shield.points -= 1
-            hud.green_boss_hp -= 1
-            hud.prep_green_boss_health()
+        boss_shields.sprite.points -= 1
+        hud.green_boss_hp -= 1
+        hud.prep_green_boss_health()
 
 
 def update_red_boss(settings: "Settings",
@@ -853,19 +853,17 @@ def update_blue_boss(settings: "Settings",
 def update_red_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
     """Update hit points of red boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        for boss_shield in boss_shields:
-            boss_shield.points -= 1
-            hud.red_boss_hp -= 1
-            hud.prep_red_boss_health()
+        boss_shields.sprite.points -= 1
+        hud.red_boss_hp -= 1
+        hud.prep_red_boss_health()
 
 
 def update_blue_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
     """Update hit points of blue boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        for boss_shield in boss_shields:
-            boss_shield.points -= 1
-            hud.blue_boss_hp -= 1
-            hud.prep_blue_boss_health()
+        boss_shields.sprite.points -= 1
+        hud.blue_boss_hp -= 1
+        hud.prep_blue_boss_health()
 
 
 def create_black_hole(settings: "Settings",

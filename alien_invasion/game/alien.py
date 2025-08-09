@@ -32,6 +32,7 @@ class Alien(Sprite):
         self.settings = settings
 
         # Image load of different aliens.
+        # TODO: Split by color
         self.image = load_image("green_alien.png")
         self.red_alien = load_image("red_alien.png")
         self.blue_alien = load_image("blue_alien.png")

@@ -23,6 +23,7 @@ class AlienBullet(Sprite):
         self.screen_rect = self.screen.get_rect()
 
         # Image load for different bullets.
+        # TODO: Split by color
         self.image = load_image("alien_bullet.png")
         self.red_bullet = load_image("red_alien_bullet.png")
         self.blue_bullet = load_image("blue_alien_bullet.png")
