@@ -79,7 +79,7 @@ def run_game(args: Namespace) -> None:
             if not (sprites.aliens or sprites.bosses) and stats.ships_left:
                 stages.load_next_stage()
 
-            gf.update_ship_shield(sprites.alien_bullets, sprites.ship_shields, sprites.boss_bullets)
+            gf.update_ship_shield(sprites.ship_shields)
             gf.update_bullets(ship, sprites)
             stages.current.check_collision()
             gf.update_aliens(settings, screen, stats, stages, hud, ship, sprites)

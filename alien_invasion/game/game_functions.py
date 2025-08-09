@@ -621,11 +621,9 @@ def use_ship_shield(screen: "Surface",
         hud.prep_shield()
 
 
-def update_ship_shield(alien_bullets: "Group", used_shields: "Group", boss_bullets: "Group") -> None:
-    """Update ship shield position. Check for collisions between shield and bullet."""
-    used_shields.update()
-    pygame.sprite.groupcollide(used_shields, alien_bullets, dokilla=False, dokillb=True)
-    pygame.sprite.groupcollide(used_shields, boss_bullets, dokilla=False, dokillb=True)
+def update_ship_shield(ship_shields: "Group") -> None:
+    """Update ship shield position."""
+    ship_shields.update()
 
 
 def create_green_boss(screen: "Surface",

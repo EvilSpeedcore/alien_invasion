@@ -115,7 +115,10 @@ class Stage(BaseStage):
             self.settings.increase_aliens_speed()
 
     def check_collision(self) -> None:
-        pass
+        # Check for collisions between ship shield and alien bullets
+        pygame.sprite.groupcollide(self.sprites.ship_shields,
+                                   self.sprites.alien_bullets,
+                                   dokilla=False, dokillb=True)
 
     def teardown(self) -> None:
         super().teardown()
@@ -160,8 +163,12 @@ class GreenBossStage(BossStage):
         self.hud = hud
 
     def check_collision(self) -> None:
+        # Check for collisions between ship shield and boss bullets
+        pygame.sprite.groupcollide(self.sprites.ship_shields,
+                                   self.sprites.boss_bullets,
+                                   dokilla=False, dokillb=True)
+
         # Chech collision between ship bullets and boss
-        super().check_collision()
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,
