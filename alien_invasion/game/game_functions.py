@@ -320,7 +320,7 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
-def update_bullets(screen: "Surface", ship_bullets: "Group") -> None:
+def update_bullets(screen: "Surface", ship_bullets: "Group[Bullet]") -> None:
     """Update ship bullets. Remove bullet from sprites, if it reaches edge of the screen."""
     ship_bullets.update()
     screen_rect = screen.get_rect()
@@ -494,7 +494,6 @@ def update_aliens(settings: "Settings",
                   ship: "Ship",
                   sprites: "Sprites") -> None:
     """Update aliens position in fleet."""
-    sprites.aliens.update(sprites.aliens, ship)
     if pygame.sprite.spritecollideany(ship, sprites.aliens):
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 

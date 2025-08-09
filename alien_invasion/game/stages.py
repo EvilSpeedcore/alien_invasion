@@ -61,6 +61,10 @@ class BaseStage:
         pass
 
     @abstractmethod
+    def update(self) -> None:
+        pass
+
+    @abstractmethod
     def teardown(self) -> None:
         log.debug("%s: teardown()", self)
         self.sprites.ship_bullets.empty()
@@ -125,6 +129,9 @@ class Stage(BaseStage):
                                    self.sprites.alien_bullets,
                                    dokilla=False, dokillb=True)
 
+    def update(self) -> None:
+        self.sprites.aliens.update(self.sprites.aliens, self.ship)
+
     def teardown(self) -> None:
         super().teardown()
         self.sprites.alien_bullets.empty()
@@ -145,6 +152,12 @@ class BossStage(BaseStage):
         super().transit()
 
     def check_collision(self) -> None:
+        # Check for collisions between ship shield and boss bullets
+        pygame.sprite.groupcollide(self.sprites.ship_shields,
+                                   self.sprites.boss_bullets,
+                                   dokilla=False, dokillb=True)
+
+    def update(self) -> None:
         pass
 
     def teardown(self) -> None:
@@ -168,12 +181,9 @@ class GreenBossStage(BossStage):
         self.hud = hud
 
     def check_collision(self) -> None:
-        # Check for collisions between ship shield and boss bullets
-        pygame.sprite.groupcollide(self.sprites.ship_shields,
-                                   self.sprites.boss_bullets,
-                                   dokilla=False, dokillb=True)
-
-        # Chech collision between ship bullets and boss
+        super().check_collision()
+        # TODO: Wrap and move to gf?
+        # Check collision between ship bullets and boss
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,
@@ -221,7 +231,9 @@ class RedBossStage(BossStage):
                            boss_shields=self.sprites.boss_shields)
 
     def check_collision(self) -> None:
-        # Chech collision between ship bullets and boss
+        super().check_collision()
+        # TODO: Wrap and move to gf?
+        # Check collision between ship bullets and boss
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,
@@ -261,7 +273,9 @@ class BlueBossStage(BossStage):
                             boss_shields=self.sprites.boss_shields)
 
     def check_collision(self) -> None:
-        # Chech collision between ship bullets and boss
+        super().check_collision()
+        # TODO: Wrap and move to gf?
+        # Check collision between ship bullets and boss
         boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                                     self.sprites.bosses,
                                                     dokilla=True,
@@ -295,6 +309,9 @@ class EndStage(BaseStage):
         pass
 
     def teardown(self) -> None:
+        pass
+
+    def update(self) -> None:
         pass
 
 
@@ -375,7 +392,7 @@ class Stages(list[StageTypes]):
             self.create_stage(name="3_2"),
             self.create_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
-            self.create_end_stage("end"),
+            self.create_end_stage("end"),  # TODO: Not a stage
         ]
 
     def get_by_name(self, name: str) -> StageTypes:
@@ -411,6 +428,7 @@ def maybe_spawn_extra_health(screen: "Surface",
                              stats: "Stats",
                              ship: "Ship",
                              health: "Group") -> bool:
+    # TODO: Move to gf?
     # Flag, which shows the fact, that extra health not yet spawned.
     health_spawned = False
     # Extra health spawn.
@@ -440,6 +458,7 @@ def maybe_spawn_extra_ammo(screen: "Surface",
                            stats: "Stats",
                            ship: "Ship",
                            ammo: "Group") -> bool:
+    # TODO: Move to gf?
     # Extra ammo spawn.
     ammo_spawned = False
     if stats.ammo >= 3:
