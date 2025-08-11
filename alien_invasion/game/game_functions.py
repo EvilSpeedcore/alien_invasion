@@ -636,12 +636,14 @@ def create_blue_boss(screen: "Surface",
     boss_shields.add(boss_shield)
 
 
-def update_green_boss_bullets(sprites: "Sprites") -> None:
+def update_green_boss_bullets(boss_bullets: "Group") -> None:
     """Update green boss bullets position."""
-    # TODO: Need to remove bullets after some time
-    sprites.boss_bullets.update()
-    for green_boss_bullet in sprites.boss_bullets.copy():
-        green_boss_bullet.change_direction(sprites.boss_bullets)
+    boss_bullets.update()
+    for green_boss_bullet in boss_bullets.copy():
+        if green_boss_bullet.bounces > 3:
+            boss_bullets.remove(green_boss_bullet)
+        else:
+            green_boss_bullet.change_direction()
 
 
 def create_red_boss(settings: "Settings",

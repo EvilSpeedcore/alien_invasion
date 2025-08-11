@@ -64,11 +64,9 @@ class GreenBossBullet(BossBullet):
         self.rect.centery = self.y
         self.rect.centerx = self.x
 
-    def change_direction(self, boss_bullets: "Group") -> None:
+    def change_direction(self) -> None:
         """Change bullet direction after it reaching screen borders."""
-        if self.bounces > 3:
-            boss_bullets.remove(self)
-        elif self.rect.top <= 0:
+        if self.rect.top <= 0:
             self.shooting_angle_up = 360 - self.shooting_angle_up
             self.bounces += 1
         elif self.rect.right > self.screen_rect.right:
