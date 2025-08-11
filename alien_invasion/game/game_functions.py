@@ -486,14 +486,14 @@ def ship_hit_at_boss_stage(settings: "Settings",
             sleep(settings.game_sleep_time)
 
 
-def update_aliens(settings: "Settings",
-                  screen: "Surface",
-                  stats: "Stats",
-                  stages: "Stages",
-                  hud: "Hud",
-                  ship: "Ship",
-                  sprites: "Sprites") -> None:
-    """Update aliens position in fleet."""
+def check_ship_aliens_collision(settings: "Settings",
+                                screen: "Surface",
+                                stats: "Stats",
+                                stages: "Stages",
+                                hud: "Hud",
+                                ship: "Ship",
+                                sprites: "Sprites") -> None:
+    """Check collision between ship and aliens."""
     if pygame.sprite.spritecollideany(ship, sprites.aliens):
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 

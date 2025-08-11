@@ -79,6 +79,7 @@ class Stage(BaseStage):
                  stages: "Stages",
                  settings: "Settings",
                  screen: "Surface",
+                 hud: "Hud",
                  stats: "Stats",
                  ship: "Ship",
                  sprites: "Sprites",
@@ -87,6 +88,7 @@ class Stage(BaseStage):
         self.stages = stages
         self.settings = settings
         self.screen = screen
+        self.hud = hud
         self.stats = stats
         self.ship = ship
 
@@ -123,6 +125,15 @@ class Stage(BaseStage):
         pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                    self.sprites.aliens,
                                    dokilla=True, dokillb=True)
+
+        # Check for collision between ship and aliens
+        gf.check_ship_aliens_collision(settings=self.settings,
+                                       screen=self.screen,
+                                       stats=self.stats,
+                                       stages=self.stages,
+                                       hud=self.hud,
+                                       ship=self.ship,
+                                       sprites=self.sprites)
 
         # Check for collisions between ship shield and alien bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
@@ -344,6 +355,7 @@ class Stages(list[StageTypes]):
         return Stage(stages=self,
                      settings=self.settings,
                      screen=self.screen,
+                     hud=self.hud,
                      stats=self.stats,
                      ship=self.ship,
                      sprites=self.sprites,
