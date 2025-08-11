@@ -7,7 +7,6 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.sprite import Group
     from pygame.surface import Surface
 
     from game.bosses import BlueBoss, GreenBoss, RedBoss

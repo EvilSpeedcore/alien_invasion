@@ -86,16 +86,14 @@ def run_game(args: Namespace) -> None:
             gf.fire_alien_bullets(settings, screen, stages, ship, dt, sprites)
             if stages.current.name == "green_boss":
                 gf.fire_green_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
-                gf.update_green_boss_bullets(sprites)
+                gf.update_green_boss_bullets(sprites.boss_bullets)
                 gf.update_green_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
             elif stages.current.name == "red_boss":
                 gf.update_red_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
                 gf.fire_red_boss_bullets(settings, screen, ship, dt, sprites.bosses, sprites.boss_bullets)
-                gf.update_bullets(screen, sprites.boss_bullets)
             elif stages.current.name == "blue_boss":
                 gf.update_blue_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
                 gf.fire_blue_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
-                gf.update_bullets(screen, sprites.boss_bullets)
                 gf.create_black_hole(settings, screen, ship, dt, sprites.boss_black_holes)
                 gf.update_black_hole(settings, screen, stats, stages, hud, ship, dt, sprites)
 

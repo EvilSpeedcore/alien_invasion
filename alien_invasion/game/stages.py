@@ -279,6 +279,7 @@ class RedBossStage(BossStage):
 
     def update(self) -> None:
         self.sprites.bosses.sprite.update()
+        gf.update_bullets(self.screen, self.sprites.boss_bullets)
 
 
 class BlueBossStage(BossStage):
@@ -309,6 +310,9 @@ class BlueBossStage(BossStage):
             time.sleep(self.settings.game_sleep_time)
             self.sprites.bosses.empty()
             self.sprites.boss_bullets.empty()
+
+    def update(self) -> None:
+        gf.update_bullets(self.screen, self.sprites.boss_bullets)
 
     def teardown(self) -> None:
         super().teardown()
