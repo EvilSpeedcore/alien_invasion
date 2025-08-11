@@ -320,23 +320,24 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
+def check_bullets_leave_screen(screen: "Surface", bullets: "Group") -> None:
+    bullets.update()
+    screen_rect = screen.get_rect()
+    for bullet in bullets.copy():
+        if bullet.rect.bottom <= 0:  # UP
+            bullets.remove(bullet)
+        if bullet.rect.left > screen_rect.right:  # RIGHT
+            bullets.remove(bullet)
+        if bullet.rect.right < screen_rect.left:  # LEFT
+            bullets.remove(bullet)
+        if bullet.rect.top > screen_rect.bottom:  # BOTTOM
+            bullets.remove(bullet)
+
+
 def update_bullets(screen: "Surface", ship_bullets: "Group[Bullet]") -> None:
     """Update ship bullets. Remove bullet from sprites, if it reaches edge of the screen."""
     ship_bullets.update()
-    screen_rect = screen.get_rect()
-    for bullet in ship_bullets.copy():
-        # For UP bullet direction.
-        if bullet.rect.bottom <= 0:
-            ship_bullets.remove(bullet)
-        # For RIGHT bullet direction.
-        if bullet.rect.left > screen_rect.right:
-            ship_bullets.remove(bullet)
-        # For LEFT bullet direction.
-        if bullet.rect.right < screen_rect.left:
-            ship_bullets.remove(bullet)
-        # For DOWN bullet direction.
-        if bullet.rect.top > screen_rect.bottom:
-            ship_bullets.remove(bullet)
+    check_bullets_leave_screen(screen, ship_bullets)
 
 
 def fire_bullet(settings: "Settings",
@@ -579,18 +580,10 @@ def fire_green_boss_bullets(settings: "Settings",
         settings.green_boss_bullet_timer = 1650
 
 
-def update_alien_bullets(alien_bullets: "Group[AlienBullet]") -> None:
+def update_alien_bullets(screen: "Surface", alien_bullets: "Group[AlienBullet]") -> None:
     """Update alien bullets position."""
     alien_bullets.update()
-    for alien_bullet in alien_bullets.copy():
-        if alien_bullet.rect.bottom <= 0:
-            alien_bullets.remove(alien_bullet)
-        if alien_bullet.rect.left > alien_bullet.screen_rect.right:
-            alien_bullets.remove(alien_bullet)
-        if alien_bullet.rect.right < alien_bullet.screen_rect.left:
-            alien_bullets.remove(alien_bullet)
-        if alien_bullet.rect.top > alien_bullet.screen_rect.bottom:
-            alien_bullets.remove(alien_bullet)
+    check_bullets_leave_screen(screen, alien_bullets)
 
 
 def use_ship_shield(screen: "Surface",
@@ -642,6 +635,7 @@ def update_green_boss_bullets(settings: "Settings",
                               ship: "Ship",
                               sprites: "Sprites") -> None:
     """Update green boss bullets position. Check for collisions between ship and boss bullets."""
+    # TODO: Need to remove bullets after some time
     boss_bullets = sprites.boss_bullets
     boss_bullets.update()
 
@@ -746,18 +740,9 @@ def update_red_boss_bullets(settings: "Settings",
                             ship: "Ship",
                             sprites: "Sprites") -> None:
     """Update red boss bullets position. Check for collisions between ship and boss bullets."""
-    boss_bullets = sprites.boss_bullets
-    boss_bullets.update()
-    for red_boss_bullet in boss_bullets.copy():
-            if red_boss_bullet.rect.bottom <= 0:
-                boss_bullets.remove(red_boss_bullet)
-            if red_boss_bullet.rect.left > red_boss_bullet.screen_rect.right:
-                boss_bullets.remove(red_boss_bullet)
-            if red_boss_bullet.rect.right < red_boss_bullet.screen_rect.left:
-                boss_bullets.remove(red_boss_bullet)
-            if red_boss_bullet.rect.top > red_boss_bullet.screen_rect.bottom:
-                boss_bullets.remove(red_boss_bullet)
-    if pygame.sprite.spritecollideany(ship, boss_bullets):
+    sprites.boss_bullets.update()
+    check_bullets_leave_screen(screen, sprites.boss_bullets)
+    if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
@@ -769,18 +754,9 @@ def update_blue_boss_bullets(settings: "Settings",
                              ship: "Ship",
                              sprites: "Sprites") -> None:
     """Update blue boss bullets position. Check for collisions between ship and boss bullets."""
-    boss_bullets = sprites.boss_bullets
-    boss_bullets.update()
-    for blue_boss_bullet in boss_bullets.copy():
-            if blue_boss_bullet.rect.bottom <= 0:
-                boss_bullets.remove(blue_boss_bullet)
-            if blue_boss_bullet.rect.left > blue_boss_bullet.screen_rect.right:
-                boss_bullets.remove(blue_boss_bullet)
-            if blue_boss_bullet.rect.right < blue_boss_bullet.screen_rect.left:
-                boss_bullets.remove(blue_boss_bullet)
-            if blue_boss_bullet.rect.top > blue_boss_bullet.screen_rect.bottom:
-                boss_bullets.remove(blue_boss_bullet)
-    if pygame.sprite.spritecollideany(ship, boss_bullets):
+    sprites.boss_bullets.update()
+    check_bullets_leave_screen(screen, sprites.boss_bullets)
+    if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
