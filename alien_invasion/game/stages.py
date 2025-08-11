@@ -121,12 +121,12 @@ class Stage(BaseStage):
             self.settings.increase_aliens_speed()
 
     def check_collision(self) -> None:
-        # Check for collisions between ship bullets and aliens
+        # Ship bullets and aliens
         pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                    self.sprites.aliens,
                                    dokilla=True, dokillb=True)
 
-        # Check for collision between ship and aliens
+        # Ship and aliens
         gf.check_ship_aliens_collision(settings=self.settings,
                                        screen=self.screen,
                                        stats=self.stats,
@@ -135,12 +135,12 @@ class Stage(BaseStage):
                                        ship=self.ship,
                                        sprites=self.sprites)
 
-        # Check for collisions between ship shield and alien bullets
+        # Ship shield and alien bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.alien_bullets,
                                    dokilla=False, dokillb=True)
 
-        # Check for collisions between ship and alien bullets
+        # Ship and alien bullets
         gf.check_ship_alien_bullets_collision(settings=self.settings,
                                               screen=self.screen,
                                               stats=self.stats,
@@ -186,11 +186,11 @@ class BossStage(BaseStage):
         super().transit()
 
     def check_collision(self) -> None:
-        # Check for collisions between ship shield and boss bullets
+        # Ship shield and boss bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.boss_bullets,
                                    dokilla=False, dokillb=True)
-
+        # Ship and boss bullets
         gf.check_ship_boss_bullets_collision(settings=self.settings,
                                              screen=self.screen,
                                              stats=self.stats,
@@ -198,6 +198,14 @@ class BossStage(BaseStage):
                                              hud=self.hud,
                                              ship=self.ship,
                                              sprites=self.sprites)
+        # Ship and bosses
+        gf.check_ship_bosses_collision(settings=self.settings,
+                                       screen=self.screen,
+                                       stats=self.stats,
+                                       stages=self.stages,
+                                       hud=self.hud,
+                                       ship=self.ship,
+                                       sprites=self.sprites)
 
     def update(self) -> None:
         pass

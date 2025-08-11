@@ -85,17 +85,15 @@ def run_game(args: Namespace) -> None:
             stages.current.check_collision()
             gf.fire_alien_bullets(settings, screen, stages, ship, dt, sprites)
             if stages.current.name == "green_boss":
-                gf.update_green_boss(settings, screen, stats, stages, hud, ship, sprites)
                 gf.fire_green_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
                 gf.update_green_boss_bullets(sprites)
                 gf.update_green_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
             elif stages.current.name == "red_boss":
-                gf.update_red_boss(settings, screen, stats, stages, hud, ship, sprites)
+                gf.update_red_boss(sprites)
                 gf.update_red_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
                 gf.fire_red_boss_bullets(settings, screen, ship, dt, sprites.bosses, sprites.boss_bullets)
                 gf.update_red_boss_bullets(screen, sprites)
             elif stages.current.name == "blue_boss":
-                gf.update_blue_boss(settings, screen, stats, stages, hud, ship, sprites)
                 gf.update_blue_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
                 gf.fire_blue_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
                 gf.update_blue_boss_bullets(screen, sprites)
