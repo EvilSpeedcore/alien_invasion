@@ -277,6 +277,9 @@ class RedBossStage(BossStage):
             self.sprites.bosses.empty()
             self.sprites.boss_bullets.empty()
 
+    def update(self) -> None:
+        self.sprites.bosses.sprite.update()
+
 
 class BlueBossStage(BossStage):
 

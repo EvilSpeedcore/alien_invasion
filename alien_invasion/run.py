@@ -89,7 +89,6 @@ def run_game(args: Namespace) -> None:
                 gf.update_green_boss_bullets(sprites)
                 gf.update_green_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
             elif stages.current.name == "red_boss":
-                gf.update_red_boss(sprites)
                 gf.update_red_boss_shield(hud, sprites.ship_bullets, sprites.boss_shields)
                 gf.fire_red_boss_bullets(settings, screen, ship, dt, sprites.bosses, sprites.boss_bullets)
                 gf.update_red_boss_bullets(screen, sprites)

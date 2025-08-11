@@ -764,13 +764,6 @@ def update_green_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupS
         hud.prep_green_boss_health()
 
 
-def update_red_boss(sprites: "Sprites") -> None:
-    """Update red boss position."""
-    # TODO: Move to update. Use single sprite?
-    for boss in sprites.bosses:
-        boss.update()
-
-
 def update_red_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
     """Update hit points of red boss shield on a collision with ship bullets."""
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
