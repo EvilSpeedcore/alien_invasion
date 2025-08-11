@@ -140,6 +140,15 @@ class Stage(BaseStage):
                                    self.sprites.alien_bullets,
                                    dokilla=False, dokillb=True)
 
+        # Check for collisions between ship and alien bullets
+        gf.check_ship_alien_bullets_collision(settings=self.settings,
+                                              screen=self.screen,
+                                              stats=self.stats,
+                                              stages=self.stages,
+                                              hud=self.hud,
+                                              ship=self.ship,
+                                              sprites=self.sprites)
+
     def update(self) -> None:
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
 

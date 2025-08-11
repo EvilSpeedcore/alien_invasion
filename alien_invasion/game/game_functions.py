@@ -498,6 +498,18 @@ def check_ship_aliens_collision(settings: "Settings",
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
 
+def check_ship_alien_bullets_collision(settings: "Settings",
+                                       screen: "Surface",
+                                       stats: "Stats",
+                                       stages: "Stages",
+                                       hud: "Hud",
+                                       ship: "Ship",
+                                       sprites: "Sprites") -> None:
+    """Check collision between ship and alien bullets."""
+    if pygame.sprite.spritecollideany(ship, sprites.alien_bullets):
+        ship_hit(settings, screen, stats, stages, hud, ship, sprites)
+
+
 def update_ship_health(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
     """Update extra health on hud after pick-up."""
     if pygame.sprite.spritecollideany(ship, health):
@@ -567,15 +579,8 @@ def fire_green_boss_bullets(settings: "Settings",
         settings.green_boss_bullet_timer = 1650
 
 
-def update_alien_bullets(settings: "Settings",
-                         screen: "Surface",
-                         stats: "Stats",
-                         stages: "Stages",
-                         hud: "Hud",
-                         ship: "Ship",
-                         sprites: "Sprites") -> None:
+def update_alien_bullets(alien_bullets: "Group[AlienBullet]") -> None:
     """Update alien bullets position."""
-    alien_bullets = sprites.alien_bullets
     alien_bullets.update()
     for alien_bullet in alien_bullets.copy():
         if alien_bullet.rect.bottom <= 0:
@@ -586,8 +591,6 @@ def update_alien_bullets(settings: "Settings",
             alien_bullets.remove(alien_bullet)
         if alien_bullet.rect.top > alien_bullet.screen_rect.bottom:
             alien_bullets.remove(alien_bullet)
-    if pygame.sprite.spritecollideany(ship, alien_bullets):
-        ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def use_ship_shield(screen: "Surface",
