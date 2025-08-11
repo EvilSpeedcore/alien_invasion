@@ -420,8 +420,8 @@ def ship_hit_at_boss_stage(settings: "Settings",
                            ship: "Ship",
                            sprites: "Sprites") -> None:
     """Handle collisions between ship and bosses."""
-    # TODO: Move this logic to check collision
     # Handle collisions between ship and green boss.
+    # TODO: Rework.
     if stages.current.name == "green_boss":
         stats.ships_left -= 1
         hud.prep_health()
@@ -494,7 +494,6 @@ def check_ship_aliens_collision(settings: "Settings",
                                 hud: "Hud",
                                 ship: "Ship",
                                 sprites: "Sprites") -> None:
-    """Check collision between ship and aliens."""
     if pygame.sprite.spritecollideany(ship, sprites.aliens):
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
 
@@ -506,9 +505,19 @@ def check_ship_alien_bullets_collision(settings: "Settings",
                                        hud: "Hud",
                                        ship: "Ship",
                                        sprites: "Sprites") -> None:
-    """Check collision between ship and alien bullets."""
     if pygame.sprite.spritecollideany(ship, sprites.alien_bullets):
         ship_hit(settings, screen, stats, stages, hud, ship, sprites)
+
+
+def check_ship_boss_bullets_collision(settings: "Settings",
+                                      screen: "Surface",
+                                      stats: "Stats",
+                                      stages: "Stages",
+                                      hud: "Hud",
+                                      ship: "Ship",
+                                      sprites: "Sprites") -> None:
+    if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def update_ship_health(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
@@ -627,13 +636,7 @@ def create_blue_boss(screen: "Surface",
     boss_shields.add(boss_shield)
 
 
-def update_green_boss_bullets(settings: "Settings",
-                              screen: "Surface",
-                              stats: "Stats",
-                              stages: "Stages",
-                              hud: "Hud",
-                              ship: "Ship",
-                              sprites: "Sprites") -> None:
+def update_green_boss_bullets(sprites: "Sprites") -> None:
     """Update green boss bullets position. Check for collisions between ship and boss bullets."""
     # TODO: Need to remove bullets after some time
     boss_bullets = sprites.boss_bullets
@@ -641,9 +644,6 @@ def update_green_boss_bullets(settings: "Settings",
 
     for green_boss_bullet in boss_bullets.copy():
         green_boss_bullet.change_direction(boss_bullets)
-
-    if pygame.sprite.spritecollideany(ship, boss_bullets):
-        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def create_red_boss(settings: "Settings",
@@ -732,32 +732,16 @@ def fire_blue_boss_bullets(settings: "Settings",
                     boss.rt_trigger = True
 
 
-def update_red_boss_bullets(settings: "Settings",
-                            screen: "Surface",
-                            stats: "Stats",
-                            stages: "Stages",
-                            hud: "Hud",
-                            ship: "Ship",
-                            sprites: "Sprites") -> None:
-    """Update red boss bullets position. Check for collisions between ship and boss bullets."""
+def update_red_boss_bullets(screen: "Surface", sprites: "Sprites") -> None:
+    """Update red boss bullets position."""
     sprites.boss_bullets.update()
     check_bullets_leave_screen(screen, sprites.boss_bullets)
-    if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
-        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
-def update_blue_boss_bullets(settings: "Settings",
-                             screen: "Surface",
-                             stats: "Stats",
-                             stages: "Stages",
-                             hud: "Hud",
-                             ship: "Ship",
-                             sprites: "Sprites") -> None:
-    """Update blue boss bullets position. Check for collisions between ship and boss bullets."""
+def update_blue_boss_bullets(screen: "Surface", sprites: "Sprites") -> None:
+    """Update blue boss bullets position."""
     sprites.boss_bullets.update()
     check_bullets_leave_screen(screen, sprites.boss_bullets)
-    if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
-        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def update_green_boss(settings: "Settings",

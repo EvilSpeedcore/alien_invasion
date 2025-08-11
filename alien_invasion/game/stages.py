@@ -160,8 +160,21 @@ class Stage(BaseStage):
 
 class BossStage(BaseStage):
 
-    def __init__(self, ship: "Ship", sprites: "Sprites", name: str) -> None:
+    def __init__(self,
+                 settings: "Settings",
+                 screen: "Surface",
+                 stats: "Stats",
+                 stages: "Stages",
+                 hud: "Hud",
+                 ship: "Ship",
+                 sprites: "Sprites",
+                 name: str) -> None:
         super().__init__(sprites=sprites, name=name)
+        self.settings = settings
+        self.screen = screen
+        self.stats = stats
+        self.stages = stages
+        self.hud = hud
         self.ship = ship
 
     def setup(self) -> None:
@@ -178,6 +191,14 @@ class BossStage(BaseStage):
                                    self.sprites.boss_bullets,
                                    dokilla=False, dokillb=True)
 
+        gf.check_ship_boss_bullets_collision(settings=self.settings,
+                                             screen=self.screen,
+                                             stats=self.stats,
+                                             stages=self.stages,
+                                             hud=self.hud,
+                                             ship=self.ship,
+                                             sprites=self.sprites)
+
     def update(self) -> None:
         pass
 
@@ -188,18 +209,6 @@ class BossStage(BaseStage):
 
 
 class GreenBossStage(BossStage):
-
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Surface",
-                 hud: "Hud",
-                 ship: "Ship",
-                 sprites: "Sprites",
-                 name: str) -> None:
-        super().__init__(ship=ship, sprites=sprites, name=name)
-        self.settings = settings
-        self.screen = screen
-        self.hud = hud
 
     def check_collision(self) -> None:
         super().check_collision()
@@ -232,18 +241,6 @@ class GreenBossStage(BossStage):
 
 class RedBossStage(BossStage):
 
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Surface",
-                 hud: "Hud",
-                 ship: "Ship",
-                 sprites: "Sprites",
-                 name: str) -> None:
-        super().__init__(ship=ship, sprites=sprites, name=name)
-        self.settings = settings
-        self.screen = screen
-        self.hud = hud
-
     def setup(self) -> None:
         super().setup()
         gf.create_red_boss(settings=self.settings,
@@ -274,18 +271,6 @@ class RedBossStage(BossStage):
 
 
 class BlueBossStage(BossStage):
-
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Surface",
-                 hud: "Hud",
-                 ship: "Ship",
-                 sprites: "Sprites",
-                 name: str) -> None:
-        super().__init__(ship=ship, sprites=sprites, name=name)
-        self.settings = settings
-        self.screen = screen
-        self.hud = hud
 
     def setup(self) -> None:
         super().setup()
@@ -371,13 +356,12 @@ class Stages(list[StageTypes]):
                      sprites=self.sprites,
                      name=name)
 
-    def create_boss_stage(self, name: str) -> BossStage:
-        return BossStage(ship=self.ship, sprites=self.sprites, name=name)
-
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
         return GreenBossStage(settings=self.settings,
                               screen=self.screen,
+                              stats=self.stats,
                               hud=self.hud,
+                              stages=self,
                               ship=self.ship,
                               sprites=self.sprites,
                               name=name)
@@ -385,7 +369,9 @@ class Stages(list[StageTypes]):
     def create_red_boss_stage(self, name: str) -> RedBossStage:
         return RedBossStage(settings=self.settings,
                             screen=self.screen,
+                            stats=self.stats,
                             hud=self.hud,
+                            stages=self,
                             ship=self.ship,
                             sprites=self.sprites,
                             name=name)
@@ -393,7 +379,9 @@ class Stages(list[StageTypes]):
     def create_blue_boss_stage(self, name: str) -> BlueBossStage:
         return BlueBossStage(settings=self.settings,
                              screen=self.screen,
+                             stats=self.stats,
                              hud=self.hud,
+                             stages=self,
                              ship=self.ship,
                              sprites=self.sprites,
                              name=name)
