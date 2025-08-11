@@ -151,7 +151,7 @@ class Stage(BaseStage):
 
     def update(self) -> None:
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
-        gf.update_alien_bullets(self.screen, self.sprites.alien_bullets)
+        gf.update_bullets(self.screen, self.sprites.alien_bullets)
 
     def teardown(self) -> None:
         super().teardown()

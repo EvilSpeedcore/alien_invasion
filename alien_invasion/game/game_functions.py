@@ -320,7 +320,7 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
-def check_bullets_leave_screen(screen: "Surface", bullets: "Group") -> None:
+def update_bullets(screen: "Surface", bullets: "Group") -> None:
     bullets.update()
     screen_rect = screen.get_rect()
     for bullet in bullets.copy():
@@ -332,12 +332,6 @@ def check_bullets_leave_screen(screen: "Surface", bullets: "Group") -> None:
             bullets.remove(bullet)
         if bullet.rect.top > screen_rect.bottom:  # BOTTOM
             bullets.remove(bullet)
-
-
-def update_bullets(screen: "Surface", ship_bullets: "Group[Bullet]") -> None:
-    """Update ship bullets. Remove bullet from sprites, if it reaches edge of the screen."""
-    ship_bullets.update()
-    check_bullets_leave_screen(screen, ship_bullets)
 
 
 def fire_bullet(settings: "Settings",
@@ -601,12 +595,6 @@ def fire_green_boss_bullets(settings: "Settings",
         settings.green_boss_bullet_timer = 1650
 
 
-def update_alien_bullets(screen: "Surface", alien_bullets: "Group[AlienBullet]") -> None:
-    """Update alien bullets position."""
-    alien_bullets.update()
-    check_bullets_leave_screen(screen, alien_bullets)
-
-
 def use_ship_shield(screen: "Surface",
                     stats: "Stats",
                     hud: "Hud",
@@ -649,13 +637,11 @@ def create_blue_boss(screen: "Surface",
 
 
 def update_green_boss_bullets(sprites: "Sprites") -> None:
-    """Update green boss bullets position. Check for collisions between ship and boss bullets."""
+    """Update green boss bullets position."""
     # TODO: Need to remove bullets after some time
-    boss_bullets = sprites.boss_bullets
-    boss_bullets.update()
-
-    for green_boss_bullet in boss_bullets.copy():
-        green_boss_bullet.change_direction(boss_bullets)
+    sprites.boss_bullets.update()
+    for green_boss_bullet in sprites.boss_bullets.copy():
+        green_boss_bullet.change_direction(sprites.boss_bullets)
 
 
 def create_red_boss(settings: "Settings",
@@ -744,20 +730,9 @@ def fire_blue_boss_bullets(settings: "Settings",
                     boss.rt_trigger = True
 
 
-def update_red_boss_bullets(screen: "Surface", sprites: "Sprites") -> None:
-    """Update red boss bullets position."""
-    sprites.boss_bullets.update()
-    check_bullets_leave_screen(screen, sprites.boss_bullets)
-
-
-def update_blue_boss_bullets(screen: "Surface", sprites: "Sprites") -> None:
-    """Update blue boss bullets position."""
-    sprites.boss_bullets.update()
-    check_bullets_leave_screen(screen, sprites.boss_bullets)
-
-
 def update_green_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
     """Update hit points of green boss shield on a collision with ship bullets."""
+    # TODO: Repeating code
     if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
         boss_shields.sprite.points -= 1
         hud.green_boss_hp -= 1
