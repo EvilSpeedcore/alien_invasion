@@ -78,51 +78,53 @@ def check_active_game_keydown_events(event: "Event",
                                      ship: "Ship",
                                      sprites: "Sprites") -> ActiveGameEvents:
     events = ActiveGameEvents()
-    if event.key == pygame.K_RIGHT:
-        ship.desirable_ship_rotation = "right"
-        ship.moving_right = True
-        rt.rotate(ship)
-    if event.key == pygame.K_LEFT:
-        ship.desirable_ship_rotation = "left"
-        ship.moving_left = True
-        rt.rotate(ship)
-    if event.key == pygame.K_UP:
-        ship.desirable_ship_rotation = "up"
-        ship.moving_up = True
-        rt.rotate(ship)
-    if event.key == pygame.K_DOWN:
-        ship.desirable_ship_rotation = "down"
-        ship.moving_down = True
-        rt.rotate(ship)
-    if event.key == pygame.K_a:
-        fire_bullet(settings, screen, stats, ship, sprites.ship_bullets)
-    if event.key == pygame.K_SPACE:
-        events.update(ActiveGameEvents(pause=True))
-    if event.key == pygame.K_d:
-        use_ship_shield(screen, stats, hud, ship, sprites.ship_shields)
+    match event.key:
+        case pygame.K_RIGHT:
+            ship.desirable_ship_rotation = "right"
+            ship.moving_right = True
+            rt.rotate(ship)
+        case pygame.K_LEFT:
+            ship.desirable_ship_rotation = "left"
+            ship.moving_left = True
+            rt.rotate(ship)
+        case pygame.K_UP:
+            ship.desirable_ship_rotation = "up"
+            ship.moving_up = True
+            rt.rotate(ship)
+        case pygame.K_DOWN:
+            ship.desirable_ship_rotation = "down"
+            ship.moving_down = True
+            rt.rotate(ship)
+        case pygame.K_a:
+            fire_bullet(settings, screen, stats, ship, sprites.ship_bullets)
+        case pygame.K_SPACE:
+            events.update(ActiveGameEvents(pause=True))
+        case pygame.K_d:
+            use_ship_shield(screen, stats, hud, ship, sprites.ship_shields)
     return events
 
 
 def check_pause_keydown_events(event: "Event", ship: "Ship") -> PauseEvents:
     events = PauseEvents()
-    if event.key == pygame.K_RIGHT:
-        ship.desirable_ship_rotation = "right"
-        ship.moving_right = True
-        rt.rotate(ship)
-    if event.key == pygame.K_LEFT:
-        ship.desirable_ship_rotation = "left"
-        ship.moving_left = True
-        rt.rotate(ship)
-    if event.key == pygame.K_UP:
-        ship.desirable_ship_rotation = "up"
-        ship.moving_up = True
-        rt.rotate(ship)
-    if event.key == pygame.K_DOWN:
-        ship.desirable_ship_rotation = "down"
-        ship.moving_down = True
-        rt.rotate(ship)
-    if event.key == pygame.K_s:
-        events.update(PauseEvents(unpause=True))
+    match event.key:
+        case pygame.K_RIGHT:
+            ship.desirable_ship_rotation = "right"
+            ship.moving_right = True
+            rt.rotate(ship)
+        case pygame.K_LEFT:
+            ship.desirable_ship_rotation = "left"
+            ship.moving_left = True
+            rt.rotate(ship)
+        case pygame.K_UP:
+            ship.desirable_ship_rotation = "up"
+            ship.moving_up = True
+            rt.rotate(ship)
+        case pygame.K_DOWN:
+            ship.desirable_ship_rotation = "down"
+            ship.moving_down = True
+            rt.rotate(ship)
+        case pygame.K_s:
+            events.update(PauseEvents(unpause=True))
     return events
 
 
@@ -138,30 +140,31 @@ def check_pause_keyup_events(event: "Event", ship: "Ship") -> PauseEvents:
 
 def check_keyup_events(event: "Event", ship: "Ship") -> None:
     """Handle events when a key is released."""
-    if event.key == pygame.K_RIGHT:
-        ship.moving_right = False
-        if ship.moving_up:
-            rt.rotate_to_up(ship)
-        elif ship.moving_down:
-            rt.rotate_to_down(ship)
-    elif event.key == pygame.K_LEFT:
-        ship.moving_left = False
-        if ship.moving_up:
-            rt.rotate_to_up(ship)
-        elif ship.moving_down:
-            rt.rotate_to_down(ship)
-    if event.key == pygame.K_UP:
-        ship.moving_up = False
-        if ship.moving_right:
-            rt.rotate_to_right(ship)
-        elif ship.moving_left:
-            rt.rotate_to_left(ship)
-    elif event.key == pygame.K_DOWN:
-        ship.moving_down = False
-        if ship.moving_right:
-            rt.rotate_to_right(ship)
-        elif ship.moving_left:
-            rt.rotate_to_left(ship)
+    match event.key:
+        case pygame.K_RIGHT:
+            ship.moving_right = False
+            if ship.moving_up:
+                rt.rotate_to_up(ship)
+            elif ship.moving_down:
+                rt.rotate_to_down(ship)
+        case pygame.K_LEFT:
+            ship.moving_left = False
+            if ship.moving_up:
+                rt.rotate_to_up(ship)
+            elif ship.moving_down:
+                rt.rotate_to_down(ship)
+        case pygame.K_UP:
+            ship.moving_up = False
+            if ship.moving_right:
+                rt.rotate_to_right(ship)
+            elif ship.moving_left:
+                rt.rotate_to_left(ship)
+        case pygame.K_DOWN:
+            ship.moving_down = False
+            if ship.moving_right:
+                rt.rotate_to_right(ship)
+            elif ship.moving_left:
+                rt.rotate_to_left(ship)
 
 
 def check_active_game_events(settings: "Settings",
@@ -172,37 +175,50 @@ def check_active_game_events(settings: "Settings",
                              sprites: "Sprites") -> ActiveGameEvents:
     events = ActiveGameEvents()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            events.update(ActiveGameEvents(quit=True))
-        elif event.type == pygame.KEYDOWN:
-            events.update(check_active_game_keydown_events(event, settings, screen, stats,
-                                                           hud, ship, sprites))
-        elif event.type == pygame.KEYUP:
-            events.update(check_active_game_keyup_events(event, ship))
+        match event.type:
+            case pygame.QUIT:
+                events.update(ActiveGameEvents(quit=True))
+            case pygame.KEYDOWN:
+                events.update(
+                    check_active_game_keydown_events(
+                        event=event,
+                        settings=settings,
+                        screen=screen,
+                        stats=stats,
+                        hud=hud,
+                        ship=ship,
+                        sprites=sprites,
+                    ),
+                )
+            case pygame.KEYUP:
+                events.update(check_active_game_keyup_events(event, ship))
     return events
 
 
 def check_pause_events(ship: "Ship") -> PauseEvents:
     events = PauseEvents()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            events.update(PauseEvents(quit=True))
-        elif event.type == pygame.KEYDOWN:
-            events.update(check_pause_keydown_events(event, ship))
-        elif event.type == pygame.KEYUP:
-            events.update(check_pause_keyup_events(event, ship))
+        match event.type:
+            case pygame.QUIT:
+                events.update(PauseEvents(quit=True))
+            case pygame.KEYDOWN:
+                events.update(check_pause_keydown_events(event, ship))
+            case pygame.KEYUP:
+                events.update(check_pause_keyup_events(event, ship))
     return events
 
 
 def check_main_menu_events(play_button: "Button") -> MainMenuEvents:
     events = MainMenuEvents()
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            events.update(MainMenuEvents(quit=True))
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            events.update(MainMenuEvents(play=check_play_button(play_button)))
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
-            events.update(MainMenuEvents(play=True))
+        match event.type:
+            case pygame.QUIT:
+                events.update(MainMenuEvents(quit=True))
+            case pygame.MOUSEBUTTONDOWN:
+                events.update(MainMenuEvents(play=check_play_button(play_button)))
+            case pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    events.update(MainMenuEvents(play=True))
     return events
 
 
