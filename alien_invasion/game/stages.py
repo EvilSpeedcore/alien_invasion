@@ -381,60 +381,40 @@ class Stages(list[StageTypes]):
         return next_stage
 
 
+
+def maybe_spawn_consumable(stats: "Stats",
+                           ship: "Ship",
+                           group: "Group",
+                           consumable: ShipHealth | ShipAmmo) -> bool:
+    if stats.ships_left > 3:
+        return False
+
+    if secrets.choice(range(1, 6)):
+        return False
+
+    banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
+    available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
+                               x not in banned_coordinates_x]
+    banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
+    available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
+                               y not in banned_coordinates_y]
+    consumable.rect.x = secrets.choice(available_coordinates_x)
+    consumable.rect.y = secrets.choice(available_coordinates_y)
+    group.add(consumable)
+    return True
+
+
 def maybe_spawn_extra_health(screen: "Surface",
                              stats: "Stats",
                              ship: "Ship",
                              health: "Group") -> bool:
-    # TODO: Move to gf?
-    # Flag, which shows the fact, that extra health not yet spawned.
-    health_spawned = False
-    # Extra health spawn.
-    if stats.ships_left > 3:
-        return health_spawned
-
-    random_number = secrets.choice(range(1, 6))
-    if random_number == 1:
-        new_health = ShipHealth(screen)
-        banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
-        available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                   x not in banned_coordinates_x]
-        banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
-        available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                   y not in banned_coordinates_y]
-        new_health.rect.x = secrets.choice(available_coordinates_x)
-        new_health.rect.y = secrets.choice(available_coordinates_y)
-        health.add(new_health)
-        health_spawned = True
-    else:
-        health.empty()
-
-    return health_spawned
+    consumable = ShipHealth(screen)
+    return maybe_spawn_consumable(stats=stats, ship=ship, group=health, consumable=consumable)
 
 
 def maybe_spawn_extra_ammo(screen: "Surface",
                            stats: "Stats",
                            ship: "Ship",
                            ammo: "Group") -> bool:
-    # TODO: Move to gf?
-    # Extra ammo spawn.
-    ammo_spawned = False
-    if stats.ammo >= 3:
-        return ammo_spawned
-
-    random_number = secrets.choice(range(1, 6))
-    if random_number == 1:
-        new_ammo = ShipAmmo(screen)
-        _banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
-        _available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                                    x not in _banned_coordinates_x]
-        _banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
-        _available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                                    y not in _banned_coordinates_y]
-        new_ammo.rect.x = secrets.choice(_available_coordinates_x)
-        new_ammo.rect.y = secrets.choice(_available_coordinates_y)
-        ammo.add(new_ammo)
-        ammo_spawned = True
-    else:
-        ammo.empty()
-
-    return ammo_spawned
+    consumable = ShipAmmo(screen)
+    return maybe_spawn_consumable(stats=stats, ship=ship, group=ammo, consumable=consumable)
