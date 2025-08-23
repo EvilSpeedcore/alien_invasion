@@ -381,8 +381,8 @@ class Stages(list[StageTypes]):
         return next_stage
 
 
-
-def maybe_spawn_consumable(stats: "Stats",
+def maybe_spawn_consumable(screen: "Surface",
+                           stats: "Stats",
                            ship: "Ship",
                            group: "Group",
                            consumable: ShipHealth | ShipAmmo) -> bool:
@@ -392,14 +392,20 @@ def maybe_spawn_consumable(stats: "Stats",
     if secrets.choice(range(1, 6)):
         return False
 
-    banned_coordinates_x = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))
-    available_coordinates_x = [x for x in range(100, ship.screen_rect.right - 100) if
-                               x not in banned_coordinates_x]
-    banned_coordinates_y = list(range(int(ship.centery - 100.0), int(ship.centery + 106.0)))
-    available_coordinates_y = [y for y in range(100, ship.screen_rect.bottom - 100) if
-                               y not in banned_coordinates_y]
-    consumable.rect.x = secrets.choice(available_coordinates_x)
-    consumable.rect.y = secrets.choice(available_coordinates_y)
+    screen_rect = screen.get_rect()
+    x_padding = consumable.rect.width * 3
+    y_padding = consumable.rect.height * 3
+    # left x
+    left_x = range(screen_rect.left + x_padding, ship.rect.left - x_padding)
+    # right x
+    right_x = range(ship.rect.right + x_padding, screen_rect.right - x_padding)
+    # top y
+    top_y = range(screen_rect.top + y_padding, ship.rect.top - y_padding)
+    # bottom y
+    bottom_y = range(ship.rect.bottom + y_padding, screen_rect.bottom - y_padding)
+
+    consumable.rect.x = secrets.choice(secrets.choice([left_x or right_x, right_x or left_x]))
+    consumable.rect.y = secrets.choice(secrets.choice([top_y or bottom_y, bottom_y or top_y]))
     group.add(consumable)
     return True
 
@@ -409,7 +415,11 @@ def maybe_spawn_extra_health(screen: "Surface",
                              ship: "Ship",
                              health: "Group") -> bool:
     consumable = ShipHealth(screen)
-    return maybe_spawn_consumable(stats=stats, ship=ship, group=health, consumable=consumable)
+    return maybe_spawn_consumable(screen=screen,
+                                  stats=stats,
+                                  ship=ship,
+                                  group=health,
+                                  consumable=consumable)
 
 
 def maybe_spawn_extra_ammo(screen: "Surface",
@@ -417,4 +427,8 @@ def maybe_spawn_extra_ammo(screen: "Surface",
                            ship: "Ship",
                            ammo: "Group") -> bool:
     consumable = ShipAmmo(screen)
-    return maybe_spawn_consumable(stats=stats, ship=ship, group=ammo, consumable=consumable)
+    return maybe_spawn_consumable(screen=screen,
+                                  stats=stats,
+                                  ship=ship,
+                                  group=ammo,
+                                  consumable=consumable)
