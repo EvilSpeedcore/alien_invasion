@@ -2,7 +2,6 @@ from typing import TYPE_CHECKING
 
 from pygame.sprite import Group
 
-from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
 
 if TYPE_CHECKING:
@@ -29,10 +28,6 @@ class Hud:
         self.ship = ship
         self.boss_health = sprites.boss_health
 
-        self.green_boss_hp = 19
-        self.red_boss_hp = 14
-        self.blue_boss_hp = 19
-
         # Preparing of hud.
         self.prep_health()
         self.prep_ammo()
@@ -46,33 +41,6 @@ class Hud:
             ship_health.rect.x = 20 + ship_number * (ship_health.rect.width + 10)
             ship_health.rect.y = 28
             self.health.add(ship_health)
-
-    def prep_green_boss_health(self) -> None:
-        """Prepare to drawn green boss health."""
-        boss_health = GreenBossHealth(self.settings, self.screen)
-        hp_image = boss_health.hp_images[self.green_boss_hp]
-        boss_health.image = hp_image.copy()
-        boss_health.rect.x = 500
-        boss_health.rect.y = 60
-        self.boss_health.add(boss_health)
-
-    def prep_red_boss_health(self) -> None:
-        """Prepare to drawn red boss health."""
-        boss_health = RedBossHealth(self.settings, self.screen)
-        hp_image = boss_health.hp_images[self.red_boss_hp]
-        boss_health.image = hp_image.copy()
-        boss_health.rect.x = 500
-        boss_health.rect.y = 60
-        self.boss_health.add(boss_health)
-
-    def prep_blue_boss_health(self) -> None:
-        """Prepare to drawn blue boss track."""
-        boss_health = BlueBossHealth(self.settings, self.screen)
-        hp_image = boss_health.hp_images[self.blue_boss_hp]
-        boss_health.image = hp_image.copy()
-        boss_health.rect.x = 500
-        boss_health.rect.y = 60
-        self.boss_health.add(boss_health)
 
     def prep_ammo(self) -> None:
         """Prepare to drawn ship ammo."""

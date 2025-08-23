@@ -232,8 +232,8 @@ class GreenBossStage(BossStage):
         # TODO: Repeating code
         boss = self.sprites.bosses.sprite
         boss.hit_points -= 1
-        self.hud.green_boss_hp -= 1
-        self.hud.prep_green_boss_health()
+        boss.hit_points_with_shield -= 1
+        boss.prepare_health()
         if boss.hit_points < 1:
             time.sleep(self.settings.game_sleep_time)
             self.sprites.bosses.empty()
@@ -241,21 +241,14 @@ class GreenBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_green_boss(screen=self.screen,
-                             hud=self.hud,
-                             bosses=self.sprites.bosses,
-                             boss_shields=self.sprites.boss_shields)
+        gf.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
 
 class RedBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_red_boss(settings=self.settings,
-                           screen=self.screen,
-                           hud=self.hud,
-                           bosses=self.sprites.bosses,
-                           boss_shields=self.sprites.boss_shields)
+        gf.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
         super().check_collision()
@@ -270,8 +263,8 @@ class RedBossStage(BossStage):
 
         boss = self.sprites.bosses.sprite
         boss.hit_points -= 1
-        self.hud.red_boss_hp -= 1
-        self.hud.prep_red_boss_health()
+        boss.hit_points_with_shield -= 1
+        boss.prepare_health()
         if boss.hit_points < 1:
             time.sleep(self.settings.game_sleep_time)
             self.sprites.bosses.empty()
@@ -286,10 +279,7 @@ class BlueBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_blue_boss(screen=self.screen,
-                            hud=self.hud,
-                            bosses=self.sprites.bosses,
-                            boss_shields=self.sprites.boss_shields)
+        gf.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
         super().check_collision()
@@ -304,8 +294,8 @@ class BlueBossStage(BossStage):
 
         boss = self.sprites.bosses.sprite
         boss.hit_points -= 1
-        self.hud.blue_boss_hp -= 1
-        self.hud.prep_blue_boss_health()
+        boss.hit_points_with_shield -= 1
+        boss.prepare_health()
         if boss.hit_points < 1:
             time.sleep(self.settings.game_sleep_time)
             self.sprites.bosses.empty()

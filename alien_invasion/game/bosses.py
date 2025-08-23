@@ -3,37 +3,31 @@ from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
+from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.sprite import GroupSingle
     from pygame.surface import Surface
 
+    from game.boss_health import BossHealthTypes
     from game.settings import Settings
 
 
-class GreenBoss(Sprite):
+class Boss(Sprite):
 
-    def __init__(self, screen: "Surface") -> None:
+    _HIT_POINTS = 0
+    _HIT_POINTS_WITH_SHIELD = 0
+
+    def __init__(self,
+                 screen: "Surface",
+                 boss_health: "GroupSingle",
+                 image: "Surface",
+                 health: "BossHealthTypes") -> None:
         super().__init__()
-        self.image = load_image("green_alien.png")
-
-        # Rectangular area of the image.
-        self.rect = self.image.get_rect()
-
-        # Set starting position of boss.
-        screen_rect = screen.get_rect()
-        self.rect.centerx = screen_rect.centerx
-        self.rect.centery = screen_rect.centery
-
-        # Boss hit points.
-        self.hit_points = 10
-
-
-class RedBoss(Sprite):
-
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
-        super().__init__()
-        self.image = load_image("red_alien.png")
+        self.boss_health = boss_health
+        self.image = image
+        self.health = health
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -43,15 +37,56 @@ class RedBoss(Sprite):
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
 
+        self.set_default_hit_points()
+
+    def prepare_health(self) -> None:
+        """Prepare to drawn green boss health."""
+        hp_image = self.health.hp_images[self.hit_points_with_shield]
+        self.health.image = hp_image.copy()
+        self.health.rect.x = 500
+        self.health.rect.y = 60
+        self.boss_health.add(self.health)
+
+    def set_default_hit_points(self) -> None:
+        self.hit_points = self._HIT_POINTS
+        self.hit_points_with_shield = self._HIT_POINTS_WITH_SHIELD
+
+
+class GreenBoss(Boss):
+
+    # TODO: Join or calculate?
+    _HIT_POINTS = 10
+    _HIT_POINTS_WITH_SHIELD = 19
+
+    def __init__(self,
+                 settings: "Settings",
+                 screen: "Surface",
+                 boss_health: "GroupSingle") -> None:
+        # TODO: Load once?
+        image = load_image("green_alien.png")
+        health = GreenBossHealth(settings, screen)
+        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
+
+
+class RedBoss(Boss):
+
+    _HIT_POINTS = 10
+    _HIT_POINTS_WITH_SHIELD = 14
+
+    def __init__(self,
+                 settings: "Settings",
+                 screen: "Surface",
+                 boss_health: "GroupSingle") -> None:
+        image = load_image("red_alien.png")
+        health = RedBossHealth(settings, screen)
+        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
+
         # Current position of bullet
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
 
         # Boss position.
         self.position = "center"
-
-        # Boss hit points.
-        self.hit_points = 10
 
         # Boss speed.
         self.speed_factor = settings.red_boss_speed_factor
@@ -275,26 +310,22 @@ class RedBoss(Sprite):
         self.random_direction = secrets.choice(range(1, 3))
 
 
-class BlueBoss(Sprite):
+class BlueBoss(Boss):
 
-    def __init__(self, screen: "Surface") -> None:
-        super().__init__()
-        self.image = load_image("blue_alien.png")
+    _HIT_POINTS = 10
+    _HIT_POINTS_WITH_SHIELD = 19
 
-        # Rectangular area of the image.
-        self.rect = self.image.get_rect()
-
-        # Set starting position of boss.
-        screen_rect = screen.get_rect()
-        self.rect.centerx = screen_rect.centerx
-        self.rect.centery = screen_rect.centery
+    def __init__(self,
+                 settings: "Settings",
+                 screen: "Surface",
+                 boss_health: "GroupSingle") -> None:
+        image = load_image("blue_alien.png")
+        health = BlueBossHealth(settings, screen)
+        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
         # Current position of bullet.
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
-
-        # Boss hit points.
-        self.hit_points = 10
 
         # Angles to manipulate shooting direction.
         self.shooting_angle = 0

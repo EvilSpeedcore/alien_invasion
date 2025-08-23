@@ -435,8 +435,8 @@ def ship_hit_at_boss_stage(settings: "Settings",
     if stages.current.name == "green_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        hud.green_boss_hp = 19
-        hud.prep_green_boss_health()
+        sprites.bosses.sprite.set_default_hit_points()
+        sprites.bosses.sprite.prepare_health()
 
         # Ship and boss timers refresh.
         settings.time_elapsed_since_shield = 0
@@ -448,7 +448,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
         sprites.ship_shields.empty()
 
         if stats.ships_left:
-            create_green_boss(screen, hud, sprites.bosses, sprites.boss_shields)
+            create_green_boss(settings=settings, screen=screen, sprites=sprites)
             ship.prepare_for_boss()
             sleep(settings.game_sleep_time)
 
@@ -456,8 +456,8 @@ def ship_hit_at_boss_stage(settings: "Settings",
     elif stages.current.name == "red_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        hud.red_boss_hp = 14
-        hud.prep_red_boss_health()
+        sprites.bosses.sprite.set_default_hit_points()
+        sprites.bosses.sprite.prepare_health()
 
         # Ship and boss timers refresh.
         settings.time_elapsed_since_shield = 0
@@ -469,7 +469,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
         sprites.ship_shields.empty()
 
         if stats.ships_left:
-            create_red_boss(settings, screen, hud, sprites.bosses, sprites.boss_shields)
+            create_red_boss(settings=settings, screen=screen, sprites=sprites)
             ship.prepare_for_boss()
             sleep(settings.game_sleep_time)
 
@@ -477,8 +477,8 @@ def ship_hit_at_boss_stage(settings: "Settings",
     elif stages.current.name == "blue_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        hud.blue_boss_hp = 19
-        hud.prep_blue_boss_health()
+        sprites.bosses.sprite.set_default_hit_points()
+        sprites.bosses.sprite.prepare_health()
 
         # Ship and boss timers refresh.
         settings.black_hole_spawn_timer = 0
@@ -492,7 +492,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
 
         if stats.ships_left:
             sprites.boss_black_holes.empty()
-            create_blue_boss(screen, hud, sprites.bosses, sprites.boss_shields)
+            create_blue_boss(settings=settings, screen=screen, sprites=sprites)
             ship.prepare_for_boss()
             sleep(settings.game_sleep_time)
 
@@ -626,30 +626,26 @@ def use_ship_shield(screen: "Surface",
         hud.prep_shield()
 
 
-def create_green_boss(screen: "Surface",
-                      hud: "Hud",
-                      bosses: "GroupSingle",
-                      boss_shields: "GroupSingle") -> None:
+def create_green_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
     """Create green boss."""
-    green_boss = GreenBoss(screen)
+    green_boss = GreenBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
     boss_shield = GreenBossShield(screen, green_boss)
-    hud.green_boss_hp = 19
-    hud.prep_green_boss_health()
-    bosses.add(green_boss)
-    boss_shields.add(boss_shield)
+    green_boss.set_default_hit_points()
+    green_boss.prepare_health()
+    sprites.bosses.add(green_boss)
+    sprites.boss_shields.add(boss_shield)
 
 
-def create_blue_boss(screen: "Surface",
-                     hud: "Hud",
-                     bosses: "GroupSingle",
-                     boss_shields: "GroupSingle") -> None:
+def create_blue_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
     """Create blue boss."""
-    blue_boss = BlueBoss(screen)
+    blue_boss = BlueBoss(settings=settings,
+                         screen=screen,
+                         boss_health=sprites.boss_health)
     boss_shield = BlueBossShield(screen, blue_boss)
-    hud.blue_boss_hp = 19
-    hud.prep_blue_boss_health()
-    bosses.add(blue_boss)
-    boss_shields.add(boss_shield)
+    blue_boss.set_default_hit_points()
+    blue_boss.prepare_health()
+    sprites.bosses.add(blue_boss)
+    sprites.boss_shields.add(boss_shield)
 
 
 def update_green_boss_bullets(boss_bullets: "Group") -> None:
@@ -662,18 +658,14 @@ def update_green_boss_bullets(boss_bullets: "Group") -> None:
             green_boss_bullet.change_direction()
 
 
-def create_red_boss(settings: "Settings",
-                    screen: "Surface",
-                    hud: "Hud",
-                    bosses: "GroupSingle",
-                    boss_shields: "GroupSingle") -> None:
+def create_red_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
     """Create red boss."""
-    red_boss = RedBoss(settings, screen)
+    red_boss = RedBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
     boss_shield = RedBossShield(screen, red_boss)
-    hud.red_boss_hp = 14
-    hud.prep_red_boss_health()
-    bosses.add(red_boss)
-    boss_shields.add(boss_shield)
+    red_boss.set_default_hit_points()
+    red_boss.prepare_health()
+    sprites.bosses.add(red_boss)
+    sprites.boss_shields.add(boss_shield)
 
 
 def fire_red_boss_bullets(settings: "Settings",
@@ -748,29 +740,12 @@ def fire_blue_boss_bullets(settings: "Settings",
                     boss.rt_trigger = True
 
 
-def update_green_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
-    """Update hit points of green boss shield on a collision with ship bullets."""
-    # TODO: Repeating code
-    if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        boss_shields.sprite.points -= 1
-        hud.green_boss_hp -= 1
-        hud.prep_green_boss_health()
-
-
-def update_red_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
-    """Update hit points of red boss shield on a collision with ship bullets."""
-    if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        boss_shields.sprite.points -= 1
-        hud.red_boss_hp -= 1
-        hud.prep_red_boss_health()
-
-
-def update_blue_boss_shield(hud: "Hud", bullets: "Group", boss_shields: "GroupSingle") -> None:
-    """Update hit points of blue boss shield on a collision with ship bullets."""
-    if pygame.sprite.groupcollide(boss_shields, bullets, dokilla=False, dokillb=True):
-        boss_shields.sprite.points -= 1
-        hud.blue_boss_hp -= 1
-        hud.prep_blue_boss_health()
+def update_boss_shield(sprites: "Sprites") -> None:
+    """Update hit points of boss shield on a collision with ship bullets."""
+    if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
+        sprites.boss_shields.sprite.points -= 1
+        sprites.bosses.sprite.hit_points_with_shield -= 1
+        sprites.bosses.sprite.prepare_health()
 
 
 def create_black_hole(settings: "Settings",

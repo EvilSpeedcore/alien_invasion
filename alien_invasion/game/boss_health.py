@@ -10,6 +10,9 @@ if TYPE_CHECKING:
     from game.settings import Settings
 
 
+type BossHealthTypes = BlueBossHealth | GreenBossHealth | RedBossHealth
+
+
 class BossHealth(Sprite):
     """Parent class, which represents health and shield bar of boss."""
 
