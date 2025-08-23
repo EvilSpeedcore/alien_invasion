@@ -1,5 +1,6 @@
 import secrets
 import sys
+import time
 from dataclasses import dataclass
 from time import sleep
 from typing import TYPE_CHECKING
@@ -528,6 +529,24 @@ def check_ship_boss_bullets_collision(settings: "Settings",
                                       sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
+
+
+def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") -> None:
+    collision = pygame.sprite.groupcollide(sprites.ship_bullets,
+                                                sprites.bosses,
+                                                dokilla=True,
+                                                dokillb=False)
+    if not collision:
+        return
+
+    boss = sprites.bosses.sprite
+    boss.hit_points -= 1
+    boss.hit_points_with_shield -= 1
+    boss.prepare_health()
+    if boss.hit_points < 1:
+        time.sleep(settings.game_sleep_time)
+        sprites.bosses.empty()
+        sprites.boss_bullets.empty()
 
 
 def check_ship_bosses_collision(settings: "Settings",

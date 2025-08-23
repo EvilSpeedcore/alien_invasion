@@ -1,5 +1,4 @@
 import secrets
-import time
 from abc import abstractmethod
 from itertools import count
 from logging import getLogger
@@ -207,6 +206,9 @@ class BossStage(BaseStage):
                                        ship=self.ship,
                                        sprites=self.sprites)
 
+        # Ship bullets and bosses
+        gf.check_ship_bullets_boss_collision(settings=self.settings, sprites=self.sprites)
+
     def update(self) -> None:
         pass
 
@@ -217,27 +219,6 @@ class BossStage(BaseStage):
 
 
 class GreenBossStage(BossStage):
-
-    def check_collision(self) -> None:
-        super().check_collision()
-        # TODO: Wrap and move to gf?
-        # Check collision between ship bullets and boss
-        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
-                                                    self.sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if not boss_collision:
-            return
-
-        # TODO: Repeating code
-        boss = self.sprites.bosses.sprite
-        boss.hit_points -= 1
-        boss.hit_points_with_shield -= 1
-        boss.prepare_health()
-        if boss.hit_points < 1:
-            time.sleep(self.settings.game_sleep_time)
-            self.sprites.bosses.empty()
-            self.sprites.boss_bullets.empty()
 
     def setup(self) -> None:
         super().setup()
@@ -250,26 +231,6 @@ class RedBossStage(BossStage):
         super().setup()
         gf.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
-    def check_collision(self) -> None:
-        super().check_collision()
-        # TODO: Wrap and move to gf?
-        # Check collision between ship bullets and boss
-        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
-                                                    self.sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if not boss_collision:
-            return
-
-        boss = self.sprites.bosses.sprite
-        boss.hit_points -= 1
-        boss.hit_points_with_shield -= 1
-        boss.prepare_health()
-        if boss.hit_points < 1:
-            time.sleep(self.settings.game_sleep_time)
-            self.sprites.bosses.empty()
-            self.sprites.boss_bullets.empty()
-
     def update(self) -> None:
         self.sprites.bosses.sprite.update()
         gf.update_bullets(self.screen, self.sprites.boss_bullets)
@@ -280,26 +241,6 @@ class BlueBossStage(BossStage):
     def setup(self) -> None:
         super().setup()
         gf.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
-
-    def check_collision(self) -> None:
-        super().check_collision()
-        # TODO: Wrap and move to gf?
-        # Check collision between ship bullets and boss
-        boss_collision = pygame.sprite.groupcollide(self.sprites.ship_bullets,
-                                                    self.sprites.bosses,
-                                                    dokilla=True,
-                                                    dokillb=False)
-        if not boss_collision:
-            return
-
-        boss = self.sprites.bosses.sprite
-        boss.hit_points -= 1
-        boss.hit_points_with_shield -= 1
-        boss.prepare_health()
-        if boss.hit_points < 1:
-            time.sleep(self.settings.game_sleep_time)
-            self.sprites.bosses.empty()
-            self.sprites.boss_bullets.empty()
 
     def update(self) -> None:
         gf.update_bullets(self.screen, self.sprites.boss_bullets)
