@@ -26,29 +26,34 @@ class ShipConsumable(Sprite):
 
 class ShipHealth(ShipConsumable):
 
+    _IMAGE = load_image("stats_health.png")
+    _ITEM = load_image("spawned_health.png")
+
     def __init__(self, screen: "Surface") -> None:
-        self.image = load_image("stats_health.png")
-        rect = self.image.get_rect()
-        item = load_image("spawned_health.png")
-        super().__init__(screen=screen, item=item, rect=rect)
+        self.image = self._IMAGE
+        rect = self._IMAGE.get_rect()
+        super().__init__(screen=screen, item=self._ITEM, rect=rect)
 
 
 class ShipAmmo(ShipConsumable):
 
+    _IMAGE = load_image("stats_ammo.png")
+    _ITEM = load_image("spawned_ammo.png")
+
     def __init__(self, screen: "Surface") -> None:
-        self.image = load_image("stats_ammo.png")
+        self.image = self._IMAGE
         rect = self.image.get_rect()
-        item = load_image("spawned_ammo.png")
-        super().__init__(screen=screen, item=item, rect=rect)
+        super().__init__(screen=screen, item=self._ITEM, rect=rect)
 
 
 class ShipShield(ShipConsumable):
+    _IMAGE = load_image("stats_shield.png")
+    _ITEM = load_image("spawned_shield.png")
 
     def __init__(self, screen: "Surface", ship: "Ship") -> None:
-        self.image = load_image("stats_shield.png")
-        item = load_image("spawned_shield.png")
-        rect = item.get_rect()
-        super().__init__(screen=screen, item=item, rect=rect)
+        self.image = self._IMAGE
+        rect = self._ITEM.get_rect()
+        super().__init__(screen=screen, item=self._ITEM, rect=rect)
         self.ship = ship
 
         self.rect.centerx = self.ship.centerx
