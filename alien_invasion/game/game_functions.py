@@ -610,30 +610,21 @@ def fire_alien_bullets(settings: "Settings",
 def fire_green_boss_bullets(settings: "Settings",
                             screen: "Screen",
                             dt: int,
-                            bosses: "GroupSingle",
+                            boss: "GreenBoss",
                             boss_bullets: "Group") -> None:
     """Create green boss bullets."""
     settings.time_elapsed_since_last_boss_bullet += dt
-    if settings.time_elapsed_since_last_boss_bullet > settings.green_boss_bullet_timer:
-        for boss in bosses:
-            green_boss_bullet_1 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_1.shooting_angle_up = secrets.choice(range(180))
-            green_boss_bullet_1.add(boss_bullets)
+    if settings.time_elapsed_since_last_boss_bullet <= settings.green_boss_bullet_timer:
+        return
 
-            green_boss_bullet_2 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_2.shooting_angle_up = secrets.choice(range(90, 270))
-            green_boss_bullet_2.add(boss_bullets)
+    ranges = (range(180), range(90, 270), range(180, 360), range(270, 450))
+    for range_ in ranges:
+        bullet = GreenBossBullet(settings=settings, screen=screen, boss=boss)
+        bullet.shooting_angle_up = secrets.choice(range_)
+        bullet.add(boss_bullets)
 
-            green_boss_bullet_3 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_3.shooting_angle_up = secrets.choice(range(180, 360))
-            green_boss_bullet_3.add(boss_bullets)
-
-            green_boss_bullet_4 = GreenBossBullet(settings, screen, boss)
-            green_boss_bullet_4.shooting_angle_up = secrets.choice(range(270, 450))
-            green_boss_bullet_4.add(boss_bullets)
-
-        settings.time_elapsed_since_last_boss_bullet = 0
-        settings.green_boss_bullet_timer = 1650
+    settings.time_elapsed_since_last_boss_bullet = 0
+    settings.green_boss_bullet_timer = 1650
 
 
 def use_ship_shield(screen: "Screen",
