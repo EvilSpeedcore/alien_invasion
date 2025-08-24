@@ -560,6 +560,13 @@ def check_ship_bosses_collision(settings: "Settings",
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
+def check_ship_bullets_boss_shield_collision(sprites: "Sprites") -> None:
+    if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
+        sprites.boss_shields.sprite.points -= 1
+        sprites.bosses.sprite.hit_points_with_shield -= 1
+        sprites.bosses.sprite.prepare_health()
+
+
 def update_ship_health(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
     """Update extra health on hud after pick-up."""
     if pygame.sprite.spritecollideany(ship, health):
@@ -757,14 +764,6 @@ def fire_blue_boss_bullets(settings: "Settings",
                 boss.shooting_angle -= 15
                 if boss.shooting_angle < 0:
                     boss.rt_trigger = True
-
-
-def update_boss_shield(sprites: "Sprites") -> None:
-    """Update hit points of boss shield on a collision with ship bullets."""
-    if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
-        sprites.boss_shields.sprite.points -= 1
-        sprites.bosses.sprite.hit_points_with_shield -= 1
-        sprites.bosses.sprite.prepare_health()
 
 
 def create_black_hole(settings: "Settings",

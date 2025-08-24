@@ -208,6 +208,9 @@ class BossStage(BaseStage):
         # Ship bullets and bosses
         gf.check_ship_bullets_boss_collision(settings=self.settings, sprites=self.sprites)
 
+        # Ship bullets and boss shield
+        gf.check_ship_bullets_boss_shield_collision(self.sprites)
+
     def update(self) -> None:
         pass
 
