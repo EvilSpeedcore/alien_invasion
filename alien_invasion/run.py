@@ -7,6 +7,7 @@ import pygame
 import game.game_functions as gf
 from game.button import Button
 from game.hud import Hud
+from game.screen import Screen
 from game.settings import Settings
 from game.ship import Ship
 from game.sprites import Sprites
@@ -22,7 +23,7 @@ def run_game(args: Namespace) -> None:
     pygame.mixer.init()
     pygame.init()
     settings = Settings(args)
-    screen = pygame.display.set_mode((settings.screen_width, settings.screen_height))
+    screen = Screen(settings.screen_width, settings.screen_height)
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
     stats = Stats(settings)
@@ -104,7 +105,7 @@ def run_game(args: Namespace) -> None:
             if gf.check_game_end(stages, stats):
                 state.set(State.MAIN_MENU)
                 # Hide ship fast
-                screen.fill(settings.bg_color)
+                screen.it.fill(settings.bg_color)
                 stages.current.teardown()
                 pygame.display.flip()
                 sleep(settings.game_sleep_time)

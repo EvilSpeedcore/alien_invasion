@@ -8,6 +8,7 @@ from game.images import load_image
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
 
@@ -19,13 +20,13 @@ class BlackHole(Sprite):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  ship: "Ship") -> None:
         """Initialize black hole."""
         super().__init__()
         self.settings = settings
         self.screen = screen
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = screen.rect
 
         # List, which will contain loaded images.
         self.images: list[Surface] = []
@@ -65,7 +66,7 @@ class BlackHole(Sprite):
 
     def draw_black_hole(self) -> None:
         """Draw black hole on screen."""
-        self.screen.blit(self.image, self.rect)
+        self.screen.it.blit(self.image, self.rect)
 
     def prepare_images(self) -> None:
         """Add loaded images to list."""

@@ -5,15 +5,14 @@ from pygame.sprite import Sprite
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
-
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
 
 
 class Bullet(Sprite):
 
-    def __init__(self, settings: "Settings", screen: "Surface", ship: "Ship") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
         self.image = load_image("bullet.png")
@@ -109,18 +108,18 @@ class Bullet(Sprite):
         """Draw bullet on screen depending on ship current rotation."""
         if self.bullet_rotation == "up":
             """Вывод пули на экран."""
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "right":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "left":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "down":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "up-right":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "up-left":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "down-left":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "down-right":
-            self.screen.blit(self.image, self.rect)
+            self.screen.it.blit(self.image, self.rect)

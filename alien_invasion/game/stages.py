@@ -17,9 +17,9 @@ type StageTypes = "BossStage" | "Stage" | "EndStage"
 
 if TYPE_CHECKING:
     from pygame.sprite import Group
-    from pygame.surface import Surface
 
     from game.hud import Hud
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
     from game.sprites import Sprites
@@ -77,7 +77,7 @@ class Stage(BaseStage):
     def __init__(self,
                  stages: "Stages",
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  hud: "Hud",
                  stats: "Stats",
                  ship: "Ship",
@@ -100,7 +100,6 @@ class Stage(BaseStage):
                                         ship=self.ship,
                                         health=self.sprites.ship_health):
             maybe_spawn_extra_ammo(screen=self.screen,
-                                   stats=self.stats,
                                    ship=self.ship,
                                    ammo=self.sprites.ship_ammo)
 
@@ -161,7 +160,7 @@ class BossStage(BaseStage):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  stats: "Stats",
                  stages: "Stages",
                  hud: "Hud",
@@ -272,7 +271,7 @@ class Stages(list[StageTypes]):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  stats: "Stats",
                  hud: "Hud",
                  ship: "Ship",
@@ -381,28 +380,23 @@ class Stages(list[StageTypes]):
         return next_stage
 
 
-def maybe_spawn_consumable(screen: "Surface",
-                           stats: "Stats",
+def maybe_spawn_consumable(screen: "Screen",
                            ship: "Ship",
                            group: "Group",
                            consumable: ShipHealth | ShipAmmo) -> bool:
-    if stats.ships_left > 3:
+    if secrets.choice(range(5)):
         return False
 
-    if secrets.choice(range(1, 6)):
-        return False
-
-    screen_rect = screen.get_rect()
     x_padding = consumable.rect.width * 3
     y_padding = consumable.rect.height * 3
     # left x
-    left_x = range(screen_rect.left + x_padding, ship.rect.left - x_padding)
+    left_x = range(screen.rect.left + x_padding, ship.rect.left - x_padding)
     # right x
-    right_x = range(ship.rect.right + x_padding, screen_rect.right - x_padding)
+    right_x = range(ship.rect.right + x_padding, screen.rect.right - x_padding)
     # top y
-    top_y = range(screen_rect.top + y_padding, ship.rect.top - y_padding)
+    top_y = range(screen.rect.top + y_padding, ship.rect.top - y_padding)
     # bottom y
-    bottom_y = range(ship.rect.bottom + y_padding, screen_rect.bottom - y_padding)
+    bottom_y = range(ship.rect.bottom + y_padding, screen.rect.bottom - y_padding)
 
     consumable.rect.x = secrets.choice(secrets.choice([left_x or right_x, right_x or left_x]))
     consumable.rect.y = secrets.choice(secrets.choice([top_y or bottom_y, bottom_y or top_y]))
@@ -410,25 +404,24 @@ def maybe_spawn_consumable(screen: "Surface",
     return True
 
 
-def maybe_spawn_extra_health(screen: "Surface",
+def maybe_spawn_extra_health(screen: "Screen",
                              stats: "Stats",
                              ship: "Ship",
                              health: "Group") -> bool:
+    if stats.ships_left > 3:
+        return False
     consumable = ShipHealth(screen)
     return maybe_spawn_consumable(screen=screen,
-                                  stats=stats,
                                   ship=ship,
                                   group=health,
                                   consumable=consumable)
 
 
-def maybe_spawn_extra_ammo(screen: "Surface",
-                           stats: "Stats",
+def maybe_spawn_extra_ammo(screen: "Screen",
                            ship: "Ship",
                            ammo: "Group") -> bool:
     consumable = ShipAmmo(screen)
     return maybe_spawn_consumable(screen=screen,
-                                  stats=stats,
                                   ship=ship,
                                   group=ammo,
                                   consumable=consumable)

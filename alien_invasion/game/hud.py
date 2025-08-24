@@ -5,8 +5,7 @@ from pygame.sprite import Group
 from game.ship_consumables import ShipAmmo, ShipHealth, ShipShield
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
-
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
     from game.sprites import Sprites
@@ -17,12 +16,12 @@ class Hud:
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  stats: "Stats",
                  ship: "Ship",
                  sprites: "Sprites") -> None:
         self.screen = screen
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = screen.rect
         self.settings = settings
         self.stats = stats
         self.ship = ship
@@ -62,7 +61,7 @@ class Hud:
 
     def show_hud(self) -> None:
         """Draw hud on screen."""
-        self.health.draw(self.screen)
-        self.ammo.draw(self.screen)
-        self.shield.draw(self.screen)
-        self.boss_health.draw(self.screen)
+        self.health.draw(self.screen.it)
+        self.ammo.draw(self.screen.it)
+        self.shield.draw(self.screen.it)
+        self.boss_health.draw(self.screen.it)

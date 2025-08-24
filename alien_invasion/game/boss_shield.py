@@ -8,11 +8,12 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.bosses import BlueBoss, GreenBoss, RedBoss
+    from game.screen import Screen
 
 
 class BossShield(Sprite):
 
-    def __init__(self, screen: "Surface", shield: "Surface") -> None:
+    def __init__(self, screen: "Screen", shield: "Surface") -> None:
         super().__init__()
         self.screen = screen
         self.shield = shield
@@ -20,12 +21,12 @@ class BossShield(Sprite):
 
     def draw_boss_shield(self) -> None:
         """Draw boss shield on screen."""
-        self.screen.blit(self.shield, self.rect)
+        self.screen.it.blit(self.shield, self.rect)
 
 
 class GreenBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "GreenBoss") -> None:
+    def __init__(self, screen: "Screen", boss: "GreenBoss") -> None:
         shield = load_image("spawned_green_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss
@@ -44,7 +45,7 @@ class GreenBossShield(BossShield):
 
 class RedBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "RedBoss") -> None:
+    def __init__(self, screen: "Screen", boss: "RedBoss") -> None:
         shield = load_image("spawned_red_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss
@@ -70,7 +71,7 @@ class RedBossShield(BossShield):
 
 class BlueBossShield(BossShield):
 
-    def __init__(self, screen: "Surface", boss: "BlueBoss") -> None:
+    def __init__(self, screen: "Screen", boss: "BlueBoss") -> None:
         shield = load_image("spawned_blue_boss_shield.png")
         super().__init__(screen=screen, shield=shield)
         self.boss = boss

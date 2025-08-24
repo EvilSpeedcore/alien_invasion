@@ -8,8 +8,8 @@ from game.images import load_image
 
 if TYPE_CHECKING:
     from pygame.sprite import Group
-    from pygame.surface import Surface
 
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
 
@@ -25,7 +25,7 @@ class Alien(Sprite):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
@@ -39,7 +39,7 @@ class Alien(Sprite):
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = self.screen.rect
 
         # Every new aliens spawns in random area of the screen from allowed coordinates.
         self.banned_coordinates = list(range(int(ship.centery - 200.0), int(ship.centery + 206.0)))

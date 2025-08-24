@@ -5,14 +5,13 @@ from pygame.sprite import Sprite
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
-
+    from game.screen import Screen
     from game.settings import Settings
 
 
 class Ship(Sprite):
 
-    def __init__(self, settings: "Settings", screen: "Surface") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen") -> None:
         super().__init__()
         self.screen = screen
         self.settings = settings
@@ -31,7 +30,7 @@ class Ship(Sprite):
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
 
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = screen.rect
 
         # Set starting position of ship at the center of screen.
         self.rect.centerx = self.screen_rect.centerx
@@ -68,7 +67,7 @@ class Ship(Sprite):
 
     def blitme(self) -> None:
         """Draw ship."""
-        self.screen.blit(self.image, self.rect)
+        self.screen.it.blit(self.image, self.rect)
 
     def set_default_movement(self) -> None:
         # Flags to check if ship moving in one or another direction.

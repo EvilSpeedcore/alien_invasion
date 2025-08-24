@@ -8,12 +8,13 @@ if TYPE_CHECKING:
     from pygame.rect import Rect
     from pygame.surface import Surface
 
+    from game.screen import Screen
     from game.ship import Ship
 
 
 class ShipConsumable(Sprite):
 
-    def __init__(self, screen: "Surface", item: "Surface", rect: "Rect") -> None:
+    def __init__(self, screen: "Screen", item: "Surface", rect: "Rect") -> None:
         super().__init__()
         self.screen = screen
         self.item = item
@@ -21,7 +22,7 @@ class ShipConsumable(Sprite):
 
     def draw_item(self) -> None:
         """Draw item on screen."""
-        self.screen.blit(self.item, self.rect)
+        self.screen.it.blit(self.item, self.rect)
 
 
 class ShipHealth(ShipConsumable):
@@ -29,7 +30,7 @@ class ShipHealth(ShipConsumable):
     _IMAGE = load_image("stats_health.png")
     _ITEM = load_image("spawned_health.png")
 
-    def __init__(self, screen: "Surface") -> None:
+    def __init__(self, screen: "Screen") -> None:
         self.image = self._IMAGE
         rect = self._IMAGE.get_rect()
         super().__init__(screen=screen, item=self._ITEM, rect=rect)
@@ -40,7 +41,7 @@ class ShipAmmo(ShipConsumable):
     _IMAGE = load_image("stats_ammo.png")
     _ITEM = load_image("spawned_ammo.png")
 
-    def __init__(self, screen: "Surface") -> None:
+    def __init__(self, screen: "Screen") -> None:
         self.image = self._IMAGE
         rect = self.image.get_rect()
         super().__init__(screen=screen, item=self._ITEM, rect=rect)
@@ -50,7 +51,7 @@ class ShipShield(ShipConsumable):
     _IMAGE = load_image("stats_shield.png")
     _ITEM = load_image("spawned_shield.png")
 
-    def __init__(self, screen: "Surface", ship: "Ship") -> None:
+    def __init__(self, screen: "Screen", ship: "Ship") -> None:
         self.image = self._IMAGE
         rect = self._ITEM.get_rect()
         super().__init__(screen=screen, item=self._ITEM, rect=rect)

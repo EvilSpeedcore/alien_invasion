@@ -6,14 +6,14 @@ import pygame.font
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
+    from game.screen import Screen
 
 
 class Button:
 
-    def __init__(self, screen: "Surface", msg: str) -> None:
+    def __init__(self, screen: "Screen", msg: str) -> None:
         self.screen = screen
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = screen.rect
         self.button_image = load_image("button1.png")
         self.button_color = (176, 186, 231)
         self.hover_text_color = (150, 255, 255)
@@ -43,5 +43,5 @@ class Button:
 
     def draw_button(self) -> None:
         """Draw button with text on screen."""
-        self.screen.blit(self.button_image, self.ellipse_rect)
-        self.screen.blit(self.msg_image, self.msg_image_rect)
+        self.screen.it.blit(self.button_image, self.ellipse_rect)
+        self.screen.it.blit(self.msg_image, self.msg_image_rect)

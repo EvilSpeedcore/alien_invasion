@@ -10,13 +10,14 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.bosses import BlueBoss, GreenBoss, RedBoss
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
 
 
 class BossBullet(Sprite):
 
-    def __init__(self, screen: "Surface", image: "Surface") -> None:
+    def __init__(self, screen: "Screen", image: "Surface") -> None:
         super().__init__()
         self.screen = screen
         self.image = image
@@ -24,17 +25,16 @@ class BossBullet(Sprite):
 
     def draw_bullet(self) -> None:
         """Draw bullet on screen."""
-        self.screen.blit(self.image, self.rect)
+        self.screen.it.blit(self.image, self.rect)
 
 
 class GreenBossBullet(BossBullet):
 
-    def __init__(self, settings: "Settings", screen: "Surface", boss: "GreenBoss") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", boss: "GreenBoss") -> None:
         image = load_image("alien_bullet.png")
         super().__init__(screen, image=image)
 
-        # Rectangular area of the screen.
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = self.screen.rect
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx
@@ -81,12 +81,11 @@ class GreenBossBullet(BossBullet):
 
 class RedBossBullet(BossBullet):
 
-    def __init__(self, settings: "Settings", screen: "Surface", boss: "RedBoss") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", boss: "RedBoss") -> None:
         image = load_image("red_alien_bullet.png")
         super().__init__(screen=screen, image=image)
 
-        # Rectangular area of the screen.
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = self.screen.rect
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx
@@ -206,14 +205,13 @@ class BlueBossBullet(BossBullet):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  boss: "BlueBoss",
                  angle: int) -> None:
         image = load_image("blue_alien_bullet.png")
         super().__init__(screen=screen, image=image)
 
-        # Rectangular area of the screen.
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = self.screen.rect
 
         # Set starting position of boss.
         self.rect.centerx = boss.rect.centerx

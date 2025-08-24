@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
     from game.boss_health import BossHealthTypes
+    from game.screen import Screen
     from game.settings import Settings
 
 
@@ -20,7 +21,7 @@ class Boss(Sprite):
     _HIT_POINTS_WITH_SHIELD = 0
 
     def __init__(self,
-                 screen: "Surface",
+                 screen: "Screen",
                  boss_health: "GroupSingle",
                  image: "Surface",
                  health: "BossHealthTypes") -> None:
@@ -33,7 +34,7 @@ class Boss(Sprite):
         self.rect = self.image.get_rect()
 
         # Set starting position of boss.
-        self.screen_rect = screen.get_rect()
+        self.screen_rect = screen.rect
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
 
@@ -60,7 +61,7 @@ class GreenBoss(Boss):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  boss_health: "GroupSingle") -> None:
         # TODO: Load once?
         image = load_image("green_alien.png")
@@ -75,7 +76,7 @@ class RedBoss(Boss):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  boss_health: "GroupSingle") -> None:
         image = load_image("red_alien.png")
         health = RedBossHealth(settings, screen)
@@ -317,7 +318,7 @@ class BlueBoss(Boss):
 
     def __init__(self,
                  settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  boss_health: "GroupSingle") -> None:
         image = load_image("blue_alien.png")
         health = BlueBossHealth(settings, screen)

@@ -7,9 +7,8 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
-
     from game.alien import Alien
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
 
@@ -17,10 +16,10 @@ if TYPE_CHECKING:
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
 
-    def __init__(self, settings: "Settings", screen: "Surface", alien: "Alien") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", alien: "Alien") -> None:
         super().__init__()
         self.screen = screen
-        self.screen_rect = self.screen.get_rect()
+        self.screen_rect = self.screen.rect
 
         # Image load for different bullets.
         # TODO: Split by color
@@ -106,7 +105,7 @@ class AlienBullet(Sprite):
 
     def draw_alien_bullet(self) -> None:
         """Draw alien bullet on screen."""
-        self.screen.blit(self.image, self.rect)
+        self.screen.it.blit(self.image, self.rect)
 
     def define_angle(self, ship: "Ship") -> None:
         """Define direction of bullet."""

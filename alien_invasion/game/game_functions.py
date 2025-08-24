@@ -21,10 +21,10 @@ from game.ship_consumables import ShipShield
 if TYPE_CHECKING:
     from pygame.event import Event
     from pygame.sprite import Group, GroupSingle
-    from pygame.surface import Surface
 
     from game.button import Button
     from game.hud import Hud
+    from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
     from game.sprites import Sprites
@@ -73,7 +73,7 @@ class ActiveGameEvents:
 
 def check_active_game_keydown_events(event: "Event",
                                      settings: "Settings",
-                                     screen: "Surface",
+                                     screen: "Screen",
                                      stats: "Stats",
                                      hud: "Hud",
                                      ship: "Ship",
@@ -169,7 +169,7 @@ def check_keyup_events(event: "Event", ship: "Ship") -> None:
 
 
 def check_active_game_events(settings: "Settings",
-                             screen: "Surface",
+                             screen: "Screen",
                              stats: "Stats",
                              hud: "Hud",
                              ship: "Ship",
@@ -272,13 +272,13 @@ def check_keys_pressed(ship: "Ship") -> None:
 
 
 def update_screen(settings: "Settings",
-                  screen: "Surface",
+                  screen: "Screen",
                   hud: "Hud",
                   ship: "Ship",
                   dt: int,
                   sprites: "Sprites") -> None:
     """Update screen."""
-    screen.fill(settings.bg_color)
+    screen.it.fill(settings.bg_color)
 
     #  Draw ship bullets on screen.
     for bullet in sprites.ship_bullets.sprites():
@@ -317,8 +317,8 @@ def update_screen(settings: "Settings",
         health_sprite.draw_item()
     for ammo_sprite in sprites.ship_ammo.sprites():
         ammo_sprite.draw_item()
-    sprites.aliens.draw(screen)
-    sprites.bosses.draw(screen)
+    sprites.aliens.draw(screen.it)
+    sprites.bosses.draw(screen.it)
     if black_hole := sprites.boss_black_holes.sprite:
         black_hole.draw_black_hole()
 
@@ -326,8 +326,8 @@ def update_screen(settings: "Settings",
     pygame.display.flip()
 
 
-def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button: "Button") -> None:
-    screen.fill(settings.bg_color)
+def update_main_menu_screen(settings: "Settings", screen: "Screen", play_button: "Button") -> None:
+    screen.it.fill(settings.bg_color)
 
     # Show start button and clear the screen.
     play_button.prep_msg(play_button.msg)
@@ -337,9 +337,9 @@ def update_main_menu_screen(settings: "Settings", screen: "Surface", play_button
     pygame.display.flip()
 
 
-def update_bullets(screen: "Surface", bullets: "Group") -> None:
+def update_bullets(screen: "Screen", bullets: "Group") -> None:
     bullets.update()
-    screen_rect = screen.get_rect()
+    screen_rect = screen.rect
     for bullet in bullets.copy():
         if bullet.rect.bottom <= 0:  # UP
             bullets.remove(bullet)
@@ -352,7 +352,7 @@ def update_bullets(screen: "Surface", bullets: "Group") -> None:
 
 
 def fire_bullet(settings: "Settings",
-                screen: "Surface",
+                screen: "Screen",
                 stats: "Stats",
                 ship: "Ship",
                 bullets: "Group") -> None:
@@ -369,7 +369,7 @@ def get_number_aliens_x(settings: "Settings", alien_width: int) -> int:
 
 
 def create_alien(settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  stages: "Stages",
                  ship: "Ship",
                  aliens: "Group",
@@ -389,7 +389,7 @@ def create_alien(settings: "Settings",
 
 
 def create_fleet(settings: "Settings",
-                 screen: "Surface",
+                 screen: "Screen",
                  stages: "Stages",
                  ship: "Ship",
                  aliens: "Group") -> None:
@@ -401,7 +401,7 @@ def create_fleet(settings: "Settings",
 
 
 def ship_hit(settings: "Settings",
-             screen: "Surface",
+             screen: "Screen",
              stats: "Stats",
              stages: "Stages",
              hud: "Hud",
@@ -424,7 +424,7 @@ def ship_hit(settings: "Settings",
 
 
 def ship_hit_at_boss_stage(settings: "Settings",
-                           screen: "Surface",
+                           screen: "Screen",
                            stats: "Stats",
                            stages: "Stages",
                            hud: "Hud",
@@ -499,7 +499,7 @@ def ship_hit_at_boss_stage(settings: "Settings",
 
 
 def check_ship_aliens_collision(settings: "Settings",
-                                screen: "Surface",
+                                screen: "Screen",
                                 stats: "Stats",
                                 stages: "Stages",
                                 hud: "Hud",
@@ -510,7 +510,7 @@ def check_ship_aliens_collision(settings: "Settings",
 
 
 def check_ship_alien_bullets_collision(settings: "Settings",
-                                       screen: "Surface",
+                                       screen: "Screen",
                                        stats: "Stats",
                                        stages: "Stages",
                                        hud: "Hud",
@@ -521,7 +521,7 @@ def check_ship_alien_bullets_collision(settings: "Settings",
 
 
 def check_ship_boss_bullets_collision(settings: "Settings",
-                                      screen: "Surface",
+                                      screen: "Screen",
                                       stats: "Stats",
                                       stages: "Stages",
                                       hud: "Hud",
@@ -550,12 +550,12 @@ def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") 
 
 
 def check_ship_bosses_collision(settings: "Settings",
-         screen: "Surface",
-         stats: "Stats",
-         stages: "Stages",
-         hud: "Hud",
-         ship: "Ship",
-         sprites: "Sprites") -> None:
+                                screen: "Screen",
+                                stats: "Stats",
+                                stages: "Stages",
+                                hud: "Hud",
+                                ship: "Ship",
+                                sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.bosses):
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
@@ -579,7 +579,7 @@ def update_ship_ammo(stats: "Stats", hud: "Hud", ship: "Ship", ammo: "Group") ->
 
 
 def fire_alien_bullets(settings: "Settings",
-                       screen: "Surface",
+                       screen: "Screen",
                        stages: "Stages",
                        ship: "Ship",
                        dt: int,
@@ -602,7 +602,7 @@ def fire_alien_bullets(settings: "Settings",
 
 
 def fire_green_boss_bullets(settings: "Settings",
-                            screen: "Surface",
+                            screen: "Screen",
                             dt: int,
                             bosses: "GroupSingle",
                             boss_bullets: "Group") -> None:
@@ -630,7 +630,7 @@ def fire_green_boss_bullets(settings: "Settings",
         settings.green_boss_bullet_timer = 1650
 
 
-def use_ship_shield(screen: "Surface",
+def use_ship_shield(screen: "Screen",
                     stats: "Stats",
                     hud: "Hud",
                     ship: "Ship",
@@ -645,7 +645,7 @@ def use_ship_shield(screen: "Surface",
         hud.prep_shield()
 
 
-def create_green_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
+def create_green_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
     green_boss = GreenBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
     boss_shield = GreenBossShield(screen, green_boss)
@@ -655,7 +655,7 @@ def create_green_boss(settings: "Settings", screen: "Surface", sprites: "Sprites
     sprites.boss_shields.add(boss_shield)
 
 
-def create_blue_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
+def create_blue_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
     """Create blue boss."""
     blue_boss = BlueBoss(settings=settings,
                          screen=screen,
@@ -677,7 +677,7 @@ def update_green_boss_bullets(boss_bullets: "Group") -> None:
             green_boss_bullet.change_direction()
 
 
-def create_red_boss(settings: "Settings", screen: "Surface", sprites: "Sprites") -> None:
+def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
     """Create red boss."""
     red_boss = RedBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
     boss_shield = RedBossShield(screen, red_boss)
@@ -688,7 +688,7 @@ def create_red_boss(settings: "Settings", screen: "Surface", sprites: "Sprites")
 
 
 def fire_red_boss_bullets(settings: "Settings",
-                          screen: "Surface",
+                          screen: "Screen",
                           ship: "Ship",
                           dt: int,
                           bosses: "GroupSingle",
@@ -725,7 +725,7 @@ def fire_red_boss_bullets(settings: "Settings",
 
 
 def fire_blue_boss_bullets(settings: "Settings",
-                           screen: "Surface",
+                           screen: "Screen",
                            dt: int,
                            bosses: "GroupSingle",
                            boss_bullets: "Group") -> None:
@@ -768,7 +768,7 @@ def update_boss_shield(sprites: "Sprites") -> None:
 
 
 def create_black_hole(settings: "Settings",
-                      screen: "Surface",
+                      screen: "Screen",
                       ship: "Ship",
                       dt: int,
                       black_holes: "GroupSingle") -> None:
@@ -784,7 +784,7 @@ def create_black_hole(settings: "Settings",
 
 
 def update_black_hole(settings: "Settings",
-                      screen: "Surface",
+                      screen: "Screen",
                       stats: "Stats",
                       stages: "Stages",
                       hud: "Hud",
