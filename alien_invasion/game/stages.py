@@ -147,6 +147,18 @@ class Stage(BaseStage):
                                               ship=self.ship,
                                               sprites=self.sprites)
 
+        # Ship and health
+        gf.check_ship_health_collision(stats=self.stats,
+                                       hud=self.hud,
+                                       ship=self.ship,
+                                       health=self.sprites.ship_health)
+
+        # Ship and ammon
+        gf.check_ship_ammo_collision(stats=self.stats,
+                                     hud=self.hud,
+                                     ship=self.ship,
+                                     ammo=self.sprites.ship_ammo)
+
     def update(self) -> None:
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
         gf.update_bullets(self.screen, self.sprites.alien_bullets)

@@ -1,3 +1,4 @@
+# TODO: Split into multiple files?
 import secrets
 import sys
 import time
@@ -567,8 +568,7 @@ def check_ship_bullets_boss_shield_collision(sprites: "Sprites") -> None:
         sprites.bosses.sprite.prepare_health()
 
 
-def update_ship_health(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
-    """Update extra health on hud after pick-up."""
+def check_ship_health_collision(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
     if pygame.sprite.spritecollideany(ship, health):
         effect = pygame.mixer.Sound(Paths.effects() / "pick_up_1.ogg")
         effect.play()
@@ -577,8 +577,7 @@ def update_ship_health(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group"
         hud.prep_health()
 
 
-def update_ship_ammo(stats: "Stats", hud: "Hud", ship: "Ship", ammo: "Group") -> None:
-    """Update extra ammo om hud after pick-up."""
+def check_ship_ammo_collision(stats: "Stats", hud: "Hud", ship: "Ship", ammo: "Group") -> None:
     if pygame.sprite.spritecollideany(ship, ammo):
         stats.ammo += 1
         ammo.empty()
