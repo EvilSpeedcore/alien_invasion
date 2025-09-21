@@ -3,3 +3,5 @@
 * Try to use https://github.com/Nuitka/Nuitka to create executable?
 * R key: reload level (debug only)
 * Tests with input recording (events)
+* Saves
+* Aliens are not shooting bullets to current ship position
