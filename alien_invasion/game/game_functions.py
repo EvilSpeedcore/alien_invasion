@@ -276,8 +276,8 @@ def update_screen(settings: "Settings",
                   screen: "Screen",
                   hud: "Hud",
                   ship: "Ship",
-                  dt: int,
-                  sprites: "Sprites") -> None:
+                  sprites: "Sprites",
+                  dt: int) -> None:
     """Update screen."""
     screen.it.fill(settings.bg_color)
 
@@ -600,8 +600,8 @@ def fire_alien_bullets(settings: "Settings",
                        screen: "Screen",
                        stages: "Stages",
                        ship: "Ship",
-                       dt: int,
-                       sprites: "Sprites") -> None:
+                       sprites: "Sprites",
+                       dt: int) -> None:
     """Create alien bullets."""
     settings.time_elapsed_since_last_alien_bullet += dt
     if settings.time_elapsed_since_last_alien_bullet > 2500:
@@ -621,9 +621,9 @@ def fire_alien_bullets(settings: "Settings",
 
 def fire_green_boss_bullets(settings: "Settings",
                             screen: "Screen",
-                            dt: int,
                             boss: "GreenBoss",
-                            boss_bullets: "Group") -> None:
+                            boss_bullets: "Group",
+                            dt: int) -> None:
     """Create green boss bullets."""
     settings.time_elapsed_since_last_boss_bullet += dt
     if settings.time_elapsed_since_last_boss_bullet <= settings.green_boss_bullet_timer:
@@ -699,9 +699,9 @@ def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") 
 def fire_red_boss_bullets(settings: "Settings",
                           screen: "Screen",
                           ship: "Ship",
-                          dt: int,
                           bosses: "GroupSingle",
-                          boss_bullets: "Group") -> None:
+                          boss_bullets: "Group",
+                          dt: int) -> None:
     """Create red boss bullets."""
     settings.time_elapsed_since_last_red_boss_bullet += dt
     if settings.time_elapsed_since_last_red_boss_bullet > 1350:
@@ -735,9 +735,9 @@ def fire_red_boss_bullets(settings: "Settings",
 
 def fire_blue_boss_bullets(settings: "Settings",
                            screen: "Screen",
-                           dt: int,
                            bosses: "GroupSingle",
-                           boss_bullets: "Group") -> None:
+                           boss_bullets: "Group",
+                           dt: int) -> None:
     """Create blue boss bullets."""
     settings.time_elapsed_since_last_red_boss_bullet += dt
     if settings.time_elapsed_since_last_red_boss_bullet > 300:
@@ -771,8 +771,8 @@ def fire_blue_boss_bullets(settings: "Settings",
 def create_black_hole(settings: "Settings",
                       screen: "Screen",
                       ship: "Ship",
-                      dt: int,
-                      black_holes: "GroupSingle") -> None:
+                      black_holes: "GroupSingle",
+                      dt: int) -> None:
     """Create black hole."""
     settings.black_hole_spawn_timer += dt
     if len(black_holes) == 0 and settings.black_hole_spawn_timer > 2000:
@@ -784,19 +784,19 @@ def create_black_hole(settings: "Settings",
             settings.black_hole_spawn_timer = 0
 
 
-def update_black_hole(settings: "Settings", sprites: "Sprites", dt: int) -> None:
-    """Update black hole animation. Check for collisions between ship and black hole."""
-    black_holes = sprites.boss_black_holes
+def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int) -> None:
+    """Update black hole animation."""
     settings.black_hole_rotation_timer += dt
-    if settings.black_hole_rotation_timer > 300:
-        for black_hole in black_holes.sprites():
-            if black_hole.rt_image_number < 11:
-                black_hole.rt_image_number += 1
-            else:
-                black_hole.rt_image_number = 0
-            black_hole.update()
-            black_holes.add(black_hole)
-            settings.black_hole_rotation_timer = 0
+    if settings.black_hole_rotation_timer <= 300:
+        return
+
+    if black_hole := black_holes.sprite:
+        if black_hole.rt_image_number < 11:
+            black_hole.rt_image_number += 1
+        else:
+            black_hole.rt_image_number = 0
+        black_hole.update()
+        settings.black_hole_rotation_timer = 0
 
 
 def quit_game() -> None:

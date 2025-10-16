@@ -88,18 +88,18 @@ def run_game(args: Namespace) -> None:
             gf.update_bullets(screen, sprites.ship_bullets)
             stages.current.update()
             stages.current.check_collision()
-            gf.fire_alien_bullets(settings, screen, stages, ship, dt, sprites)
+            gf.fire_alien_bullets(settings, screen, stages, ship, sprites, dt)
             if stages.current.name == "green_boss":
-                gf.fire_green_boss_bullets(settings, screen, dt, sprites.bosses.sprite, sprites.boss_bullets)
+                gf.fire_green_boss_bullets(settings, screen, sprites.bosses.sprite, sprites.boss_bullets, dt)
                 gf.update_green_boss_bullets(sprites.boss_bullets)
             elif stages.current.name == "red_boss":
-                gf.fire_red_boss_bullets(settings, screen, ship, dt, sprites.bosses, sprites.boss_bullets)
+                gf.fire_red_boss_bullets(settings, screen, ship, sprites.bosses, sprites.boss_bullets, dt)
             elif stages.current.name == "blue_boss":
-                gf.fire_blue_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
-                gf.create_black_hole(settings, screen, ship, dt, sprites.boss_black_holes)
-                gf.update_black_hole(settings=settings, sprites=sprites, dt=dt)
+                gf.fire_blue_boss_bullets(settings, screen, sprites.bosses, sprites.boss_bullets, dt)
+                gf.create_black_hole(settings, screen, ship, sprites.boss_black_holes, dt)
+                gf.update_black_hole(settings, sprites.boss_black_holes, dt)
 
-            gf.update_screen(settings, screen, hud, ship, dt, sprites)
+            gf.update_screen(settings, screen, hud, ship, sprites, dt)
 
             if gf.check_game_end(stages, stats):
                 state.set(State.MAIN_MENU)
