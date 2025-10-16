@@ -764,17 +764,19 @@ def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int)
         settings.black_hole_spawn_timer = 0
         return
 
+    if not (black_hole := black_holes.sprite):
+        return
+
     settings.black_hole_rotation_timer += dt
     if settings.black_hole_rotation_timer <= 300:
         return
 
-    if black_hole := black_holes.sprite:
-        if black_hole.rt_image_number < 11:
-            black_hole.rt_image_number += 1
-        else:
-            black_hole.rt_image_number = 0
-        black_hole.update()
-        settings.black_hole_rotation_timer = 0
+    if black_hole.rt_image_number < 11:
+        black_hole.rt_image_number += 1
+    else:
+        black_hole.rt_image_number = 0
+    black_hole.update()
+    settings.black_hole_rotation_timer = 0
 
 
 def quit_game() -> None:
