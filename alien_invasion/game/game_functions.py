@@ -633,7 +633,7 @@ def fire_green_boss_bullets(settings: "Settings",
     for range_ in ranges:
         bullet = GreenBossBullet(settings=settings, screen=screen, boss=boss)
         bullet.shooting_angle_up = secrets.choice(range_)
-        bullet.add(boss_bullets)
+        boss_bullets.add(bullet)
 
     settings.time_elapsed_since_last_boss_bullet = 0
     settings.green_boss_bullet_timer = 1650
