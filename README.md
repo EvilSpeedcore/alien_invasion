@@ -5,3 +5,4 @@
 * Tests with input recording (events)
 * Saves
 * Aliens are not shooting bullets to current ship position
+* Change blue alient to shoot first bullets with delay
