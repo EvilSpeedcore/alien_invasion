@@ -768,22 +768,23 @@ def fire_blue_boss_bullets(settings: "Settings",
                     boss.rt_trigger = True
 
 
-def create_black_hole(settings: "Settings",
-                      screen: "Screen",
-                      ship: "Ship",
-                      black_holes: "GroupSingle",
-                      dt: int) -> None:
+def maybe_create_black_hole(settings: "Settings",
+                            screen: "Screen",
+                            ship: "Ship",
+                            black_holes: "GroupSingle") -> None:
     """Create black hole."""
-    settings.black_hole_spawn_timer += dt
     if not black_holes and settings.black_hole_spawn_timer > 2000:
         black_holes.add(BlackHole(settings, screen, ship))
-    elif black_holes and settings.black_hole_spawn_timer > 6000:
-        black_holes.empty()
-        settings.black_hole_spawn_timer = 0
 
 
 def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int) -> None:
     """Update black hole animation."""
+    settings.black_hole_spawn_timer += dt
+    if black_holes and settings.black_hole_spawn_timer > 6000:
+        black_holes.empty()
+        settings.black_hole_spawn_timer = 0
+        return
+
     settings.black_hole_rotation_timer += dt
     if settings.black_hole_rotation_timer <= 300:
         return
