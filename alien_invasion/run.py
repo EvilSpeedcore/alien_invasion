@@ -93,7 +93,7 @@ def run_game(args: Namespace) -> None:
             elif stages.current.name == "blue_boss":
                 gf.fire_blue_boss_bullets(settings, screen, dt, sprites.bosses, sprites.boss_bullets)
                 gf.create_black_hole(settings, screen, ship, dt, sprites.boss_black_holes)
-                gf.update_black_hole(settings, screen, stats, stages, hud, ship, dt, sprites)
+                gf.update_black_hole(settings=settings, sprites=sprites, dt=dt)
 
             gf.update_screen(settings, screen, hud, ship, dt, sprites)
 

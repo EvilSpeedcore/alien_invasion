@@ -585,6 +585,17 @@ def check_ship_ammo_collision(stats: "Stats", hud: "Hud", ship: "Ship", ammo: "G
         hud.prep_ammo()
 
 
+def check_ship_black_holes_collision(settings: "Settings",
+                                     screen: "Screen",
+                                     stats: "Stats",
+                                     hud: "Hud",
+                                     stages: "Stages",
+                                     ship: "Ship",
+                                     sprites: "Sprites") -> None:
+    if pygame.sprite.spritecollideany(ship, sprites.boss_black_holes):
+        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
+
+
 def fire_alien_bullets(settings: "Settings",
                        screen: "Screen",
                        stages: "Stages",
@@ -773,14 +784,7 @@ def create_black_hole(settings: "Settings",
             settings.black_hole_spawn_timer = 0
 
 
-def update_black_hole(settings: "Settings",
-                      screen: "Screen",
-                      stats: "Stats",
-                      stages: "Stages",
-                      hud: "Hud",
-                      ship: "Ship",
-                      dt: int,
-                      sprites: "Sprites") -> None:
+def update_black_hole(settings: "Settings", sprites: "Sprites", dt: int) -> None:
     """Update black hole animation. Check for collisions between ship and black hole."""
     black_holes = sprites.boss_black_holes
     settings.black_hole_rotation_timer += dt
@@ -793,8 +797,6 @@ def update_black_hole(settings: "Settings",
             black_hole.update()
             black_holes.add(black_hole)
             settings.black_hole_rotation_timer = 0
-    if pygame.sprite.spritecollideany(ship, black_holes):
-        ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
 
 
 def quit_game() -> None:

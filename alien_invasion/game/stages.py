@@ -256,6 +256,16 @@ class BlueBossStage(BossStage):
         super().setup()
         gf.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
+    def check_collision(self) -> None:
+        gf.check_ship_black_holes_collision(settings=self.settings,
+                                            screen=self.screen,
+                                            stats=self.stats,
+                                            hud=self.hud,
+                                            stages=self.stages,
+                                            ship=self.ship,
+                                            sprites=self.sprites)
+        super().check_collision()
+
     def update(self) -> None:
         gf.update_bullets(self.screen, self.sprites.boss_bullets)
 
