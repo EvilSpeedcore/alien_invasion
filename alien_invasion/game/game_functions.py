@@ -775,13 +775,11 @@ def create_black_hole(settings: "Settings",
                       dt: int) -> None:
     """Create black hole."""
     settings.black_hole_spawn_timer += dt
-    if len(black_holes) == 0 and settings.black_hole_spawn_timer > 2000:
-        black_hole = BlackHole(settings, screen, ship)
-        black_holes.add(black_hole)
-    elif len(black_holes) == 1:
-        if settings.black_hole_spawn_timer > 6000:
-            black_holes.empty()
-            settings.black_hole_spawn_timer = 0
+    if not black_holes and settings.black_hole_spawn_timer > 2000:
+        black_holes.add(BlackHole(settings, screen, ship))
+    elif black_holes and settings.black_hole_spawn_timer > 6000:
+        black_holes.empty()
+        settings.black_hole_spawn_timer = 0
 
 
 def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int) -> None:
