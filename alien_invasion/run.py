@@ -16,11 +16,15 @@ from game.state import GameState, State
 from game.stats import Stats
 
 
+def initialize_audio() -> None:
+    pygame.mixer.pre_init(44100, -16, 2, 2048)
+    pygame.mixer.init()
+
+
 def run_game(args: Namespace) -> None:
     logging.basicConfig(filename="app.log", level=logging.DEBUG)
 
-    pygame.mixer.pre_init(44100, -16, 2, 2048)
-    pygame.mixer.init()
+    initialize_audio()
     pygame.init()
     settings = Settings(health=args.health)
     screen = Screen(settings.screen_width, settings.screen_height)
