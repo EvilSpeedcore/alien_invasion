@@ -29,6 +29,7 @@ class Settings:
         self.time_elapsed_since_last_boss_bullet = 0
         self.time_elapsed_since_boss_shield = 0
         self.time_elapsed_since_last_red_boss_bullet = 0
+        self.time_elapsed_since_last_blue_boss_bullet = 0
         self.green_boss_bullet_timer = 300
 
         # Game settings

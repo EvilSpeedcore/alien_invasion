@@ -739,33 +739,26 @@ def fire_blue_boss_bullets(settings: "Settings",
                            boss_bullets: "Group",
                            dt: int) -> None:
     """Create blue boss bullets."""
-    settings.time_elapsed_since_last_red_boss_bullet += dt
-    if settings.time_elapsed_since_last_red_boss_bullet > 300:
-        for boss in bosses:
-            blue_boss_bullet = BlueBossBullet(settings, screen, boss, boss.shooting_angle)
-            blue_boss_bullet.add(boss_bullets)
+    settings.time_elapsed_since_last_blue_boss_bullet += dt
+    if settings.time_elapsed_since_last_blue_boss_bullet <= 300:
+        return
 
-            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
-                                              (boss.shooting_angle + boss.shooting_angles[0]))
-            blue_boss_bullet.add(boss_bullets)
+    if not (boss := bosses.sprite):
+        return
 
-            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
-                                              (boss.shooting_angle + boss.shooting_angles[1]))
-            blue_boss_bullet.add(boss_bullets)
+    angles = (0, 90, 180, 270)
+    bullets = (BlueBossBullet(settings, screen, boss, boss.shooting_angle + angle) for angle in angles)
+    boss_bullets.add(bullets)
 
-            blue_boss_bullet = BlueBossBullet(settings, screen, boss,
-                                              (boss.shooting_angle + boss.shooting_angles[2]))
-            blue_boss_bullet.add(boss_bullets)
-
-            settings.time_elapsed_since_last_red_boss_bullet = 0
-            if boss.rt_trigger:
-                boss.shooting_angle += 15
-                if boss.shooting_angle > 400:
-                    boss.rt_trigger = False
-            else:
-                boss.shooting_angle -= 15
-                if boss.shooting_angle < 0:
-                    boss.rt_trigger = True
+    settings.time_elapsed_since_last_blue_boss_bullet = 0
+    if boss.rt_trigger:
+        boss.shooting_angle += 15
+        if boss.shooting_angle > 400:
+            boss.rt_trigger = False
+    else:
+        boss.shooting_angle -= 15
+        if boss.shooting_angle < 0:
+            boss.rt_trigger = True
 
 
 def maybe_create_black_hole(settings: "Settings",

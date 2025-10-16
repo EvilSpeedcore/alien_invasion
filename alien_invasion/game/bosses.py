@@ -328,9 +328,8 @@ class BlueBoss(Boss):
         self.x = float(self.rect.centerx)
         self.y = float(self.rect.centery)
 
-        # Angles to manipulate shooting direction.
+        # Angle to manipulate shooting direction.
         self.shooting_angle = 0
-        self.shooting_angles = [90, 180, 270]
 
         # Trigger, that defines clock direction of boss: clockwise, counter-clockwise.
         self.rt_trigger = True
