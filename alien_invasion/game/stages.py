@@ -414,17 +414,12 @@ def maybe_spawn_consumable(screen: "Screen",
 
     x_padding = consumable.rect.width * 3
     y_padding = consumable.rect.height * 3
-    # left x
     left_x = range(screen.rect.left + x_padding, ship.rect.left - x_padding)
-    # right x
     right_x = range(ship.rect.right + x_padding, screen.rect.right - x_padding)
-    # top y
     top_y = range(screen.rect.top + y_padding, ship.rect.top - y_padding)
-    # bottom y
     bottom_y = range(ship.rect.bottom + y_padding, screen.rect.bottom - y_padding)
-
-    consumable.rect.x = secrets.choice(secrets.choice([left_x or right_x, right_x or left_x]))
-    consumable.rect.y = secrets.choice(secrets.choice([top_y or bottom_y, bottom_y or top_y]))
+    consumable.rect.x = secrets.choice(secrets.choice((left_x or right_x, right_x or left_x)))
+    consumable.rect.y = secrets.choice(secrets.choice((top_y or bottom_y, bottom_y or top_y)))
     group.add(consumable)
     return True
 
