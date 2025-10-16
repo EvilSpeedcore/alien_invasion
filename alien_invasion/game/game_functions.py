@@ -704,33 +704,19 @@ def fire_red_boss_bullets(settings: "Settings",
                           dt: int) -> None:
     """Create red boss bullets."""
     settings.time_elapsed_since_last_red_boss_bullet += dt
-    if settings.time_elapsed_since_last_red_boss_bullet > 1350:
-        for boss in bosses:
-            red_boss_bullet = RedBossBullet(settings, screen, boss)
-            red_boss_bullet.define_position(ship)
-            red_boss_bullet.add(boss_bullets)
+    if settings.time_elapsed_since_last_red_boss_bullet <= 1350:
+        return
 
-            red_boss_bullet_2 = RedBossBullet(settings, screen, boss)
-            red_boss_bullet_2.define_position(ship)
-            red_boss_bullet_2.shooting_angle += 15
-            red_boss_bullet_2.add(boss_bullets)
+    if not (boss := bosses.sprite):
+        return
 
-            red_boss_bullet_3 = RedBossBullet(settings, screen, boss)
-            red_boss_bullet_3.define_position(ship)
-            red_boss_bullet_3.shooting_angle += 30
-            red_boss_bullet_3.add(boss_bullets)
+    for angle in (0, 15, 30, -15, -30):
+        bullet = RedBossBullet(settings, screen, boss)
+        bullet.define_position(ship)
+        bullet.shooting_angle = bullet.shooting_angle + angle
+        boss_bullets.add(bullet)
 
-            red_boss_bullet_4 = RedBossBullet(settings, screen, boss)
-            red_boss_bullet_4.define_position(ship)
-            red_boss_bullet_4.shooting_angle -= 15
-            red_boss_bullet_4.add(boss_bullets)
-
-            red_boss_bullet_5 = RedBossBullet(settings, screen, boss)
-            red_boss_bullet_5.define_position(ship)
-            red_boss_bullet_5.shooting_angle -= 30
-            red_boss_bullet_5.add(boss_bullets)
-
-            settings.time_elapsed_since_last_red_boss_bullet = 0
+    settings.time_elapsed_since_last_red_boss_bullet = 0
 
 
 def fire_blue_boss_bullets(settings: "Settings",
