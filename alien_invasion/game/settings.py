@@ -1,6 +1,3 @@
-from argparse import Namespace
-
-
 class Settings:
 
     def __init__(self, health: int = 3) -> None:
