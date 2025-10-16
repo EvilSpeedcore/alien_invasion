@@ -22,7 +22,7 @@ def run_game(args: Namespace) -> None:
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
     pygame.init()
-    settings = Settings(args)
+    settings = Settings(health=args.health)
     screen = Screen(settings.screen_width, settings.screen_height)
     pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
@@ -109,6 +109,6 @@ def run_game(args: Namespace) -> None:
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--stage", type=str)
-    parser.add_argument("--ships", type=int)
+    parser.add_argument("--health", type=int)
     args = parser.parse_args()
     run_game(args)
