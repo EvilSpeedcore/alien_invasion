@@ -23,6 +23,8 @@ if TYPE_CHECKING:
     from pygame.event import Event
     from pygame.sprite import Group, GroupSingle
 
+    from game.boss_shield import BossShield
+    from game.bosses import Boss
     from game.button import Button
     from game.hud import Hud
     from game.screen import Screen
@@ -282,10 +284,13 @@ def update_screen(settings: "Settings",
     screen.it.fill(settings.bg_color)
 
     #  Draw ship bullets on screen.
-    for bullet in sprites.ship_bullets.sprites():
+    bullets: list[Bullet] = sprites.ship_bullets.sprites()
+    for bullet in bullets:
         bullet.draw_bullet()
 
     # Draw alien bullets on screen.
+    # TODO: Move into respected stages?
+    # TODO: Add type hints
     for alien_bullet in sprites.alien_bullets.sprites():
         alien_bullet.draw_alien_bullet()
     for green_boss_bullet in sprites.boss_bullets.sprites():
@@ -294,17 +299,20 @@ def update_screen(settings: "Settings",
         red_boss_bullet.draw_bullet()
 
     #  Ship shield duration handling.
-    if len(sprites.ship_shields) == 1:
+    if sprites.ship_shields:
         settings.time_elapsed_since_shield += dt
         if settings.time_elapsed_since_shield > 3000:
             settings.time_elapsed_since_shield = 0
             sprites.ship_shields.empty()
 
-    #  Display ship shield on hud.
-    for used_shield in sprites.ship_shields:
-        used_shield.draw_item()
+    #  Draw ship shield on usage.
+    # TODO: Why ship_shields is a Group, when ship can have only 1 active shield?
+    # TODO: Add type hints
+    for shield in sprites.ship_shields:
+        shield.draw_item()
 
     #  Display boss shield on hud.
+    boss_shield: BossShield
     if boss_shield := sprites.boss_shields.sprite:
         if boss_shield.points > 0:
             boss_shield.draw_boss_shield()
@@ -320,8 +328,8 @@ def update_screen(settings: "Settings",
         ammo_sprite.draw_item()
     sprites.aliens.draw(screen.it)
     sprites.bosses.draw(screen.it)
-    if black_hole := sprites.boss_black_holes.sprite:
-        black_hole.draw_black_hole()
+    # TODO: Move into respected stage?
+    sprites.boss_black_holes.draw(screen.it)
 
     # Update screen.
     pygame.display.flip()
@@ -338,7 +346,7 @@ def update_main_menu_screen(settings: "Settings", screen: "Screen", play_button:
     pygame.display.flip()
 
 
-def update_bullets(screen: "Screen", bullets: "Group") -> None:
+def update_bullets(screen: "Screen", bullets: "Group[Bullet]") -> None:
     bullets.update()
     screen_rect = screen.rect
     for bullet in bullets.copy():
@@ -438,8 +446,9 @@ def ship_hit_at_boss_stage(settings: "Settings",
     if stages.current.name == "green_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        sprites.bosses.sprite.set_default_hit_points()
-        sprites.bosses.sprite.prepare_health()
+        boss: Boss = sprites.bosses.sprite
+        boss.set_default_hit_points()
+        boss.prepare_health()
 
         # Ship and boss timers refresh.
         settings.time_elapsed_since_shield = 0
@@ -459,8 +468,9 @@ def ship_hit_at_boss_stage(settings: "Settings",
     elif stages.current.name == "red_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        sprites.bosses.sprite.set_default_hit_points()
-        sprites.bosses.sprite.prepare_health()
+        boss = sprites.bosses.sprite
+        boss.set_default_hit_points()
+        boss.prepare_health()
 
         # Ship and boss timers refresh.
         settings.time_elapsed_since_shield = 0
@@ -480,8 +490,9 @@ def ship_hit_at_boss_stage(settings: "Settings",
     elif stages.current.name == "blue_boss":
         stats.ships_left -= 1
         hud.prep_health()
-        sprites.bosses.sprite.set_default_hit_points()
-        sprites.bosses.sprite.prepare_health()
+        boss = sprites.bosses.sprite
+        boss.set_default_hit_points()
+        boss.prepare_health()
 
         # Ship and boss timers refresh.
         settings.black_hole_spawn_timer = 0
@@ -535,13 +546,13 @@ def check_ship_boss_bullets_collision(settings: "Settings",
 
 def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") -> None:
     collision = pygame.sprite.groupcollide(sprites.ship_bullets,
-                                                sprites.bosses,
-                                                dokilla=True,
-                                                dokillb=False)
+                                           sprites.bosses,
+                                           dokilla=True,
+                                           dokillb=False)
     if not collision:
         return
 
-    boss = sprites.bosses.sprite
+    boss: Boss = sprites.bosses.sprite
     boss.hit_points -= 1
     boss.hit_points_with_shield -= 1
     boss.prepare_health()
@@ -564,9 +575,11 @@ def check_ship_bosses_collision(settings: "Settings",
 
 def check_ship_bullets_boss_shield_collision(sprites: "Sprites") -> None:
     if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
-        sprites.boss_shields.sprite.points -= 1
-        sprites.bosses.sprite.hit_points_with_shield -= 1
-        sprites.bosses.sprite.prepare_health()
+        boss_shield: BossShield = sprites.boss_shields.sprite
+        boss_shield.points -= 1
+        boss: Boss = sprites.bosses.sprite
+        boss.hit_points_with_shield -= 1
+        boss.prepare_health()
 
 
 def check_ship_health_collision(stats: "Stats", hud: "Hud", ship: "Ship", health: "Group") -> None:
@@ -676,7 +689,7 @@ def create_blue_boss(settings: "Settings", screen: "Screen", sprites: "Sprites")
     sprites.boss_shields.add(boss_shield)
 
 
-def update_green_boss_bullets(boss_bullets: "Group") -> None:
+def update_green_boss_bullets(boss_bullets: "Group[GreenBossBullet]") -> None:
     """Update green boss bullets position."""
     boss_bullets.update()
     for green_boss_bullet in boss_bullets.copy():
@@ -707,6 +720,7 @@ def fire_red_boss_bullets(settings: "Settings",
     if settings.time_elapsed_since_last_red_boss_bullet <= 1350:
         return
 
+    boss: RedBoss | None
     if not (boss := bosses.sprite):
         return
 
@@ -729,6 +743,7 @@ def fire_blue_boss_bullets(settings: "Settings",
     if settings.time_elapsed_since_last_blue_boss_bullet <= 300:
         return
 
+    boss: BlueBoss | None
     if not (boss := bosses.sprite):
         return
 
@@ -764,6 +779,7 @@ def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int)
         settings.black_hole_spawn_timer = 0
         return
 
+    black_hole: BlackHole | None
     if not (black_hole := black_holes.sprite):
         return
 

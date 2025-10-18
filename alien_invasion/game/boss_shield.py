@@ -17,7 +17,9 @@ class BossShield(Sprite):
         super().__init__()
         self.screen = screen
         self.shield = shield
+
         self.rect = shield.get_rect()
+        self.points = 0
 
     def draw_boss_shield(self) -> None:
         """Draw boss shield on screen."""

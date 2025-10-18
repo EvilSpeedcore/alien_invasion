@@ -64,7 +64,7 @@ class BlackHole(Sprite):
         # Black hole animation step counter.
         self.rt_image_number = 0
 
-    def draw_black_hole(self) -> None:
+    def draw(self) -> None:
         """Draw black hole on screen."""
         self.screen.it.blit(self.image, self.rect)
 
