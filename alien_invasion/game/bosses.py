@@ -26,6 +26,7 @@ class Boss(Sprite):
                  image: "Surface",
                  health: "BossHealthTypes") -> None:
         super().__init__()
+        self.screen = screen
         self.boss_health = boss_health
         self.image = image
         self.health = health
@@ -51,6 +52,9 @@ class Boss(Sprite):
     def set_default_hit_points(self) -> None:
         self.hit_points = self._HIT_POINTS
         self.hit_points_with_shield = self._HIT_POINTS_WITH_SHIELD
+
+    def blitme(self) -> None:
+        self.screen.it.blit(self.image, self.rect)
 
 
 class GreenBoss(Boss):

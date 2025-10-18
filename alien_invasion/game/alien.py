@@ -69,3 +69,6 @@ class Alien(Sprite):
             if self.y < ship.centery:
                 self.y += self.settings.alien_speed_factor  # type: ignore[assignment]
                 self.rect.centery = self.y
+
+    def blitme(self) -> None:
+        self.screen.it.blit(self.image, self.rect)

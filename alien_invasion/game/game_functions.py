@@ -291,16 +291,12 @@ def update_screen(settings: "Settings",
         sprites.ship_shields.sprites(),
         sprites.ship_health.sprites(),
         sprites.ship_health.sprites(),
+        sprites.boss_black_holes.sprites(),
+        sprites.bosses.sprites(),
+        sprites.aliens.sprites(),
         (ship,),
     ):
         item.blitme()
-
-    for item in (
-        sprites.aliens,
-        sprites.bosses,
-        sprites.boss_black_holes,
-    ):
-        item.draw(screen.it)
 
     # Ship shield duration handling.
     if sprites.ship_shields:
