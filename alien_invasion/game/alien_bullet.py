@@ -103,7 +103,7 @@ class AlienBullet(Sprite):
             self.rect.centery = self.y  # type: ignore[assignment]
             self.rect.centerx = self.x  # type: ignore[assignment]
 
-    def draw_alien_bullet(self) -> None:
+    def blitme(self) -> None:
         """Draw alien bullet on screen."""
         self.screen.it.blit(self.image, self.rect)
 

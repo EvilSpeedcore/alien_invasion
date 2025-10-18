@@ -20,7 +20,7 @@ class ShipConsumable(Sprite):
         self.item = item
         self.rect = rect
 
-    def draw_item(self) -> None:
+    def blitme(self) -> None:
         """Draw item on screen."""
         self.screen.it.blit(self.item, self.rect)
 

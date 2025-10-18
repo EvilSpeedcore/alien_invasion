@@ -23,7 +23,7 @@ class BossBullet(Sprite):
         self.image = image
         self.rect = image.get_rect()
 
-    def draw_bullet(self) -> None:
+    def blitme(self) -> None:
         """Draw bullet on screen."""
         self.screen.it.blit(self.image, self.rect)
 

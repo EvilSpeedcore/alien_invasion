@@ -104,10 +104,9 @@ class Bullet(Sprite):
             self.rect.centery = self.y_down_right  # type: ignore[assignment]
             self.rect.centerx = self.x_down_right  # type: ignore[assignment]
 
-    def draw_bullet(self) -> None:
+    def blitme(self) -> None:
         """Draw bullet on screen depending on ship current rotation."""
         if self.bullet_rotation == "up":
-            """Вывод пули на экран."""
             self.screen.it.blit(self.image, self.rect)
         if self.bullet_rotation == "right":
             self.screen.it.blit(self.image, self.rect)

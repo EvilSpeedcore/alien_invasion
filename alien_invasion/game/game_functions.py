@@ -3,6 +3,7 @@ import secrets
 import sys
 import time
 from dataclasses import dataclass
+from itertools import chain
 from time import sleep
 from typing import TYPE_CHECKING
 
@@ -25,13 +26,11 @@ if TYPE_CHECKING:
 
     from game.boss_shield import BossShield
     from game.bosses import Boss
-    from game.bosses_bullets import BossBullet
     from game.button import Button
     from game.hud import Hud
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
-    from game.ship_consumables import ShipAmmo, ShipHealth
     from game.sprites import Sprites
     from game.stages import Stages
     from game.stats import Stats
@@ -285,18 +284,23 @@ def update_screen(settings: "Settings",
     """Update screen."""
     screen.it.fill(settings.bg_color)
 
-    #  Draw ship bullets on screen.
-    bullets: list[Bullet] = sprites.ship_bullets.sprites()
-    for bullet in bullets:
-        bullet.draw_bullet()
+    for item in chain(
+        sprites.ship_bullets.sprites(),
+        sprites.alien_bullets.sprites(),
+        sprites.boss_bullets.sprites(),
+        sprites.ship_shields.sprites(),
+        sprites.ship_health.sprites(),
+        sprites.ship_health.sprites(),
+        (ship,),
+    ):
+        item.blitme()
 
-    # Draw alien bullets on screen.
-    alien_bullets: list[AlienBullet] = sprites.alien_bullets.sprites()
-    for alien_bullet in alien_bullets:
-        alien_bullet.draw_alien_bullet()
-    boss_bullets: list[BossBullet] = sprites.boss_bullets.sprites()
-    for boss_bullet in boss_bullets:
-        boss_bullet.draw_bullet()
+    for item in (
+        sprites.aliens,
+        sprites.bosses,
+        sprites.boss_black_holes,
+    ):
+        item.draw(screen.it)
 
     # Ship shield duration handling.
     if sprites.ship_shields:
@@ -304,11 +308,6 @@ def update_screen(settings: "Settings",
         if settings.time_elapsed_since_shield > 3000:
             settings.time_elapsed_since_shield = 0
             sprites.ship_shields.empty()
-
-    # Draw ship shield on usage.
-    ship_shields: list[ShipShield] = sprites.ship_shields.sprites()
-    for shield in ship_shields:
-        shield.draw_item()
 
     # Display boss shield on hud.
     boss_shield: BossShield
@@ -320,17 +319,6 @@ def update_screen(settings: "Settings",
             sprites.boss_shields.empty()
 
     hud.show_hud()
-    ship.blitme()
-
-    ship_health: list[ShipHealth] = sprites.ship_health.sprites()
-    for health_sprite in ship_health:
-        health_sprite.draw_item()
-    ship_ammo: list[ShipAmmo] = sprites.ship_health.sprites()
-    for ammo_sprite in ship_ammo:
-        ammo_sprite.draw_item()
-    sprites.aliens.draw(screen.it)
-    sprites.bosses.draw(screen.it)
-    sprites.boss_black_holes.draw(screen.it)
 
     # Update screen.
     pygame.display.flip()
