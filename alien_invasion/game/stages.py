@@ -61,7 +61,7 @@ class BaseStage:
 
     @abstractmethod
     def update(self) -> None:
-        pass
+        self.sprites.ship_shields.update()
 
     @abstractmethod
     def teardown(self) -> None:
@@ -160,6 +160,7 @@ class Stage(BaseStage):
                                      ammo=self.sprites.ship_ammo)
 
     def update(self) -> None:
+        super().update()
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
         gf.update_bullets(self.screen, self.sprites.alien_bullets)
 
@@ -224,7 +225,7 @@ class BossStage(BaseStage):
         gf.check_ship_bullets_boss_shield_collision(self.sprites)
 
     def update(self) -> None:
-        pass
+        super().update()
 
     def teardown(self) -> None:
         super().teardown()
@@ -267,6 +268,7 @@ class BlueBossStage(BossStage):
         super().check_collision()
 
     def update(self) -> None:
+        super().update()
         gf.update_bullets(self.screen, self.sprites.boss_bullets)
 
     def teardown(self) -> None:

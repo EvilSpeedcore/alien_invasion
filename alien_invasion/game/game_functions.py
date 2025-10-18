@@ -25,11 +25,13 @@ if TYPE_CHECKING:
 
     from game.boss_shield import BossShield
     from game.bosses import Boss
+    from game.bosses_bullets import BossBullet
     from game.button import Button
     from game.hud import Hud
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
+    from game.ship_consumables import ShipAmmo, ShipHealth
     from game.sprites import Sprites
     from game.stages import Stages
     from game.stats import Stats
@@ -289,29 +291,26 @@ def update_screen(settings: "Settings",
         bullet.draw_bullet()
 
     # Draw alien bullets on screen.
-    # TODO: Move into respected stages?
-    # TODO: Add type hints
-    for alien_bullet in sprites.alien_bullets.sprites():
+    alien_bullets: list[AlienBullet] = sprites.alien_bullets.sprites()
+    for alien_bullet in alien_bullets:
         alien_bullet.draw_alien_bullet()
-    for green_boss_bullet in sprites.boss_bullets.sprites():
-        green_boss_bullet.draw_bullet()
-    for red_boss_bullet in sprites.boss_bullets.sprites():
-        red_boss_bullet.draw_bullet()
+    boss_bullets: list[BossBullet] = sprites.boss_bullets.sprites()
+    for boss_bullet in boss_bullets:
+        boss_bullet.draw_bullet()
 
-    #  Ship shield duration handling.
+    # Ship shield duration handling.
     if sprites.ship_shields:
         settings.time_elapsed_since_shield += dt
         if settings.time_elapsed_since_shield > 3000:
             settings.time_elapsed_since_shield = 0
             sprites.ship_shields.empty()
 
-    #  Draw ship shield on usage.
-    # TODO: Why ship_shields is a Group, when ship can have only 1 active shield?
-    # TODO: Add type hints
-    for shield in sprites.ship_shields:
+    # Draw ship shield on usage.
+    ship_shields: list[ShipShield] = sprites.ship_shields.sprites()
+    for shield in ship_shields:
         shield.draw_item()
 
-    #  Display boss shield on hud.
+    # Display boss shield on hud.
     boss_shield: BossShield
     if boss_shield := sprites.boss_shields.sprite:
         if boss_shield.points > 0:
@@ -322,13 +321,15 @@ def update_screen(settings: "Settings",
 
     hud.show_hud()
     ship.blitme()
-    for health_sprite in sprites.ship_health.sprites():
+
+    ship_health: list[ShipHealth] = sprites.ship_health.sprites()
+    for health_sprite in ship_health:
         health_sprite.draw_item()
-    for ammo_sprite in sprites.ship_ammo.sprites():
+    ship_ammo: list[ShipAmmo] = sprites.ship_health.sprites()
+    for ammo_sprite in ship_ammo:
         ammo_sprite.draw_item()
     sprites.aliens.draw(screen.it)
     sprites.bosses.draw(screen.it)
-    # TODO: Move into respected stage?
     sprites.boss_black_holes.draw(screen.it)
 
     # Update screen.
