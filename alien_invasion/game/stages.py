@@ -18,6 +18,7 @@ type StageTypes = "BossStage" | "Stage" | "EndStage"
 if TYPE_CHECKING:
     from pygame.sprite import Group
 
+    from game.bosses import Boss
     from game.hud import Hud
     from game.screen import Screen
     from game.settings import Settings
@@ -234,10 +235,10 @@ class BossStage(BaseStage):
         collision.check_bullets_screen_collision(screen=self.screen,
                                                  bullets=self.sprites.boss_bullets)
 
-    def update(self):
+    def update(self) -> None:
         super().update()
-        # TODO: Add type hint
-        self.sprites.bosses.sprite.update()
+        boss: Boss = self.sprites.bosses.sprite
+        boss.update()
         self.sprites.boss_bullets.update()
 
     def teardown(self) -> None:
