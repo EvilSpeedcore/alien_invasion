@@ -132,13 +132,7 @@ def update_bullets(screen: "Screen", bullets: "Group[Bullet]") -> None:
     bullets.update()
     screen_rect = screen.rect
     for bullet in bullets.copy():
-        if bullet.rect.bottom <= 0:  # UP
-            bullets.remove(bullet)
-        if bullet.rect.left > screen_rect.right:  # RIGHT
-            bullets.remove(bullet)
-        if bullet.rect.right < screen_rect.left:  # LEFT
-            bullets.remove(bullet)
-        if bullet.rect.top > screen_rect.bottom:  # BOTTOM
+        if not screen_rect.colliderect(bullet.rect):
             bullets.remove(bullet)
 
 
