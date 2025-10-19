@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 
     from game.boss_shield import BossShield
     from game.bosses import Boss
+    from game.bullet import Bullet
     from game.hud import Hud
     from game.screen import Screen
     from game.settings import Settings
@@ -116,3 +117,10 @@ def check_ship_black_holes_collision(settings: "Settings",
                                      sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.boss_black_holes):
         ship_hit_at_boss_stage(settings, screen, stats, stages, hud, ship, sprites)
+
+
+def check_bullets_screen_collision(screen: "Screen", bullets: "Group[Bullet]") -> None:
+    screen_rect = screen.rect
+    for bullet in bullets.copy():
+        if not screen_rect.colliderect(bullet.rect):
+            bullets.remove(bullet)

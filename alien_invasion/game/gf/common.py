@@ -128,14 +128,6 @@ def update_main_menu_screen(settings: "Settings", screen: "Screen", play_button:
     pygame.display.flip()
 
 
-def update_bullets(screen: "Screen", bullets: "Group[Bullet]") -> None:
-    bullets.update()
-    screen_rect = screen.rect
-    for bullet in bullets.copy():
-        if not screen_rect.colliderect(bullet.rect):
-            bullets.remove(bullet)
-
-
 def fire_bullet(settings: "Settings",
                 screen: "Screen",
                 stats: "Stats",

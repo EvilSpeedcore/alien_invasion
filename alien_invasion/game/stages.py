@@ -30,7 +30,8 @@ class BaseStage:
 
     counter = count(start=0)
 
-    def __init__(self, sprites: "Sprites", name: str) -> None:
+    def __init__(self, screen: "Screen", sprites: "Sprites", name: str) -> None:
+        self.screen = screen
         self.sprites = sprites
         self.name = name
 
@@ -57,10 +58,12 @@ class BaseStage:
 
     @abstractmethod
     def check_collision(self) -> None:
-        pass
+        collision.check_bullets_screen_collision(screen=self.screen,
+                                                 bullets=self.sprites.ship_bullets)
 
     @abstractmethod
     def update(self) -> None:
+        self.sprites.ship_bullets.update()
         self.sprites.ship_shields.update()
 
     @abstractmethod
@@ -83,10 +86,9 @@ class Stage(BaseStage):
                  ship: "Ship",
                  sprites: "Sprites",
                  name: str) -> None:
-        super().__init__(sprites=sprites, name=name)
+        super().__init__(screen=screen, sprites=sprites, name=name)
         self.stages = stages
         self.settings = settings
-        self.screen = screen
         self.hud = hud
         self.stats = stats
         self.ship = ship
@@ -119,6 +121,7 @@ class Stage(BaseStage):
             self.settings.increase_aliens_speed()
 
     def check_collision(self) -> None:
+        super().check_collision()
         # Ship bullets and aliens
         pygame.sprite.groupcollide(self.sprites.ship_bullets,
                                    self.sprites.aliens,
@@ -158,11 +161,14 @@ class Stage(BaseStage):
                                             hud=self.hud,
                                             ship=self.ship,
                                             ammo=self.sprites.ship_ammo)
+        # Bullets and screen edge
+        collision.check_bullets_screen_collision(screen=self.screen,
+                                                 bullets=self.sprites.alien_bullets)
 
     def update(self) -> None:
         super().update()
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
-        common.update_bullets(self.screen, self.sprites.alien_bullets)
+        self.sprites.alien_bullets.update()
 
     def teardown(self) -> None:
         super().teardown()
@@ -180,9 +186,8 @@ class BossStage(BaseStage):
                  ship: "Ship",
                  sprites: "Sprites",
                  name: str) -> None:
-        super().__init__(sprites=sprites, name=name)
+        super().__init__(screen=screen, sprites=sprites, name=name)
         self.settings = settings
-        self.screen = screen
         self.stats = stats
         self.stages = stages
         self.hud = hud
@@ -197,6 +202,7 @@ class BossStage(BaseStage):
         super().transit()
 
     def check_collision(self) -> None:
+        super().check_collision()
         # Ship shield and boss bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.boss_bullets,
@@ -224,8 +230,15 @@ class BossStage(BaseStage):
         # Ship bullets and boss shield
         collision.check_ship_bullets_boss_shield_collision(self.sprites)
 
-    def update(self) -> None:
+        # Boss bullets and screen edge
+        collision.check_bullets_screen_collision(screen=self.screen,
+                                                 bullets=self.sprites.boss_bullets)
+
+    def update(self):
         super().update()
+        # TODO: Add type hint
+        self.sprites.bosses.sprite.update()
+        self.sprites.boss_bullets.update()
 
     def teardown(self) -> None:
         super().teardown()
@@ -246,10 +259,6 @@ class RedBossStage(BossStage):
         super().setup()
         common.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
-    def update(self) -> None:
-        self.sprites.bosses.sprite.update()
-        common.update_bullets(self.screen, self.sprites.boss_bullets)
-
 
 class BlueBossStage(BossStage):
 
@@ -269,7 +278,7 @@ class BlueBossStage(BossStage):
 
     def update(self) -> None:
         super().update()
-        common.update_bullets(self.screen, self.sprites.boss_bullets)
+        self.sprites.boss_bullets.update()
 
     def teardown(self) -> None:
         super().teardown()
@@ -359,7 +368,7 @@ class Stages(list[StageTypes]):
                              name=name)
 
     def create_end_stage(self, name: str) -> EndStage:
-        return EndStage(sprites=self.sprites, name=name)
+        return EndStage(screen=self.screen, sprites=self.sprites, name=name)
 
     def create_stages(self) -> list[StageTypes]:
         return [

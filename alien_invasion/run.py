@@ -94,7 +94,6 @@ def run_game(args: Namespace) -> None:
             if not (sprites.aliens or sprites.bosses) and stats.ships_left:
                 stages.load_next_stage()
 
-            common.update_bullets(screen=screen, bullets=sprites.ship_bullets)
             stages.current.update()
             stages.current.check_collision()
             common.fire_alien_bullets(settings=settings,
