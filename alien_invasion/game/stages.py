@@ -6,8 +6,8 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-import game.game_functions as gf
 import game.rotation as rt
+from game.gf import collision, common
 from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
@@ -103,11 +103,11 @@ class Stage(BaseStage):
                                    ship=self.ship,
                                    ammo=self.sprites.ship_ammo)
 
-        gf.create_fleet(settings=self.settings,
-                        screen=self.screen,
-                        stages=self.stages,
-                        ship=self.ship,
-                        aliens=self.sprites.aliens)
+        common.create_fleet(settings=self.settings,
+                            screen=self.screen,
+                            stages=self.stages,
+                            ship=self.ship,
+                            aliens=self.sprites.aliens)
 
     def transit(self) -> None:
         super().transit()
@@ -125,21 +125,7 @@ class Stage(BaseStage):
                                    dokilla=True, dokillb=True)
 
         # Ship and aliens
-        gf.check_ship_aliens_collision(settings=self.settings,
-                                       screen=self.screen,
-                                       stats=self.stats,
-                                       stages=self.stages,
-                                       hud=self.hud,
-                                       ship=self.ship,
-                                       sprites=self.sprites)
-
-        # Ship shield and alien bullets
-        pygame.sprite.groupcollide(self.sprites.ship_shields,
-                                   self.sprites.alien_bullets,
-                                   dokilla=False, dokillb=True)
-
-        # Ship and alien bullets
-        gf.check_ship_alien_bullets_collision(settings=self.settings,
+        collision.check_ship_aliens_collision(settings=self.settings,
                                               screen=self.screen,
                                               stats=self.stats,
                                               stages=self.stages,
@@ -147,22 +133,36 @@ class Stage(BaseStage):
                                               ship=self.ship,
                                               sprites=self.sprites)
 
+        # Ship shield and alien bullets
+        pygame.sprite.groupcollide(self.sprites.ship_shields,
+                                   self.sprites.alien_bullets,
+                                   dokilla=False, dokillb=True)
+
+        # Ship and alien bullets
+        collision.check_ship_alien_bullets_collision(settings=self.settings,
+                                                     screen=self.screen,
+                                                     stats=self.stats,
+                                                     stages=self.stages,
+                                                     hud=self.hud,
+                                                     ship=self.ship,
+                                                     sprites=self.sprites)
+
         # Ship and health
-        gf.check_ship_health_collision(stats=self.stats,
-                                       hud=self.hud,
-                                       ship=self.ship,
-                                       health=self.sprites.ship_health)
+        collision.check_ship_health_collision(stats=self.stats,
+                                              hud=self.hud,
+                                              ship=self.ship,
+                                              health=self.sprites.ship_health)
 
         # Ship and ammon
-        gf.check_ship_ammo_collision(stats=self.stats,
-                                     hud=self.hud,
-                                     ship=self.ship,
-                                     ammo=self.sprites.ship_ammo)
+        collision.check_ship_ammo_collision(stats=self.stats,
+                                            hud=self.hud,
+                                            ship=self.ship,
+                                            ammo=self.sprites.ship_ammo)
 
     def update(self) -> None:
         super().update()
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
-        gf.update_bullets(self.screen, self.sprites.alien_bullets)
+        common.update_bullets(self.screen, self.sprites.alien_bullets)
 
     def teardown(self) -> None:
         super().teardown()
@@ -202,27 +202,27 @@ class BossStage(BaseStage):
                                    self.sprites.boss_bullets,
                                    dokilla=False, dokillb=True)
         # Ship and boss bullets
-        gf.check_ship_boss_bullets_collision(settings=self.settings,
-                                             screen=self.screen,
-                                             stats=self.stats,
-                                             stages=self.stages,
-                                             hud=self.hud,
-                                             ship=self.ship,
-                                             sprites=self.sprites)
+        collision.check_ship_boss_bullets_collision(settings=self.settings,
+                                                    screen=self.screen,
+                                                    stats=self.stats,
+                                                    stages=self.stages,
+                                                    hud=self.hud,
+                                                    ship=self.ship,
+                                                    sprites=self.sprites)
         # Ship and bosses
-        gf.check_ship_bosses_collision(settings=self.settings,
-                                       screen=self.screen,
-                                       stats=self.stats,
-                                       stages=self.stages,
-                                       hud=self.hud,
-                                       ship=self.ship,
-                                       sprites=self.sprites)
+        collision.check_ship_bosses_collision(settings=self.settings,
+                                              screen=self.screen,
+                                              stats=self.stats,
+                                              stages=self.stages,
+                                              hud=self.hud,
+                                              ship=self.ship,
+                                              sprites=self.sprites)
 
         # Ship bullets and bosses
-        gf.check_ship_bullets_boss_collision(settings=self.settings, sprites=self.sprites)
+        collision.check_ship_bullets_boss_collision(settings=self.settings, sprites=self.sprites)
 
         # Ship bullets and boss shield
-        gf.check_ship_bullets_boss_shield_collision(self.sprites)
+        collision.check_ship_bullets_boss_shield_collision(self.sprites)
 
     def update(self) -> None:
         super().update()
@@ -237,39 +237,39 @@ class GreenBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+        common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
 
 class RedBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+        common.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
     def update(self) -> None:
         self.sprites.bosses.sprite.update()
-        gf.update_bullets(self.screen, self.sprites.boss_bullets)
+        common.update_bullets(self.screen, self.sprites.boss_bullets)
 
 
 class BlueBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        gf.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+        common.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
-        gf.check_ship_black_holes_collision(settings=self.settings,
-                                            screen=self.screen,
-                                            stats=self.stats,
-                                            hud=self.hud,
-                                            stages=self.stages,
-                                            ship=self.ship,
-                                            sprites=self.sprites)
+        collision.check_ship_black_holes_collision(settings=self.settings,
+                                                   screen=self.screen,
+                                                   stats=self.stats,
+                                                   hud=self.hud,
+                                                   stages=self.stages,
+                                                   ship=self.ship,
+                                                   sprites=self.sprites)
         super().check_collision()
 
     def update(self) -> None:
         super().update()
-        gf.update_bullets(self.screen, self.sprites.boss_bullets)
+        common.update_bullets(self.screen, self.sprites.boss_bullets)
 
     def teardown(self) -> None:
         super().teardown()

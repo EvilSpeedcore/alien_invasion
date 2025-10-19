@@ -4,8 +4,8 @@ from time import sleep
 
 import pygame
 
-import game.game_functions as gf
 from game.button import Button
+from game.gf import common, events
 from game.hud import Hud
 from game.screen import Screen
 from game.settings import Settings
@@ -49,9 +49,9 @@ def run_game(args: Namespace) -> None:
     while True:
         # Pause state
         while state(State.PAUSED):
-            pause_events = gf.check_pause_events(ship)
+            pause_events = events.check_pause_events(ship)
             if pause_events.quit:
-                gf.quit_game()
+                events.quit_game()
             if pause_events.unpause:
                state.set(State.ACTIVE)
 
@@ -59,48 +59,86 @@ def run_game(args: Namespace) -> None:
         while state(State.MAIN_MENU):
             pygame.mouse.set_visible(True)
 
-            menu_events = gf.check_main_menu_events(play_button)
-            gf.update_main_menu_screen(settings, screen, play_button)
+            menu_events = events.check_main_menu_events(play_button)
+            common.update_main_menu_screen(settings=settings,
+                                           screen=screen,
+                                           play_button=play_button)
 
             if menu_events.play:
-                gf.initialize_game_from_main_menu(settings, stats, hud, ship)
+                common.initialize_game_from_main_menu(settings=settings,
+                                                      stats=stats,
+                                                      hud=hud,
+                                                      ship=ship)
                 stages.select(args.stage or "1_1")
                 state.set(State.ACTIVE)
             if menu_events.quit:
-                gf.quit_game()
+                events.quit_game()
 
         # Active game state
         while state(State.ACTIVE):
             dt = clock.tick()
-            active_events = gf.check_active_game_events(settings, screen, stats, hud, ship, sprites)
+            active_events = events.check_active_game_events(settings=settings,
+                                                            screen=screen,
+                                                            stats=stats,
+                                                            hud=hud,
+                                                            ship=ship,
+                                                            sprites=sprites)
             if active_events.quit:
-                gf.quit_game()
+                events.quit_game()
             if active_events.pause:
                 state.set(State.PAUSED)
 
-            gf.check_keys_pressed(ship)
+            common.handle_ship_diagonal_movement(ship)
             ship.update()
 
             if not (sprites.aliens or sprites.bosses) and stats.ships_left:
                 stages.load_next_stage()
 
-            gf.update_bullets(screen, sprites.ship_bullets)
+            common.update_bullets(screen=screen, bullets=sprites.ship_bullets)
             stages.current.update()
             stages.current.check_collision()
-            gf.fire_alien_bullets(settings, screen, stages, ship, sprites, dt)
+            common.fire_alien_bullets(settings=settings,
+                                      screen=screen,
+                                      stages=stages,
+                                      ship=ship,
+                                      sprites=sprites,
+                                      dt=dt)
             if stages.current.name == "green_boss":
-                gf.fire_green_boss_bullets(settings, screen, sprites.bosses.sprite, sprites.boss_bullets, dt)
-                gf.update_green_boss_bullets(sprites.boss_bullets)
+                common.fire_green_boss_bullets(settings=settings,
+                                               screen=screen,
+                                               boss=sprites.bosses.sprite,
+                                               boss_bullets=sprites.boss_bullets,
+                                               dt=dt)
+                common.update_green_boss_bullets(sprites.boss_bullets)
             elif stages.current.name == "red_boss":
-                gf.fire_red_boss_bullets(settings, screen, ship, sprites.bosses, sprites.boss_bullets, dt)
+                common.fire_red_boss_bullets(settings=settings,
+                                             screen=screen,
+                                             ship=ship,
+                                             bosses=sprites.bosses,
+                                             boss_bullets=sprites.boss_bullets,
+                                             dt=dt)
             elif stages.current.name == "blue_boss":
-                gf.fire_blue_boss_bullets(settings, screen, sprites.bosses, sprites.boss_bullets, dt)
-                gf.maybe_create_black_hole(settings, screen, ship, sprites.boss_black_holes)
-                gf.update_black_hole(settings, sprites.boss_black_holes, dt)
+                common.fire_blue_boss_bullets(settings=settings,
+                                              screen=screen,
+                                              bosses=sprites.bosses,
+                                              boss_bullets=sprites.boss_bullets,
+                                              dt=dt)
+                common.maybe_create_black_hole(settings=settings,
+                                               screen=screen,
+                                               ship=ship,
+                                               black_holes=sprites.boss_black_holes)
+                common.update_black_hole(settings=settings,
+                                         black_holes=sprites.boss_black_holes,
+                                         dt=dt)
 
-            gf.update_screen(settings, screen, hud, ship, sprites, dt)
+            common.update_screen(settings=settings,
+                                 screen=screen,
+                                 hud=hud,
+                                 ship=ship,
+                                 sprites=sprites,
+                                 dt=dt)
 
-            if gf.check_game_end(stages, stats):
+            if events.check_game_end(stages, stats):
                 state.set(State.MAIN_MENU)
                 # Hide ship fast
                 screen.it.fill(settings.bg_color)
