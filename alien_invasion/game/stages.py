@@ -12,8 +12,7 @@ from game.ship_consumables import ShipAmmo, ShipHealth
 
 log = getLogger(__name__)
 
-type StageTypes = "BossStage" | "Stage" | "EndStage"
-
+type StageTypes = "BossStage" | "Stage"
 
 if TYPE_CHECKING:
     from pygame.sprite import Group
@@ -311,27 +310,6 @@ class BlueBossStage(BossStage):
         self.sprites.boss_black_holes.empty()
 
 
-class EndStage(BaseStage):
-
-    def setup(self) -> None:
-        pass
-
-    def transit(self) -> None:
-        pass
-
-    def check_collision(self) -> None:
-        pass
-
-    def gameplay(self, dt: int) -> None:
-        pass
-
-    def update(self) -> None:
-        pass
-
-    def teardown(self) -> None:
-        pass
-
-
 class Stages(list[StageTypes]):
 
     def __init__(self,
@@ -400,9 +378,6 @@ class Stages(list[StageTypes]):
                              sprites=self.sprites,
                              name=name)
 
-    def create_end_stage(self, name: str) -> EndStage:
-        return EndStage(screen=self.screen, sprites=self.sprites, name=name)
-
     def create_stages(self) -> list[StageTypes]:
         return [
             self.create_stage(name="1_1"),
@@ -417,7 +392,6 @@ class Stages(list[StageTypes]):
             self.create_stage(name="3_2"),
             self.create_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
-            self.create_end_stage("end"),  # TODO: Not a stage
         ]
 
     def get_by_name(self, name: str) -> StageTypes:

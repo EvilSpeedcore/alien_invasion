@@ -1,6 +1,5 @@
 import logging
 from argparse import ArgumentParser, Namespace
-from time import sleep
 
 import pygame
 
@@ -91,6 +90,10 @@ def run_game(args: Namespace) -> None:
             ship.update()
 
             if not (sprites.aliens or sprites.bosses) and stats.ships_left:
+                if stages.current == stages.last:
+                    state.set(State.MAIN_MENU)
+                    events.end_game(settings=settings, screen=screen, stages=stages)
+                    continue
                 stages.load_next_stage()
 
             stages.current.update()
@@ -125,13 +128,9 @@ def run_game(args: Namespace) -> None:
                                  sprites=sprites,
                                  dt=dt)
 
-            if events.check_game_end(stages, stats):
+            if stats.ships_left < 1:
                 state.set(State.MAIN_MENU)
-                # Hide ship fast
-                screen.it.fill(settings.bg_color)
-                stages.current.teardown()
-                pygame.display.flip()
-                sleep(settings.game_sleep_time)
+                events.end_game(settings=settings, screen=screen, stages=stages)
 
 
 if __name__ == "__main__":

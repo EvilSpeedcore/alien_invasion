@@ -1,6 +1,6 @@
 import secrets
 from collections import deque
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, ClassVar
 
 from pygame.sprite import Sprite
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class BlackHole(Sprite):
 
     IMAGE_DIR = "black_hole"
-    ROTATION_IMAGES = [f'black_hole_{number}.png' for number in range(1, 13)]
+    ROTATION_IMAGES: ClassVar[list[str]] = [f"black_hole_{number}.png" for number in range(1, 13)]
 
     def __init__(self,
                  settings: "Settings",
@@ -50,7 +50,7 @@ class BlackHole(Sprite):
         self.rect.centery = secrets.choice(self.available_coordinates_y)
 
     @classmethod
-    def prepare_images(cls) -> None:
+    def prepare_images(cls) -> list["Surface"]:
         return [load_image(f"{cls.IMAGE_DIR}/{image}") for image in cls.ROTATION_IMAGES]
 
     def blitme(self) -> None:

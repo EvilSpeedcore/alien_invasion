@@ -1,4 +1,5 @@
 import sys
+import time
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
@@ -221,8 +222,9 @@ def quit_game() -> None:
     sys.exit(0)
 
 
-def check_game_end(stages: "Stages", stats: "Stats") -> bool:
-    if stages.current == stages.last:
-        return True
-
-    return stats.ships_left < 1
+def end_game(settings: "Settings", screen: "Screen", stages: "Stages") -> None:
+    # Hide ship fast
+    screen.it.fill(settings.bg_color)
+    stages.current.teardown()
+    pygame.display.flip()
+    time.sleep(settings.game_sleep_time)
