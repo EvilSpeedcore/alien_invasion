@@ -222,7 +222,7 @@ def quit_game() -> None:
 
 
 def check_game_end(stages: "Stages", stats: "Stats") -> bool:
-    if stages.end:
+    if stages.current == stages.last:
         return True
 
     return stats.ships_left < 1

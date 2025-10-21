@@ -325,8 +325,12 @@ class Stages(list[StageTypes]):
         self.current: StageTypes = self[0]
 
     @property
-    def end(self) -> bool:
-        return self.current == self[-1] if self.current else False
+    def first(self) -> Stage:
+        return self[0]
+
+    @property
+    def last(self) -> bool:
+        return self[-1]
 
     def create_stage(self, name: str) -> Stage:
         return Stage(stages=self,

@@ -69,7 +69,7 @@ def run_game(args: Namespace) -> None:
                                                       stats=stats,
                                                       hud=hud,
                                                       ship=ship)
-                stages.select(args.stage or "1_1")
+                stages.select(args.stage or stages.first.name)
                 state.set(State.ACTIVE)
             if menu_events.quit:
                 events.quit_game()
