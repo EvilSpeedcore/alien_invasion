@@ -16,19 +16,18 @@ from game.state import GameState, State
 from game.stats import Stats
 
 
-def initialize_audio() -> None:
+def initialize() -> None:
+    pygame.init()
+    pygame.display.set_caption("Alien Invasion")
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
 
 
 def run_game(args: Namespace) -> None:
-    logging.basicConfig(filename="app.log", level=logging.DEBUG)
+    initialize()
 
-    initialize_audio()
-    pygame.init()
     settings = Settings(health=args.health)
     screen = Screen(settings.screen_width, settings.screen_height)
-    pygame.display.set_caption("Alien Invasion")
     ship = Ship(settings, screen)
     stats = Stats(settings)
     play_button = Button(screen, "Start")
@@ -151,4 +150,7 @@ if __name__ == "__main__":
     parser.add_argument("--stage", type=str)
     parser.add_argument("--health", type=int)
     args = parser.parse_args()
+
+    logging.basicConfig(filename="app.log", level=logging.DEBUG)
+
     run_game(args)
