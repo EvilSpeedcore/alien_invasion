@@ -268,6 +268,7 @@ class GreenBossStage(BossStage):
                                        boss=self.sprites.bosses.sprite,
                                        boss_bullets=self.sprites.boss_bullets,
                                        dt=dt)
+        common.update_green_boss_bullets(self.sprites.boss_bullets)
 
 
 class RedBossStage(BossStage):
