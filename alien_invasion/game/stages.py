@@ -305,6 +305,7 @@ class BlueBossStage(BossStage):
     def update(self) -> None:
         super().update()
         self.sprites.boss_bullets.update()
+        self.sprites.boss_black_holes.update()
 
     def teardown(self) -> None:
         super().teardown()

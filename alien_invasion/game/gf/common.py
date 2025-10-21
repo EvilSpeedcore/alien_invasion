@@ -461,5 +461,4 @@ def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int)
         black_hole.rt_image_number += 1
     else:
         black_hole.rt_image_number = 0
-    black_hole.update()
     settings.black_hole_rotation_timer = 0
