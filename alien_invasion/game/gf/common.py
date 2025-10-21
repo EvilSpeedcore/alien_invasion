@@ -457,8 +457,5 @@ def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int)
     if settings.black_hole_rotation_timer <= 300:
         return
 
-    if black_hole.rt_image_number < 11:
-        black_hole.rt_image_number += 1
-    else:
-        black_hole.rt_image_number = 0
+    black_hole.update()
     settings.black_hole_rotation_timer = 0

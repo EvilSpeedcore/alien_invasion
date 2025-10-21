@@ -1,4 +1,5 @@
 import secrets
+from collections import deque
 from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
@@ -14,35 +15,22 @@ if TYPE_CHECKING:
 
 
 class BlackHole(Sprite):
-    """Parent class, which represent BlackHoles spawn at last boss stage."""
 
     IMAGE_DIR = "black_hole"
+    ROTATION_IMAGES = [f'black_hole_{number}.png' for number in range(1, 13)]
 
     def __init__(self,
                  settings: "Settings",
                  screen: "Screen",
                  ship: "Ship") -> None:
-        """Initialize black hole."""
         super().__init__()
         self.settings = settings
         self.screen = screen
         self.screen_rect = screen.rect
 
-        # List, which will contain loaded images.
-        self.images: list[Surface] = []
+        self.images: deque[Surface] = deque(self.prepare_images())
+        self.image = self.images[0].copy()
 
-        # List for names of images in directory.
-        self.rt_list = ["black_hole_1.png", "black_hole_2.png", "black_hole_3.png", "black_hole_4.png",
-                        "black_hole_5.png", "black_hole_6.png", "black_hole_7.png", "black_hole_8.png",
-                        "black_hole_9.png", "black_hole_10.png", "black_hole_11.png", "black_hole_12.png"]
-
-        # To make an animated black hole, we store several loaded images in list to iterate through it later.
-        self.prepare_images()
-
-        # load of black hole image to display it as static image.
-        self.image = load_image("black_hole/black_hole_1.png")
-
-        # Rectangular area of the image.
         self.rect = self.image.get_rect()
 
         # Black holes spawns in random area of screen from allowed coordinates.
@@ -61,18 +49,15 @@ class BlackHole(Sprite):
         self.rect.centerx = secrets.choice(self.available_coordinates_x)
         self.rect.centery = secrets.choice(self.available_coordinates_y)
 
-        # Black hole animation step counter.
-        self.rt_image_number = 0
+    @classmethod
+    def prepare_images(cls) -> None:
+        return [load_image(f"{cls.IMAGE_DIR}/{image}") for image in cls.ROTATION_IMAGES]
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
 
-    def prepare_images(self) -> None:
-        """Add loaded images to list."""
-        for image in self.rt_list:
-            self.images.append(load_image(f"{self.IMAGE_DIR}/{image}"))
-
     def update(self) -> None:
         """Change image of black hole to make animation effect."""
-        hp_image = self.images[self.rt_image_number]
+        self.images.rotate()
+        hp_image = self.images[0]
         self.image = hp_image.copy()
