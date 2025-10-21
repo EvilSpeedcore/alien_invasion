@@ -104,13 +104,6 @@ def run_game(args: Namespace) -> None:
                                       dt=dt)
             if stages.current.name == "green_boss":
                 common.update_green_boss_bullets(sprites.boss_bullets)
-            elif stages.current.name == "red_boss":
-                common.fire_red_boss_bullets(settings=settings,
-                                             screen=screen,
-                                             ship=ship,
-                                             bosses=sprites.bosses,
-                                             boss_bullets=sprites.boss_bullets,
-                                             dt=dt)
             elif stages.current.name == "blue_boss":
                 common.fire_blue_boss_bullets(settings=settings,
                                               screen=screen,

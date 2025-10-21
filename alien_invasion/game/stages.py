@@ -277,6 +277,14 @@ class RedBossStage(BossStage):
         super().setup()
         common.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
+    def gameplay(self, dt: int) -> None:
+        common.fire_red_boss_bullets(settings=self.settings,
+                                     screen=self.screen,
+                                     ship=self.ship,
+                                     bosses=self.sprites.bosses,
+                                     boss_bullets=self.sprites.boss_bullets,
+                                     dt=dt)
+
 
 class BlueBossStage(BossStage):
 
