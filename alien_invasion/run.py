@@ -94,6 +94,7 @@ def run_game(args: Namespace) -> None:
                 stages.load_next_stage()
 
             stages.current.update()
+            stages.current.gameplay(dt)
             stages.current.check_collision()
             common.fire_alien_bullets(settings=settings,
                                       screen=screen,
@@ -102,11 +103,6 @@ def run_game(args: Namespace) -> None:
                                       sprites=sprites,
                                       dt=dt)
             if stages.current.name == "green_boss":
-                common.fire_green_boss_bullets(settings=settings,
-                                               screen=screen,
-                                               boss=sprites.bosses.sprite,
-                                               boss_bullets=sprites.boss_bullets,
-                                               dt=dt)
                 common.update_green_boss_bullets(sprites.boss_bullets)
             elif stages.current.name == "red_boss":
                 common.fire_red_boss_bullets(settings=settings,

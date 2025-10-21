@@ -63,6 +63,10 @@ class BaseStage:
                                                  bullets=self.sprites.ship_bullets)
 
     @abstractmethod
+    def gameplay(self, dt: int) -> None:
+        pass
+
+    @abstractmethod
     def update(self) -> None:
         self.sprites.ship_bullets.update()
         self.sprites.ship_shields.update()
@@ -166,6 +170,9 @@ class Stage(BaseStage):
         collision.check_bullets_screen_collision(screen=self.screen,
                                                  bullets=self.sprites.alien_bullets)
 
+    def gameplay(self, dt: int) -> None:
+        pass
+
     def update(self) -> None:
         super().update()
         self.sprites.aliens.update(self.sprites.aliens, self.ship)
@@ -235,6 +242,9 @@ class BossStage(BaseStage):
         collision.check_bullets_screen_collision(screen=self.screen,
                                                  bullets=self.sprites.boss_bullets)
 
+    def gameplay(self, dt: int) -> None:
+        pass
+
     def update(self) -> None:
         super().update()
         boss: Boss = self.sprites.bosses.sprite
@@ -252,6 +262,13 @@ class GreenBossStage(BossStage):
     def setup(self) -> None:
         super().setup()
         common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+
+    def gameplay(self, dt: int) -> None:
+        common.fire_green_boss_bullets(settings=self.settings,
+                                       screen=self.screen,
+                                       boss=self.sprites.bosses.sprite,
+                                       boss_bullets=self.sprites.boss_bullets,
+                                       dt=dt)
 
 
 class RedBossStage(BossStage):
@@ -297,10 +314,13 @@ class EndStage(BaseStage):
     def check_collision(self) -> None:
         pass
 
-    def teardown(self) -> None:
+    def gameplay(self, dt: int) -> None:
         pass
 
     def update(self) -> None:
+        pass
+
+    def teardown(self) -> None:
         pass
 
 
@@ -325,11 +345,11 @@ class Stages(list[StageTypes]):
         self.current: StageTypes = self[0]
 
     @property
-    def first(self) -> Stage:
+    def first(self) -> StageTypes:
         return self[0]
 
     @property
-    def last(self) -> bool:
+    def last(self) -> StageTypes:
         return self[-1]
 
     def create_stage(self, name: str) -> Stage:
