@@ -434,7 +434,6 @@ def maybe_create_black_hole(settings: "Settings",
                             screen: "Screen",
                             ship: "Ship",
                             black_holes: "GroupSingle") -> None:
-    """Create black hole."""
     if not black_holes and settings.black_hole_spawn_timer > 2000:
         black_holes.add(BlackHole(settings, screen, ship))
 

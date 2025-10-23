@@ -334,6 +334,20 @@ class BlueBossStage(BossStage):
                                                    sprites=self.sprites)
         super().check_collision()
 
+    def gameplay(self, dt: int) -> None:
+        common.fire_blue_boss_bullets(settings=self.settings,
+                                      screen=self.screen,
+                                      bosses=self.sprites.bosses,
+                                      boss_bullets=self.sprites.boss_bullets,
+                                      dt=dt)
+        common.maybe_create_black_hole(settings=self.settings,
+                                       screen=self.screen,
+                                       ship=self.ship,
+                                       black_holes=self.sprites.boss_black_holes)
+        common.update_black_hole(settings=self.settings,
+                                 black_holes=self.sprites.boss_black_holes,
+                                 dt=dt)
+
     def update(self) -> None:
         super().update()
         self.sprites.boss_bullets.update()

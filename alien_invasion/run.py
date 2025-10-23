@@ -100,19 +100,6 @@ def run_game(args: Namespace) -> None:
             stages.current.update()
             stages.current.gameplay(dt)
             stages.current.check_collision()
-            if stages.current.name == "blue_boss":
-                common.fire_blue_boss_bullets(settings=settings,
-                                              screen=screen,
-                                              bosses=sprites.bosses,
-                                              boss_bullets=sprites.boss_bullets,
-                                              dt=dt)
-                common.maybe_create_black_hole(settings=settings,
-                                               screen=screen,
-                                               ship=ship,
-                                               black_holes=sprites.boss_black_holes)
-                common.update_black_hole(settings=settings,
-                                         black_holes=sprites.boss_black_holes,
-                                         dt=dt)
 
             common.update_screen(settings=settings,
                                  screen=screen,
