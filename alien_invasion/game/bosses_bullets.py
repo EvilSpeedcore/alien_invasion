@@ -45,7 +45,7 @@ class GreenBossBullet(BossBullet):
         self.y = self.rect.centery
 
         # Bullet speed.
-        self.speed_factor = settings.green_boss_bullet_speed_factor
+        self.speed = settings.green_boss_bullets_speed
 
         # Angle of bullet direction.
         self.shooting_angle_up = 0
@@ -56,8 +56,8 @@ class GreenBossBullet(BossBullet):
     def update(self) -> None:
         """Update bullet position."""
         angle = self.shooting_angle_up
-        bullet_move_x = self.speed_factor * math.cos(math.radians(angle))
-        bullet_move_y = -self.speed_factor * math.sin(math.radians(angle))
+        bullet_move_x = self.speed * math.cos(math.radians(angle))
+        bullet_move_y = -self.speed * math.sin(math.radians(angle))
         self.x += bullet_move_x  # type: ignore[assignment]
         self.y += bullet_move_y  # type: ignore[assignment]
         self.rect.centery = self.y

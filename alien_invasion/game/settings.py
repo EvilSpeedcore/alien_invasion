@@ -21,7 +21,7 @@ class Settings:
 
         # Bosses settings.
         self.red_boss_speed_factor = 0.004
-        self.green_boss_bullet_speed_factor = 0.09
+        self.green_boss_bullets_speed = 0.15
         self.red_boss_bullet_speed_factor = 0.08
         self.blue_boss_bullets_speed = 0.3
         self.time_elapsed_since_last_boss_bullet = 0
