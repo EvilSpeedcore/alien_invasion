@@ -14,11 +14,11 @@ if TYPE_CHECKING:
     from game.ship import Ship
 
 
-def collidable(alien_1: "Alien", alien_2: "Alien") -> bool:
+def collidable(alien: "Alien", other: "Alien") -> bool:
     """Check collision between two aliens."""
-    if alien_1 is alien_2:
+    if alien is other:
         return False
-    return alien_1.rect.colliderect(alien_2.rect)
+    return alien.rect.colliderect(other.rect)
 
 
 class Alien(Sprite):
@@ -57,20 +57,21 @@ class Alien(Sprite):
         """Update aliens position depending on ship current position. Check for collision between aliens."""
         aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
         if aliens_collision:
-            aliens.remove(aliens_collision[0])
-        else:
-            if self.x > ship.centerx:
-                self.x -= self.speed  # type: ignore[assignment]
-                self.rect.centerx = self.x
-            if self.y > ship.centery:
-                self.y -= self.speed  # type: ignore[assignment]
-                self.rect.centery = self.y
-            if self.x < ship.centerx:
-                self.x += self.speed  # type: ignore[assignment]
-                self.rect.centerx = self.x
-            if self.y < ship.centery:
-                self.y += self.speed  # type: ignore[assignment]
-                self.rect.centery = self.y
+            for alien in aliens_collision:
+                aliens.remove(alien)
+
+        if self.x > ship.centerx:
+            self.x -= self.speed  # type: ignore[assignment]
+            self.rect.centerx = self.x
+        if self.y > ship.centery:
+            self.y -= self.speed  # type: ignore[assignment]
+            self.rect.centery = self.y
+        if self.x < ship.centerx:
+            self.x += self.speed  # type: ignore[assignment]
+            self.rect.centerx = self.x
+        if self.y < ship.centery:
+            self.y += self.speed  # type: ignore[assignment]
+            self.rect.centery = self.y
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
