@@ -94,7 +94,7 @@ class RedBoss(Boss):
         self.position = "center"
 
         # Boss speed.
-        self.speed_factor = settings.red_boss_speed_factor
+        self.speed = settings.red_boss_speed
         self.moving_angle = None
         self.define_start_direction()
 
@@ -103,7 +103,7 @@ class RedBoss(Boss):
         if self.position == "center":
             if self.random_direction == 1:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centery = self.y  # type: ignore[assignment]
                     self.rect.centerx = self.x  # type: ignore[assignment]
                 else:
@@ -111,7 +111,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -119,7 +119,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centery = self.y  # type: ignore[assignment]
                     self.rect.centerx = self.x  # type: ignore[assignment]
                 else:
@@ -127,7 +127,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 4:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -136,7 +136,7 @@ class RedBoss(Boss):
         elif self.position == "midtop":
             if self.random_direction == 1:
                 if self.rect.top < self.screen_rect.centery:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -144,7 +144,7 @@ class RedBoss(Boss):
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -152,7 +152,7 @@ class RedBoss(Boss):
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -161,7 +161,7 @@ class RedBoss(Boss):
         elif self.position == "midleft":
             if self.random_direction == 1:
                 if self.rect.left < self.screen_rect.centerx:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -169,7 +169,7 @@ class RedBoss(Boss):
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -177,7 +177,7 @@ class RedBoss(Boss):
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -186,7 +186,7 @@ class RedBoss(Boss):
         elif self.position == "midbottom":
             if self.random_direction == 1:
                 if self.rect.bottom > self.screen_rect.centery:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -194,7 +194,7 @@ class RedBoss(Boss):
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -202,7 +202,7 @@ class RedBoss(Boss):
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -211,7 +211,7 @@ class RedBoss(Boss):
         elif self.position == "midright":
             if self.random_direction == 1:
                 if self.rect.right > self.screen_rect.centerx:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -219,7 +219,7 @@ class RedBoss(Boss):
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -227,7 +227,7 @@ class RedBoss(Boss):
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -236,7 +236,7 @@ class RedBoss(Boss):
         elif self.position == "topleft":
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -244,7 +244,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -253,7 +253,7 @@ class RedBoss(Boss):
         elif self.position == "bottomleft":
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
-                    self.x += self.speed_factor
+                    self.x += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -261,7 +261,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -270,7 +270,7 @@ class RedBoss(Boss):
         elif self.position == "bottomright":
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -278,7 +278,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
-                    self.y -= self.speed_factor
+                    self.y -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -287,7 +287,7 @@ class RedBoss(Boss):
         elif self.position == "topright":
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
-                    self.x -= self.speed_factor
+                    self.x -= self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:
@@ -295,7 +295,7 @@ class RedBoss(Boss):
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
-                    self.y += self.speed_factor
+                    self.y += self.speed
                     self.rect.centerx = self.x  # type: ignore[assignment]
                     self.rect.centery = self.y  # type: ignore[assignment]
                 else:

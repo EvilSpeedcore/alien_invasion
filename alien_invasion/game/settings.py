@@ -20,9 +20,9 @@ class Settings:
         self.alien_bullets_speed = 0.20
 
         # Bosses settings.
-        self.red_boss_speed_factor = 0.004
+        self.red_boss_speed = 0.1
         self.green_boss_bullets_speed = 0.15
-        self.red_boss_bullet_speed_factor = 0.08
+        self.red_boss_bullets_speed = 0.10
         self.blue_boss_bullets_speed = 0.3
         self.time_elapsed_since_last_boss_bullet = 0
         self.time_elapsed_since_boss_shield = 0
