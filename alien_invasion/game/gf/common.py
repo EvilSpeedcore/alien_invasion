@@ -7,7 +7,7 @@ import pygame
 
 import game.rotation as rt
 from game.alien import Alien
-from game.alien_bullet import AlienBullet
+from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.black_hole import BlackHole
 from game.boss_shield import BlueBossShield, GreenBossShield, RedBossShield
 from game.bosses import BlueBoss, GreenBoss, RedBoss
@@ -290,14 +290,13 @@ def fire_alien_bullets(settings: "Settings",
     if settings.time_elapsed_since_last_alien_bullet > 2500:
         aliens: list[Alien] = sprites.aliens.sprites()
         for alien in aliens:
-            alien_bullet = AlienBullet(settings, screen, alien.rect)
             # TODO: Rework
             if stages.current.index < stages.get_by_name("green_boss").index:
-                pass
+                alien_bullet = AlienBullet(settings, screen, alien.rect)
             elif stages.current.index < stages.get_by_name("red_boss").index + 1:
-                alien_bullet.image = alien_bullet.red_bullet
-            elif stages.current.index >= stages.get_by_name("red_boss").index + 1:
-                alien_bullet.image = alien_bullet.blue_bullet
+                alien_bullet = RedAlienBullet(settings, screen, alien.rect)
+            else:
+                alien_bullet = BlueAlienBullet(settings, screen, alien.rect)
             alien_bullet.define_position(ship)
             sprites.alien_bullets.add(alien_bullet)
         settings.time_elapsed_since_last_alien_bullet = 0

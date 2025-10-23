@@ -17,17 +17,14 @@ if TYPE_CHECKING:
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
 
+    _IMAGE = load_image("alien_bullet.png")
+
     def __init__(self, settings: "Settings", screen: "Screen", rect: "Rect") -> None:
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.rect
 
-        # Image load for different bullets.
-        # TODO: Split by color
-        self.image = load_image("alien_bullet.png")
-        self.red_bullet = load_image("red_alien_bullet.png")
-        self.blue_bullet = load_image("blue_alien_bullet.png")
-
+        self.image = self._IMAGE
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
 
@@ -142,3 +139,11 @@ class AlienBullet(Sprite):
         elif self.x == ship.centerx and self.y < ship.centery:
             self.ship_position = "3-4"
             self.define_angle(ship)
+
+
+class RedAlienBullet(AlienBullet):
+    _IMAGE = load_image("red_alien_bullet.png")
+
+
+class BlueAlienBullet(AlienBullet):
+    _IMAGE = load_image("blue_alien_bullet.png")
