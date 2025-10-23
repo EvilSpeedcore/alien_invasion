@@ -117,12 +117,10 @@ def update_screen(settings: "Settings",
     pygame.display.flip()
 
 
-def update_main_menu_screen(settings: "Settings", screen: "Screen", play_button: "Button") -> None:
+def update_main_menu_screen(settings: "Settings", screen: "Screen", start_button: "Button") -> None:
     screen.it.fill(settings.bg_color)
 
-    # Show start button and clear the screen.
-    play_button.prep_msg(play_button.msg)
-    play_button.draw_button()
+    start_button.draw_button()
 
     # Update screen.
     pygame.display.flip()

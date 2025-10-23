@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 class Button:
 
-    def __init__(self, screen: "Screen", msg: str) -> None:
+    def __init__(self, screen: "Screen", message: str) -> None:
         self.screen = screen
         self.screen_rect = screen.rect
         self.button_image = load_image("button1.png")
@@ -22,22 +22,21 @@ class Button:
         self.ellipse_rect = self.button_image.get_rect()
         self.ellipse_rect.centerx = self.screen_rect.centerx
         self.ellipse_rect.centery = self.screen_rect.centery
-        self.msg = msg
-        self.prep_msg(msg)
+        self.prepare_message(message)
 
-    def prep_msg(self, msg: str) -> None:
+    def prepare_message(self, message: str) -> None:
         """Turn message to Surface subject.
 
         Args:
-            :param str msg: Button label.
+            :param str message: Button label.
 
         """
         if self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
-            self.msg_image = self.font.render(msg, True, self.hover_text_color, self.button_color)  # noqa: FBT003
+            self.msg_image = self.font.render(message, True, self.hover_text_color, self.button_color)  # noqa: FBT003
             self.msg_image_rect = self.msg_image.get_rect()
             self.msg_image_rect.center = self.ellipse_rect.center
         else:
-            self.msg_image = self.font.render(msg, True, self.text_color, self.button_color)  # noqa: FBT003
+            self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
             self.msg_image_rect = self.msg_image.get_rect()
             self.msg_image_rect.center = self.ellipse_rect.center
 

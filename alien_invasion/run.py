@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 import pygame
 
-from game.button import Button
+from game.buttons import Buttons
 from game.gf import common, events
 from game.hud import Hud
 from game.screen import Screen
@@ -27,9 +27,9 @@ def run_game(args: Namespace) -> None:
 
     settings = Settings(health=args.health)
     screen = Screen(settings.screen_width, settings.screen_height)
+    buttons = Buttons(screen)
     ship = Ship(settings, screen)
     stats = Stats(settings)
-    play_button = Button(screen, "Start")
     sprites = Sprites()
 
     hud = Hud(settings, screen, stats, ship, sprites)
@@ -57,10 +57,10 @@ def run_game(args: Namespace) -> None:
         while state(State.MAIN_MENU):
             pygame.mouse.set_visible(True)
 
-            menu_events = events.check_main_menu_events(play_button)
+            menu_events = events.check_main_menu_events(buttons.START)
             common.update_main_menu_screen(settings=settings,
                                            screen=screen,
-                                           play_button=play_button)
+                                           start_button=buttons.START)
 
             if menu_events.play:
                 common.initialize_game_from_main_menu(settings=settings,
