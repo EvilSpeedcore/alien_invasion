@@ -51,6 +51,8 @@ class Alien(Sprite):
         self.x = self.rect.centerx
         self.y = self.rect.centery
 
+        self.speed = self.settings.aliens_speed
+
     def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens."""
         aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
@@ -58,16 +60,16 @@ class Alien(Sprite):
             aliens.remove(aliens_collision[0])
         else:
             if self.x > ship.centerx:
-                self.x -= self.settings.alien_speed_factor  # type: ignore[assignment]
+                self.x -= self.speed  # type: ignore[assignment]
                 self.rect.centerx = self.x
             if self.y > ship.centery:
-                self.y -= self.settings.alien_speed_factor  # type: ignore[assignment]
+                self.y -= self.speed  # type: ignore[assignment]
                 self.rect.centery = self.y
             if self.x < ship.centerx:
-                self.x += self.settings.alien_speed_factor  # type: ignore[assignment]
+                self.x += self.speed  # type: ignore[assignment]
                 self.rect.centerx = self.x
             if self.y < ship.centery:
-                self.y += self.settings.alien_speed_factor  # type: ignore[assignment]
+                self.y += self.speed  # type: ignore[assignment]
                 self.rect.centery = self.y
 
     def blitme(self) -> None:

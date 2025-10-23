@@ -133,13 +133,10 @@ class Stage(BaseStage):
                             aliens=self.sprites.aliens)
 
     def transit(self) -> None:
-        super().transit()
-        # do not increase speed if next stage is a boss stage
         # TODO: self.stages.current is confusing
         #       (we set current to early),
         #       change to self.stages.next
-        if not isinstance(self.stages.current, BossStage):
-            self.settings.increase_aliens_speed()
+        super().transit()
 
     def check_collision(self) -> None:
         super().check_collision()

@@ -74,7 +74,7 @@ def run_game(args: Namespace) -> None:
 
         # Active game state
         while state(State.ACTIVE):
-            dt = clock.tick()
+            dt = clock.tick(5000)
             active_events = events.check_active_game_events(settings=settings,
                                                             screen=screen,
                                                             stats=stats,

@@ -40,18 +40,20 @@ class Ship(Sprite):
         self.centerx = self.rect.centerx
         self.centery = self.rect.centery
 
+        self.speed = self.settings.ship_speed
+
         self.set_default_movement()
 
     def update(self) -> None:
         """Update ship position depending on movement flag."""
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.centerx += self.settings.ship_speed_factor  # type: ignore[assignment]
+            self.centerx += self.speed  # type: ignore[assignment]
         if self.moving_left and self.rect.left > 0:
-            self.centerx -= self.settings.ship_speed_factor  # type: ignore[assignment]
+            self.centerx -= self.speed  # type: ignore[assignment]
         if self.moving_up and self.rect.top > self.screen_rect.top:
-            self.centery -= self.settings.ship_speed_factor  # type: ignore[assignment]
+            self.centery -= self.speed  # type: ignore[assignment]
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.centery += self.settings.ship_speed_factor  # type: ignore[assignment]
+            self.centery += self.speed  # type: ignore[assignment]
         self.rect.centerx = self.centerx
         self.rect.centery = self.centery
 

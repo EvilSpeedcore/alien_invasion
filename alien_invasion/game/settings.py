@@ -9,17 +9,15 @@ class Settings:
         # Ship settings.
         self.bullets_allowed = 1
         self.ships_limit = health
-        self.ship_speed_factor = 0.75
+        self.ship_speed = 0.60
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1
         self.time_elapsed_since_shield = 0
 
         # Aliens settings.
-        # TODO: Not used? Use in increase_aliens_speed?
-        self.alien_speed_factor_scale = 0.001
-        # TODO: Not used? Use in increase_aliens_speed?
-        self.alien_bullet_speed_factor_scale = 0.001
         self.time_elapsed_since_last_alien_bullet = 0
+        self.aliens_speed = 0.1
+        self.alien_bullets_speed = 0.20
 
         # Bosses settings.
         self.red_boss_speed_factor = 0.004
@@ -43,11 +41,3 @@ class Settings:
         self.black_hole_spawn_timer = 0
         self.black_hole_rotation_timer = 0
         self.black_hole_despawn_timer = 0
-
-        self.alien_speed_factor = 0.1
-        self.alien_bullet_speed_factor = 0.07
-
-    def increase_aliens_speed(self) -> None:
-        """Increase alien speed with stage progression."""
-        self.alien_speed_factor += 0.01
-        self.alien_bullet_speed_factor += 0.02
