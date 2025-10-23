@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from game.gf.common import ship_hit, ship_hit_at_boss_stage
+from game.gf.common import ship_hit_on_boss_stage, ship_hit_on_regular_stage
 from game.paths import Paths
 
 if TYPE_CHECKING:
@@ -29,13 +29,13 @@ def check_ship_aliens_collision(settings: "Settings",
                                 ship: "Ship",
                                 sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.aliens):
-        ship_hit(settings=settings,
-                 screen=screen,
-                 stats=stats,
-                 stages=stages,
-                 hud=hud,
-                 ship=ship,
-                 sprites=sprites)
+        ship_hit_on_regular_stage(settings=settings,
+                                  screen=screen,
+                                  stats=stats,
+                                  stages=stages,
+                                  hud=hud,
+                                  ship=ship,
+                                  sprites=sprites)
 
 
 def check_ship_alien_bullets_collision(settings: "Settings",
@@ -46,13 +46,13 @@ def check_ship_alien_bullets_collision(settings: "Settings",
                                        ship: "Ship",
                                        sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.alien_bullets):
-        ship_hit(settings=settings,
-                 screen=screen,
-                 stats=stats,
-                 stages=stages,
-                 hud=hud,
-                 ship=ship,
-                 sprites=sprites)
+        ship_hit_on_regular_stage(settings=settings,
+                                  screen=screen,
+                                  stats=stats,
+                                  stages=stages,
+                                  hud=hud,
+                                  ship=ship,
+                                  sprites=sprites)
 
 
 def check_ship_boss_bullets_collision(settings: "Settings",
@@ -63,7 +63,7 @@ def check_ship_boss_bullets_collision(settings: "Settings",
                                       ship: "Ship",
                                       sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
-        ship_hit_at_boss_stage(settings=settings,
+        ship_hit_on_boss_stage(settings=settings,
                                screen=screen,
                                stats=stats,
                                stages=stages,
@@ -97,7 +97,7 @@ def check_ship_bosses_collision(settings: "Settings",
                                 ship: "Ship",
                                 sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.bosses):
-        ship_hit_at_boss_stage(settings=settings,
+        ship_hit_on_boss_stage(settings=settings,
                                screen=screen,
                                stats=stats,
                                stages=stages,
@@ -139,7 +139,7 @@ def check_ship_black_holes_collision(settings: "Settings",
                                      ship: "Ship",
                                      sprites: "Sprites") -> None:
     if pygame.sprite.spritecollideany(ship, sprites.boss_black_holes):
-        ship_hit_at_boss_stage(settings=settings,
+        ship_hit_on_boss_stage(settings=settings,
                                screen=screen,
                                stats=stats,
                                stages=stages,

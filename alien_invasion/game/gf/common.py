@@ -178,13 +178,13 @@ def create_fleet(settings: "Settings",
         create_alien(settings, screen, stages, ship, aliens, alien_number)
 
 
-def ship_hit(settings: "Settings",
-             screen: "Screen",
-             stats: "Stats",
-             stages: "Stages",
-             hud: "Hud",
-             ship: "Ship",
-             sprites: "Sprites") -> None:
+def ship_hit_on_regular_stage(settings: "Settings",
+                              screen: "Screen",
+                              stats: "Stats",
+                              stages: "Stages",
+                              hud: "Hud",
+                              ship: "Ship",
+                              sprites: "Sprites") -> None:
     stats.ships_left -= 1
     hud.prep_health()
     sprites.ship_health.empty()
@@ -201,7 +201,7 @@ def ship_hit(settings: "Settings",
         sleep(settings.game_sleep_time)
 
 
-def ship_hit_at_boss_stage(settings: "Settings",
+def ship_hit_on_boss_stage(settings: "Settings",
                            screen: "Screen",
                            stats: "Stats",
                            stages: "Stages",
