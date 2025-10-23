@@ -7,7 +7,8 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from game.alien import Alien
+    from pygame.rect import Rect
+
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
 class AlienBullet(Sprite):
     """Class, which represent bullets of alien ships."""
 
-    def __init__(self, settings: "Settings", screen: "Screen", alien: "Alien") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", rect: "Rect") -> None:
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.rect
@@ -31,8 +32,8 @@ class AlienBullet(Sprite):
         self.rect = self.image.get_rect()
 
         # Set starting position of bullet.
-        self.rect.centerx = alien.rect.centerx
-        self.rect.centery = alien.rect.centery
+        self.rect.centerx = rect.centerx
+        self.rect.centery = rect.centery
 
         # Current position of bullet.
         self.x = float(self.rect.centerx)

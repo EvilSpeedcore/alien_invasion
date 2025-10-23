@@ -288,8 +288,9 @@ def fire_alien_bullets(settings: "Settings",
     """Create alien bullets."""
     settings.time_elapsed_since_last_alien_bullet += dt
     if settings.time_elapsed_since_last_alien_bullet > 2500:
-        for alien in sprites.aliens:
-            alien_bullet = AlienBullet(settings, screen, alien)
+        aliens: list[Alien] = sprites.aliens.sprites()
+        for alien in aliens:
+            alien_bullet = AlienBullet(settings, screen, alien.rect)
             # TODO: Rework
             if stages.current.index < stages.get_by_name("green_boss").index:
                 pass
