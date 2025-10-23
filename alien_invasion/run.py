@@ -99,12 +99,6 @@ def run_game(args: Namespace) -> None:
             stages.current.update()
             stages.current.gameplay(dt)
             stages.current.check_collision()
-            common.fire_alien_bullets(settings=settings,
-                                      screen=screen,
-                                      stages=stages,
-                                      ship=ship,
-                                      sprites=sprites,
-                                      dt=dt)
             if stages.current.name == "blue_boss":
                 common.fire_blue_boss_bullets(settings=settings,
                                               screen=screen,

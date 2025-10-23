@@ -1,5 +1,6 @@
 import secrets
 from abc import abstractmethod
+from collections.abc import Generator
 from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING
@@ -7,6 +8,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 import game.rotation as rt
+from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.gf import collision, common
 from game.ship_consumables import ShipAmmo, ShipHealth
 
@@ -17,6 +19,7 @@ type StageTypes = "BossStage" | "Stage"
 if TYPE_CHECKING:
     from pygame.sprite import Group
 
+    from game.alien import Alien
     from game.bosses import Boss
     from game.hud import Hud
     from game.screen import Screen
@@ -97,6 +100,20 @@ class Stage(BaseStage):
         self.stats = stats
         self.ship = ship
 
+    def create_bullets(self) -> Generator[AlienBullet]:
+        aliens: list[Alien] = self.sprites.aliens.sprites()
+        for alien in aliens:
+            alien_bullet = AlienBullet(self.settings, self.screen, alien.rect)
+            yield alien_bullet
+
+    def fire_alien_bullets(self, dt: int) -> None:
+        self.settings.time_elapsed_since_last_alien_bullet += dt
+        if self.settings.time_elapsed_since_last_alien_bullet > 2500:
+            for bullet in self.create_bullets():
+                bullet.define_position(self.ship)
+                self.sprites.alien_bullets.add(bullet)
+            self.settings.time_elapsed_since_last_alien_bullet = 0
+
     def setup(self) -> None:
         super().setup()
         self.ship.center_ship()
@@ -170,7 +187,7 @@ class Stage(BaseStage):
                                                  bullets=self.sprites.alien_bullets)
 
     def gameplay(self, dt: int) -> None:
-        pass
+        self.fire_alien_bullets(dt)
 
     def update(self) -> None:
         super().update()
@@ -180,6 +197,24 @@ class Stage(BaseStage):
     def teardown(self) -> None:
         super().teardown()
         self.sprites.alien_bullets.empty()
+
+
+class RedStage(Stage):
+
+    def create_bullets(self) -> Generator[RedAlienBullet]:
+        aliens: list[Alien] = self.sprites.aliens.sprites()
+        for alien in aliens:
+            alien_bullet = RedAlienBullet(self.settings, self.screen, alien.rect)
+            yield alien_bullet
+
+
+class BlueStage(Stage):
+
+    def create_bullets(self) -> Generator[BlueAlienBullet]:
+        aliens: list[Alien] = self.sprites.aliens.sprites()
+        for alien in aliens:
+            alien_bullet = BlueAlienBullet(self.settings, self.screen, alien.rect)
+            yield alien_bullet
 
 
 class BossStage(BaseStage):
@@ -349,6 +384,27 @@ class Stages(list[StageTypes]):
                      sprites=self.sprites,
                      name=name)
 
+    def create_red_stage(self, name: str) -> RedStage:
+        return RedStage(stages=self,
+                        settings=self.settings,
+                        screen=self.screen,
+                        hud=self.hud,
+                        stats=self.stats,
+                        ship=self.ship,
+                        sprites=self.sprites,
+                        name=name)
+
+    def create_blue_stage(self, name: str) -> BlueStage:
+        return BlueStage(stages=self,
+                         settings=self.settings,
+                         screen=self.screen,
+                         hud=self.hud,
+                         stats=self.stats,
+                         ship=self.ship,
+                         sprites=self.sprites,
+                         name=name)
+
+
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
         return GreenBossStage(settings=self.settings,
                               screen=self.screen,
@@ -385,13 +441,13 @@ class Stages(list[StageTypes]):
             self.create_stage(name="1_2"),
             self.create_stage(name="1_3"),
             self.create_green_boss_stage(name="green_boss"),
-            self.create_stage(name="2_1"),
-            self.create_stage(name="2_2"),
-            self.create_stage(name="2_3"),
+            self.create_red_stage(name="2_1"),
+            self.create_red_stage(name="2_2"),
+            self.create_red_stage(name="2_3"),
             self.create_red_boss_stage(name="red_boss"),
-            self.create_stage(name="3_1"),
-            self.create_stage(name="3_2"),
-            self.create_stage(name="3_3"),
+            self.create_blue_stage(name="3_1"),
+            self.create_blue_stage(name="3_2"),
+            self.create_blue_stage(name="3_3"),
             self.create_blue_boss_stage(name="blue_boss"),
         ]
 
