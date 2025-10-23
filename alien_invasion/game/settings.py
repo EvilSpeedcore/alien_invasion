@@ -23,7 +23,7 @@ class Settings:
         self.red_boss_speed_factor = 0.004
         self.green_boss_bullet_speed_factor = 0.09
         self.red_boss_bullet_speed_factor = 0.08
-        self.blue_boss_bullet_speed_factor = 1
+        self.blue_boss_bullets_speed = 0.3
         self.time_elapsed_since_last_boss_bullet = 0
         self.time_elapsed_since_boss_shield = 0
         self.time_elapsed_since_last_red_boss_bullet = 0
@@ -31,6 +31,7 @@ class Settings:
         self.green_boss_bullet_timer = 300
 
         # Game settings
+        self.framerate = 5000
         self.game_sleep_time = 0.3
 
         # Settings initialization.

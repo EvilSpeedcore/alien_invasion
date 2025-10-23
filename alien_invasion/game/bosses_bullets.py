@@ -221,13 +221,13 @@ class BlueBossBullet(BossBullet):
         self.x = self.rect.centerx
         self.y = self.rect.centery
 
-        self.speed_factor = settings.blue_boss_bullet_speed_factor
+        self.speed = settings.blue_boss_bullets_speed
         self.angle = angle
 
     def update(self) -> None:
         """Update bullet position."""
-        bullet_move_x = self.speed_factor * math.cos(math.radians(self.angle))
-        bullet_move_y = -self.speed_factor * math.sin(math.radians(self.angle))
+        bullet_move_x = self.speed * math.cos(math.radians(self.angle))
+        bullet_move_y = -self.speed * math.sin(math.radians(self.angle))
         self.x += bullet_move_x  # type: ignore[assignment]
         self.y += bullet_move_y  # type: ignore[assignment]
         self.rect.centery = self.y

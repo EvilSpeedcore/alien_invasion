@@ -73,8 +73,9 @@ def run_game(args: Namespace) -> None:
                 events.quit_game()
 
         # Active game state
+        framerate = settings.framerate
         while state(State.ACTIVE):
-            dt = clock.tick(5000)
+            dt = clock.tick(framerate)
             active_events = events.check_active_game_events(settings=settings,
                                                             screen=screen,
                                                             stats=stats,

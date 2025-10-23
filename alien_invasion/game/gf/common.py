@@ -415,7 +415,7 @@ def fire_blue_boss_bullets(settings: "Settings",
     if not (boss := bosses.sprite):
         return
 
-    angles = (0, 90, 180, 270)
+    angles = (30, 120, 210, 300)
     bullets = (BlueBossBullet(settings, screen, boss, boss.shooting_angle + angle) for angle in angles)
     boss_bullets.add(bullets)
 
