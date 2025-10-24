@@ -200,81 +200,22 @@ def ship_hit_on_regular_stage(settings: "Settings",
 
 
 def ship_hit_on_boss_stage(settings: "Settings",
-                           screen: "Screen",
                            stats: "Stats",
-                           stages: "Stages",
                            hud: "Hud",
                            ship: "Ship",
                            sprites: "Sprites") -> None:
-    """Handle collisions between ship and bosses."""
-    # Handle collisions between ship and green boss.
-    # TODO: Rework.
-    if stages.current.name == "green_boss":
-        stats.ships_left -= 1
-        hud.prep_health()
-        boss: Boss = sprites.bosses.sprite
-        boss.set_default_hit_points()
-        boss.prepare_health()
-
-        # Ship and boss timers refresh.
-        settings.time_elapsed_since_shield = 0
-        settings.time_elapsed_since_boss_shield = 0
-
-        sprites.ship_bullets.empty()
-        sprites.bosses.empty()
-        sprites.boss_bullets.empty()
-        sprites.ship_shields.empty()
-
-        if stats.ships_left:
-            create_green_boss(settings=settings, screen=screen, sprites=sprites)
-            ship.prepare_for_boss()
-            sleep(settings.game_sleep_time)
-
-    # Handle collisions between ship and red boss.
-    elif stages.current.name == "red_boss":
-        stats.ships_left -= 1
-        hud.prep_health()
-        boss = sprites.bosses.sprite
-        boss.set_default_hit_points()
-        boss.prepare_health()
-
-        # Ship and boss timers refresh.
-        settings.time_elapsed_since_shield = 0
-        settings.time_elapsed_since_boss_shield = 0
-
-        sprites.ship_bullets.empty()
-        sprites.bosses.empty()
-        sprites.boss_bullets.empty()
-        sprites.ship_shields.empty()
-
-        if stats.ships_left:
-            create_red_boss(settings=settings, screen=screen, sprites=sprites)
-            ship.prepare_for_boss()
-            sleep(settings.game_sleep_time)
-
-    # Handle collisions between ship and blue boss.
-    elif stages.current.name == "blue_boss":
-        stats.ships_left -= 1
-        hud.prep_health()
-        boss = sprites.bosses.sprite
-        boss.set_default_hit_points()
-        boss.prepare_health()
-
-        # Ship and boss timers refresh.
-        settings.black_hole_spawn_timer = 0
-        settings.time_elapsed_since_shield = 0
-        settings.time_elapsed_since_boss_shield = 0
-
-        sprites.ship_bullets.empty()
-        sprites.bosses.empty()
-        sprites.boss_bullets.empty()
-        sprites.ship_shields.empty()
-
-        if stats.ships_left:
-            sprites.boss_black_holes.empty()
-            create_blue_boss(settings=settings, screen=screen, sprites=sprites)
-            ship.prepare_for_boss()
-            sleep(settings.game_sleep_time)
+    stats.ships_left -= 1
+    hud.prep_health()
+    boss: Boss = sprites.bosses.sprite
+    boss.set_default_hit_points()
+    boss.prepare_health()
+    sprites.ship_bullets.empty()
+    sprites.bosses.empty()
+    sprites.boss_bullets.empty()
+    sprites.ship_shields.empty()
+    settings.time_elapsed_since_shield = 0
+    settings.time_elapsed_since_boss_shield = 0
+    ship.prepare_for_boss()
 
 
 def fire_alien_bullets(settings: "Settings",

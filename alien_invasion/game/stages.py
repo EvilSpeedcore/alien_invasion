@@ -1,4 +1,5 @@
 import secrets
+import time
 from abc import abstractmethod
 from collections.abc import Generator
 from itertools import count
@@ -246,22 +247,6 @@ class BossStage(BaseStage):
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.boss_bullets,
                                    dokilla=False, dokillb=True)
-        # Ship and boss bullets
-        collision.check_ship_boss_bullets_collision(settings=self.settings,
-                                                    screen=self.screen,
-                                                    stats=self.stats,
-                                                    stages=self.stages,
-                                                    hud=self.hud,
-                                                    ship=self.ship,
-                                                    sprites=self.sprites)
-        # Ship and bosses
-        collision.check_ship_bosses_collision(settings=self.settings,
-                                              screen=self.screen,
-                                              stats=self.stats,
-                                              stages=self.stages,
-                                              hud=self.hud,
-                                              ship=self.ship,
-                                              sprites=self.sprites)
 
         # Ship bullets and bosses
         collision.check_ship_bullets_boss_collision(settings=self.settings, sprites=self.sprites)
@@ -294,6 +279,23 @@ class GreenBossStage(BossStage):
         super().setup()
         common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
+    def check_collision(self) -> None:
+        if any((
+            collision.check_ship_boss_bullets_collision(settings=self.settings,
+                                                        stats=self.stats,
+                                                        hud=self.hud,
+                                                        ship=self.ship,
+                                                        sprites=self.sprites),
+            collision.check_ship_bosses_collision(settings=self.settings,
+                                                  stats=self.stats,
+                                                  hud=self.hud,
+                                                  ship=self.ship,
+                                                  sprites=self.sprites),
+        )) and  self.stats.ships_left:
+            common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+            time.sleep(self.settings.game_sleep_time)
+        super().check_collision()
+
     def gameplay(self, dt: int) -> None:
         common.fire_green_boss_bullets(settings=self.settings,
                                        screen=self.screen,
@@ -308,6 +310,23 @@ class RedBossStage(BossStage):
     def setup(self) -> None:
         super().setup()
         common.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+
+    def check_collision(self) -> None:
+        if any((
+            collision.check_ship_boss_bullets_collision(settings=self.settings,
+                                                        stats=self.stats,
+                                                        hud=self.hud,
+                                                        ship=self.ship,
+                                                        sprites=self.sprites),
+            collision.check_ship_bosses_collision(settings=self.settings,
+                                                  stats=self.stats,
+                                                  hud=self.hud,
+                                                  ship=self.ship,
+                                                  sprites=self.sprites),
+        )) and self.stats.ships_left:
+            common.create_red_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+            time.sleep(self.settings.game_sleep_time)
+        super().check_collision()
 
     def gameplay(self, dt: int) -> None:
         common.fire_red_boss_bullets(settings=self.settings,
@@ -325,13 +344,29 @@ class BlueBossStage(BossStage):
         common.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
-        collision.check_ship_black_holes_collision(settings=self.settings,
-                                                   screen=self.screen,
-                                                   stats=self.stats,
-                                                   hud=self.hud,
-                                                   stages=self.stages,
-                                                   ship=self.ship,
-                                                   sprites=self.sprites)
+        if any((
+            collision.check_ship_boss_bullets_collision(settings=self.settings,
+                                                        stats=self.stats,
+                                                        hud=self.hud,
+                                                        ship=self.ship,
+                                                        sprites=self.sprites),
+            collision.check_ship_bosses_collision(settings=self.settings,
+                                                  stats=self.stats,
+                                                  hud=self.hud,
+                                                  ship=self.ship,
+                                                  sprites=self.sprites),
+            collision.check_ship_black_holes_collision(settings=self.settings,
+                                                       stats=self.stats,
+                                                       hud=self.hud,
+                                                       ship=self.ship,
+                                                       sprites=self.sprites),
+        )):
+            self.settings.black_hole_spawn_timer = 0
+            if self.stats.ships_left:
+                self.sprites.boss_black_holes.empty()
+                common.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+                time.sleep(self.settings.game_sleep_time)
+
         super().check_collision()
 
     def gameplay(self, dt: int) -> None:

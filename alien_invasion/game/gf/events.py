@@ -216,7 +216,6 @@ def check_play_button_pressed(play_button: "Button") -> bool:
     return play_button.ellipse_rect.collidepoint(mouse_x, mouse_y)
 
 
-
 def quit_game() -> None:
     pygame.quit()
     sys.exit(0)

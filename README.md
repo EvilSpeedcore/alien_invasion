@@ -20,3 +20,4 @@ uv run nuitka --onefile --msvc=latest --include-data-dir=./assets=assets run.py
 * Tests with input recording (events)
 * Saves
 * Change blue alien to shoot first bullets with delay
+* .ini configuration for executable

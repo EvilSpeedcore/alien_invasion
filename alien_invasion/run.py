@@ -32,7 +32,11 @@ def run_game(args: Namespace) -> None:
     stats = Stats(settings)
     sprites = Sprites()
 
-    hud = Hud(settings, screen, stats, ship, sprites)
+    hud = Hud(settings=settings,
+              screen=screen,
+              stats=stats,
+              ship=ship,
+              sprites=sprites)
     stages = Stages(settings=settings,
                     screen=screen,
                     stats=stats,
