@@ -3,18 +3,17 @@ from functools import cache
 from pathlib import Path
 
 
-def is_compiled() -> bool:
-    return "__compiled__" in globals()
-
-
 class Paths:
 
     @staticmethod
     @cache
     def assets() -> Path:
-        if is_compiled():
-            return Path(sys.executable).parent / "assets"
-        return Path(__file__).parent.parent / "assets"
+        if getattr(sys, "frozen", False):
+            base = Path(sys._MEIPASS) if hasattr(sys, "_MEIPASS") else Path(sys.executable).parent  # noqa: SLF001
+            return base / "assets"
+
+        base = Path(__file__).resolve().parent.parent
+        return base / "assets"
 
     @staticmethod
     @cache

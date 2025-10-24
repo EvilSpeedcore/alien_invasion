@@ -68,7 +68,8 @@ ignore = [
 disallow_untyped_defs = true
 mypy_path = "./alien_invasion"
 exclude = [
-    ".*\\.onefile-build.*"
+    ".*\\.onefile-build.*",
+    ".*\\.build.*",
 ]
 
 [tool.tox]
