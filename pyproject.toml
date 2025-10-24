@@ -13,6 +13,9 @@ auto = [
     "tox>=4.27.0",
     "tox-uv>=1.26.1",
 ]
+build = [
+    "nuitka>=2.8.4",
+]
 lint = [
     "isort>=6.0.1",
     "ruff>=0.12.2",
@@ -64,6 +67,9 @@ ignore = [
 [tool.mypy]
 disallow_untyped_defs = true
 mypy_path = "./alien_invasion"
+exclude = [
+    ".*\\.onefile-build.*"
+]
 
 [tool.tox]
 requires = ["tox>=4.19"]

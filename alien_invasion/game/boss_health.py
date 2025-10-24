@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias, Union
 
 from pygame.sprite import Sprite
 
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from game.settings import Settings
 
 
-type BossHealthTypes = BlueBossHealth | GreenBossHealth | RedBossHealth
+BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
 
 
 class BossHealth(Sprite):

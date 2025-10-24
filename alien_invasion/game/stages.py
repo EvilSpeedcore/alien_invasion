@@ -3,7 +3,7 @@ from abc import abstractmethod
 from collections.abc import Generator
 from itertools import count
 from logging import getLogger
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeAlias, Union
 
 import pygame
 
@@ -11,10 +11,6 @@ import game.rotation as rt
 from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.gf import collision, common
 from game.ship_consumables import ShipAmmo, ShipHealth
-
-log = getLogger(__name__)
-
-type StageTypes = "BossStage" | "Stage"
 
 if TYPE_CHECKING:
     from pygame.sprite import Group
@@ -27,6 +23,10 @@ if TYPE_CHECKING:
     from game.ship import Ship
     from game.sprites import Sprites
     from game.stats import Stats
+
+
+StageTypes: TypeAlias = Union["BossStage", "Stage"]  # noqa: UP040
+log = getLogger(__name__)
 
 
 class BaseStage:

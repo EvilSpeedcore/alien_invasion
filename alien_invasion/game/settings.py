@@ -1,6 +1,6 @@
 class Settings:
 
-    def __init__(self, health: int = 3) -> None:
+    def __init__(self, health: int | None) -> None:
         # Screen settings.
         self.screen_width = 1200
         self.screen_height = 800
@@ -8,7 +8,7 @@ class Settings:
 
         # Ship settings.
         self.bullets_allowed = 1
-        self.ships_limit = health
+        self.ships_limit = health or 3
         self.ship_speed = 0.60
         self.bullet_speed_factor = 1.5
         self.shields_allowed = 1
