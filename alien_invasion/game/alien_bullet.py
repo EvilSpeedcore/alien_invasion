@@ -117,29 +117,23 @@ class AlienBullet(Sprite):
         """Define position of ship."""
         if self.x < ship.centerx and self.y < ship.centery:
             self.ship_position = "4"
-            self.define_angle(ship)
         elif self.x < ship.centerx and self.y > ship.centery:
             self.ship_position = "1"
-            self.define_angle(ship)
         elif self.x > ship.centerx and self.y > ship.centery:
             self.ship_position = "2"
-            self.define_angle(ship)
         elif self.x > ship.centerx and self.y < ship.centery:
             self.ship_position = "3"
-            self.define_angle(ship)
         elif self.x < ship.centerx and self.y == ship.centery:
             self.ship_position = "4-1"
-            self.define_angle(ship)
         elif self.x > ship.centerx and self.y == ship.centery:
             self.ship_position = "2-3"
-            self.define_angle(ship)
         elif self.x == ship.centerx and self.y > ship.centery:
             self.ship_position = "1-2"
-            self.define_angle(ship)
         elif self.x == ship.centerx and self.y < ship.centery:
             self.ship_position = "3-4"
-            self.define_angle(ship)
-
+        else:
+            raise AssertionError
+        self.define_angle(ship)
 
 class RedAlienBullet(AlienBullet):
     _IMAGE = load_image("red_alien_bullet.png")
