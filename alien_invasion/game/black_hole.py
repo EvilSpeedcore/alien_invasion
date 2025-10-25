@@ -14,10 +14,13 @@ if TYPE_CHECKING:
     from game.ship import Ship
 
 
-class BlackHole(Sprite):
+def prepare_images() -> list["Surface"]:
+    filenames = (f"black_hole_{number}.png" for number in range(1, 13))
+    return [load_image(f"black_hole/{image}") for image in filenames]
 
-    IMAGE_DIR = "black_hole"
-    ROTATION_IMAGES: ClassVar[list[str]] = [f"black_hole_{number}.png" for number in range(1, 13)]
+
+class BlackHole(Sprite):
+    ROTATION_IMAGES: ClassVar[list["Surface"]] = prepare_images()
 
     def __init__(self,
                  settings: "Settings",
@@ -28,7 +31,7 @@ class BlackHole(Sprite):
         self.screen = screen
         self.screen_rect = screen.rect
 
-        self.images: deque[Surface] = deque(self.prepare_images())
+        self.images: deque[Surface] = deque(self.ROTATION_IMAGES)
         self.image = self.images[0].copy()
 
         self.rect = self.image.get_rect()
@@ -48,10 +51,6 @@ class BlackHole(Sprite):
                                         y not in self.banned_coordinates_y]
         self.rect.centerx = secrets.choice(self.available_coordinates_x)
         self.rect.centery = secrets.choice(self.available_coordinates_y)
-
-    @classmethod
-    def prepare_images(cls) -> list["Surface"]:
-        return [load_image(f"{cls.IMAGE_DIR}/{image}") for image in cls.ROTATION_IMAGES]
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
