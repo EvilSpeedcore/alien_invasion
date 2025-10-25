@@ -23,8 +23,6 @@ class ShipPosition(Enum):
 
 
 class AlienBullet(Sprite):
-    """Class, which represent bullets of alien ships."""
-
     IMAGE = load_image("alien_bullet.png")
 
     def __init__(self, settings: "Settings", screen: "Screen", rect: "Rect") -> None:

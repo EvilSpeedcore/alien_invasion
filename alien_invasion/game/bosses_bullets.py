@@ -7,8 +7,6 @@ import game.find_angle as fa
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.surface import Surface
-
     from game.bosses import BlueBoss, GreenBoss, RedBoss
     from game.screen import Screen
     from game.settings import Settings
@@ -16,12 +14,13 @@ if TYPE_CHECKING:
 
 
 class BossBullet(Sprite):
+    IMAGE = load_image("alien_bullet.png")
 
-    def __init__(self, screen: "Screen", image: "Surface") -> None:
+    def __init__(self, screen: "Screen") -> None:
         super().__init__()
         self.screen = screen
-        self.image = image
-        self.rect = image.get_rect()
+        self.image = self.IMAGE
+        self.rect = self.image.get_rect()
 
     def blitme(self) -> None:
         """Draw bullet on screen."""
@@ -31,8 +30,7 @@ class BossBullet(Sprite):
 class GreenBossBullet(BossBullet):
 
     def __init__(self, settings: "Settings", screen: "Screen", boss: "GreenBoss") -> None:
-        image = load_image("alien_bullet.png")
-        super().__init__(screen, image=image)
+        super().__init__(screen)
 
         self.screen_rect = self.screen.rect
 
@@ -80,10 +78,10 @@ class GreenBossBullet(BossBullet):
 
 
 class RedBossBullet(BossBullet):
+    IMAGE = load_image("red_alien_bullet.png")
 
     def __init__(self, settings: "Settings", screen: "Screen", boss: "RedBoss") -> None:
-        image = load_image("red_alien_bullet.png")
-        super().__init__(screen=screen, image=image)
+        super().__init__(screen=screen)
 
         self.screen_rect = self.screen.rect
 
@@ -202,14 +200,14 @@ class RedBossBullet(BossBullet):
 
 
 class BlueBossBullet(BossBullet):
+    IMAGE = load_image("blue_alien_bullet.png")
 
     def __init__(self,
                  settings: "Settings",
                  screen: "Screen",
                  boss: "BlueBoss",
                  angle: int) -> None:
-        image = load_image("blue_alien_bullet.png")
-        super().__init__(screen=screen, image=image)
+        super().__init__(screen=screen)
 
         self.screen_rect = self.screen.rect
 
