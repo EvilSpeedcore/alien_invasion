@@ -12,10 +12,12 @@ if TYPE_CHECKING:
 
 class Bullet(Sprite):
 
+    IMAGE = load_image("bullet.png")
+
     def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
-        self.image = load_image("bullet.png")
+        self.image = self.IMAGE
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -61,12 +63,7 @@ class Bullet(Sprite):
         self.bullet_rotation = ship.current_ship_rotation
 
     def update(self) -> None:
-        """Update bullet position depending on ship current rotation.
-
-        Args:
-            :param ship: Instance of Ship class.
-
-        """
+        """Update bullet position depending on ship current rotation."""
         if self.bullet_rotation == "up":
             self.y_up -= self.speed_factor
             self.rect.centery = self.y_up  # type: ignore[assignment]
