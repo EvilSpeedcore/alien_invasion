@@ -105,20 +105,4 @@ class Bullet(Sprite):
             self.rect.centerx = self.x_down_right  # type: ignore[assignment]
 
     def blitme(self) -> None:
-        """Draw bullet on screen depending on ship current rotation."""
-        if self.bullet_rotation == "up":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "right":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "left":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "down":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "up-right":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "up-left":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "down-left":
-            self.screen.it.blit(self.image, self.rect)
-        if self.bullet_rotation == "down-right":
-            self.screen.it.blit(self.image, self.rect)
+        self.screen.it.blit(self.image, self.rect)
