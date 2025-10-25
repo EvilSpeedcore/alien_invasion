@@ -9,9 +9,9 @@ import game.rotation as rt
 from game.alien import Alien
 from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.black_hole import BlackHole
+from game.boss_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.boss_shield import BlueBossShield, GreenBossShield, RedBossShield
 from game.bosses import BlueBoss, GreenBoss, RedBoss
-from game.bosses_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.bullet import Bullet
 from game.paths import Paths
 from game.ship_consumables import ShipShield
