@@ -13,24 +13,24 @@ if TYPE_CHECKING:
 
 class BossShield(Sprite):
 
-    def __init__(self, screen: "Screen", shield: "Surface") -> None:
+    def __init__(self, screen: "Screen", image: "Surface") -> None:
         super().__init__()
         self.screen = screen
-        self.shield = shield
+        self.image = image
 
-        self.rect = shield.get_rect()
+        self.rect = image.get_rect()
         self.points = 0
 
     def draw_boss_shield(self) -> None:
         """Draw boss shield on screen."""
-        self.screen.it.blit(self.shield, self.rect)
+        self.screen.it.blit(self.image, self.rect)
 
 
 class GreenBossShield(BossShield):
+    IMAGE = load_image("spawned_green_boss_shield.png")
 
     def __init__(self, screen: "Screen", boss: "GreenBoss") -> None:
-        shield = load_image("spawned_green_boss_shield.png")
-        super().__init__(screen=screen, shield=shield)
+        super().__init__(screen=screen, image=self.IMAGE)
         self.boss = boss
 
         # Set starting position of shield.
@@ -46,10 +46,10 @@ class GreenBossShield(BossShield):
 
 
 class RedBossShield(BossShield):
+    IMAGE = load_image("spawned_red_boss_shield.png")
 
     def __init__(self, screen: "Screen", boss: "RedBoss") -> None:
-        shield = load_image("spawned_red_boss_shield.png")
-        super().__init__(screen=screen, shield=shield)
+        super().__init__(screen=screen, image=self.IMAGE)
         self.boss = boss
 
         # Set starting position of shield.
@@ -72,10 +72,10 @@ class RedBossShield(BossShield):
 
 
 class BlueBossShield(BossShield):
+    IMAGE = load_image("spawned_blue_boss_shield.png")
 
     def __init__(self, screen: "Screen", boss: "BlueBoss") -> None:
-        shield = load_image("spawned_blue_boss_shield.png")
-        super().__init__(screen=screen, shield=shield)
+        super().__init__(screen=screen, image=self.IMAGE)
         self.boss = boss
 
         # Set position of shield.
