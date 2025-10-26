@@ -279,11 +279,11 @@ def use_ship_shield(screen: "Screen",
 
 def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
-    green_boss = GreenBoss(screen=screen, boss_health=sprites.boss_health)
-    boss_shield = GreenBossShield(screen, green_boss)
-    green_boss.set_default_hit_points()
-    green_boss.prepare_health()
-    sprites.bosses.add(green_boss)
+    boss = GreenBoss(screen=screen, boss_health=sprites.boss_health)
+    boss_shield = GreenBossShield(screen, position=(boss.rect.centerx, boss.rect.centery))
+    boss.set_default_hit_points()
+    boss.prepare_health()
+    sprites.bosses.add(boss)
     sprites.boss_shields.add(boss_shield)
 
 
