@@ -1,53 +1,52 @@
+from enum import Enum, auto
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from game.ship import Ship
 
 
+class Rotation(Enum):
+    UP         = auto()
+    RIGHT      = auto()
+    LEFT       = auto()
+    DOWN       = auto()
+    UP_RIGHT   = auto()
+    UP_LEFT    = auto()
+    DOWN_LEFT  = auto()
+    DOWN_RIGHT = auto()
+
+
 def rotate(ship: "Ship") -> None:
-    """Change ship direction.
-
-    Args:
-        :param Ship ship: Instance of Ship class.
-
-    """
+    """Change ship direction."""
     if ship.current_ship_rotation == ship.desirable_ship_rotation:
         return
 
-    if ship.desirable_ship_rotation == "up":
-        rotate_to_up(ship)
-    if ship.desirable_ship_rotation == "right":
-        rotate_to_right(ship)
-    if ship.desirable_ship_rotation == "left":
-        rotate_to_left(ship)
-    if ship.desirable_ship_rotation == "down":
-        rotate_to_down(ship)
+    match ship.desirable_ship_rotation:
+        case Rotation.UP:
+            rotate_to_up(ship)
+        case Rotation.RIGHT:
+            rotate_to_right(ship)
+        case Rotation.LEFT:
+            rotate_to_left(ship)
+        case Rotation.DOWN:
+            rotate_to_down(ship)
 
 
 def rotate_to_up(ship: "Ship") -> None:
-    """Rotate ship to UP direction.
-
-    Args:
-        :param ship: Instance of Ship class.
-
-    """
     ship.image = ship.original_image
-    ship.current_ship_rotation = "up"
+    ship.current_ship_rotation = Rotation.UP
 
 
 def rotate_to_right(ship: "Ship") -> None:
-    """Rotate ship to RIGHT direction."""
     ship.image = ship.original_image_right
-    ship.current_ship_rotation = "right"
+    ship.current_ship_rotation = Rotation.RIGHT
 
 
 def rotate_to_left(ship: "Ship") -> None:
-    """Rotate ship to LEFT direction."""
     ship.image = ship.original_image_left
-    ship.current_ship_rotation = "left"
+    ship.current_ship_rotation = Rotation.LEFT
 
 
 def rotate_to_down(ship: "Ship") -> None:
-    """Rotate ship to DOWN direction."""
     ship.image = ship.original_image_down
-    ship.current_ship_rotation = "down"
+    ship.current_ship_rotation = Rotation.DOWN

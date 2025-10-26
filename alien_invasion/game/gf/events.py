@@ -69,19 +69,19 @@ def check_active_game_keydown_events(event: "Event",
     events = ActiveGameEvents()
     match event.key:
         case pygame.K_RIGHT:
-            ship.desirable_ship_rotation = "right"
+            ship.desirable_ship_rotation = rt.Rotation.RIGHT
             ship.moving_right = True
             rt.rotate(ship)
         case pygame.K_LEFT:
-            ship.desirable_ship_rotation = "left"
+            ship.desirable_ship_rotation = rt.Rotation.LEFT
             ship.moving_left = True
             rt.rotate(ship)
         case pygame.K_UP:
-            ship.desirable_ship_rotation = "up"
+            ship.desirable_ship_rotation = rt.Rotation.UP
             ship.moving_up = True
             rt.rotate(ship)
         case pygame.K_DOWN:
-            ship.desirable_ship_rotation = "down"
+            ship.desirable_ship_rotation = rt.Rotation.DOWN
             ship.moving_down = True
             rt.rotate(ship)
         case pygame.K_a:
@@ -97,19 +97,19 @@ def check_pause_keydown_events(event: "Event", ship: "Ship") -> PauseEvents:
     events = PauseEvents()
     match event.key:
         case pygame.K_RIGHT:
-            ship.desirable_ship_rotation = "right"
+            ship.desirable_ship_rotation = rt.Rotation.RIGHT
             ship.moving_right = True
             rt.rotate(ship)
         case pygame.K_LEFT:
-            ship.desirable_ship_rotation = "left"
+            ship.desirable_ship_rotation = rt.Rotation.LEFT
             ship.moving_left = True
             rt.rotate(ship)
         case pygame.K_UP:
-            ship.desirable_ship_rotation = "up"
+            ship.desirable_ship_rotation = rt.Rotation.UP
             ship.moving_up = True
             rt.rotate(ship)
         case pygame.K_DOWN:
-            ship.desirable_ship_rotation = "down"
+            ship.desirable_ship_rotation = rt.Rotation.DOWN
             ship.moving_down = True
             rt.rotate(ship)
         case pygame.K_s:

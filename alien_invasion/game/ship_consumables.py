@@ -3,6 +3,7 @@ from typing import TYPE_CHECKING
 from pygame.sprite import Sprite
 
 from game.images import load_image
+from game.rotation import Rotation
 
 if TYPE_CHECKING:
     from pygame.rect import Rect
@@ -62,33 +63,34 @@ class ShipShield(ShipConsumable):
 
     def update(self) -> None:
         """Update position of used shield relatively ship position."""
-        if self.ship.current_ship_rotation in ("up", "down"):
-            self.centerx = self.ship.centerx
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation in ("left", "right"):
-            self.centerx = self.ship.centerx - 8
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 3
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "up-left":
-            self.centerx = self.ship.centerx - 9
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery - 5
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "up-right":
-            self.centerx = self.ship.centerx
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery - 5
-            self.rect.centery = self.centery
-        elif self.ship.current_ship_rotation == "down-left":
-            self.centerx = self.ship.centerx - 9
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 1
-            self.rect.centery = self.centery + 1
-        elif self.ship.current_ship_rotation == "down-right":
-            self.centerx = self.ship.centerx - 1
-            self.rect.centerx = self.centerx
-            self.centery = self.ship.centery + 2
-            self.rect.centery = self.centery
+        match self.ship.current_ship_rotation:
+            case Rotation.UP | Rotation.DOWN:
+                self.centerx = self.ship.centerx
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery
+                self.rect.centery = self.centery
+            case Rotation.LEFT | Rotation.RIGHT:
+                self.centerx = self.ship.centerx - 8
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery + 3
+                self.rect.centery = self.centery
+            case Rotation.UP_LEFT:
+                self.centerx = self.ship.centerx - 9
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery - 5
+                self.rect.centery = self.centery
+            case Rotation.UP_RIGHT:
+                self.centerx = self.ship.centerx
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery - 5
+                self.rect.centery = self.centery
+            case Rotation.DOWN_LEFT:
+                self.centerx = self.ship.centerx - 9
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery + 1
+                self.rect.centery = self.centery + 1
+            case Rotation.DOWN_RIGHT:
+                self.centerx = self.ship.centerx - 1
+                self.rect.centerx = self.centerx
+                self.centery = self.ship.centery + 2
+                self.rect.centery = self.centery

@@ -48,14 +48,15 @@ def define_direct_bullet_position(bullet: "AlienBullet | RedBossBullet", ship: "
 
 
 def update_direct_bullet(bullet: "AlienBullet | RedBossBullet") -> None:
-    if bullet.ship_position == ShipToBulletPosition.DOWN_RIGHT:
-        radians = math.radians(360 - bullet.shooting_angle)
-    elif bullet.ship_position == ShipToBulletPosition.UP_RIGHT:
-        radians = math.radians(bullet.shooting_angle)
-    elif bullet.ship_position == ShipToBulletPosition.UP_LEFT:
-        radians = math.radians(180 - bullet.shooting_angle)
-    elif bullet.ship_position == ShipToBulletPosition.DOWN_LEFT:
-        radians = math.radians(180 + bullet.shooting_angle)
+    match bullet.ship_position:
+        case ShipToBulletPosition.DOWN_RIGHT:
+            radians = math.radians(360 - bullet.shooting_angle)
+        case ShipToBulletPosition.UP_RIGHT:
+            radians = math.radians(bullet.shooting_angle)
+        case ShipToBulletPosition.UP_LEFT:
+            radians = math.radians(180 - bullet.shooting_angle)
+        case ShipToBulletPosition.DOWN_LEFT:
+            radians = math.radians(180 + bullet.shooting_angle)
 
     bullet_move_x = bullet.speed * math.cos(radians)
     bullet_move_y = -bullet.speed * math.sin(radians)

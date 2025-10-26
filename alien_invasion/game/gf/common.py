@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-import game.rotation as rt
 from game.alien import Alien
 from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.black_hole import BlackHole
@@ -14,6 +13,7 @@ from game.boss_shield import BlueBossShield, GreenBossShield, RedBossShield
 from game.bosses import BlueBoss, GreenBoss, RedBoss
 from game.bullet import Bullet
 from game.paths import Paths
+from game.rotation import Rotation, rotate_to_up
 from game.ship_consumables import ShipShield
 
 if TYPE_CHECKING:
@@ -39,35 +39,35 @@ def initialize_game_from_main_menu(settings: "Settings", stats: "Stats", hud: "H
     hud.prep_health()
     hud.prep_ammo()
     hud.prep_shield()
-    rt.rotate_to_up(ship)
+    rotate_to_up(ship)
 
 
 def handle_ship_diagonal_movement(ship: "Ship") -> None:
     # Check for UP_LEFT ship direction.
     if ship.moving_up and ship.moving_left:
-        ship.current_ship_rotation = "up-left"
-        while ship.current_ship_rotation == "up-left":
+        ship.current_ship_rotation = Rotation.UP_LEFT
+        while ship.current_ship_rotation == Rotation.UP_LEFT:
             ship.image = ship.original_image_up_left
             break
 
     # Check for UP_RIGHT ship direction.
     if ship.moving_up and ship.moving_right:
-        ship.current_ship_rotation = "up-right"
-        while ship.current_ship_rotation == "up-right":
+        ship.current_ship_rotation = Rotation.UP_RIGHT
+        while ship.current_ship_rotation == Rotation.UP_RIGHT:
             ship.image = ship.original_image_up_right
             break
 
     # Check for DOWN_LEFT ship direction.
     if ship.moving_down and ship.moving_left:
-        ship.current_ship_rotation = "down-left"
-        while ship.current_ship_rotation == "down-left":
+        ship.current_ship_rotation = Rotation.DOWN_LEFT
+        while ship.current_ship_rotation == Rotation.DOWN_LEFT:
             ship.image = ship.original_image_down_left
             break
 
     # Check for DOWN_RIGHT ship direction.
     if ship.moving_down and ship.moving_right:
-        ship.current_ship_rotation = "down-right"
-        while ship.current_ship_rotation == "down-right":
+        ship.current_ship_rotation = Rotation.DOWN_RIGHT
+        while ship.current_ship_rotation == Rotation.DOWN_RIGHT:
             ship.image = ship.original_image_down_right
             break
 
