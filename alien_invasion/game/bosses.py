@@ -43,7 +43,7 @@ class Boss(Sprite):
 
     def prepare_health(self) -> None:
         """Prepare to drawn green boss health."""
-        hp_image = self.health.hp_images[self.hit_points_with_shield]
+        hp_image = self.health.IMAGES[self.hit_points_with_shield]
         self.health.image = hp_image.copy()
         self.health.rect.x = 500
         self.health.rect.y = 60
@@ -63,13 +63,10 @@ class GreenBoss(Boss):
     _HIT_POINTS = 10
     _HIT_POINTS_WITH_SHIELD = 19
 
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 boss_health: "GroupSingle") -> None:
+    def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
         # TODO: Load once?
         image = load_image("green_alien.png")
-        health = GreenBossHealth(settings, screen)
+        health = GreenBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
 
@@ -83,7 +80,7 @@ class RedBoss(Boss):
                  screen: "Screen",
                  boss_health: "GroupSingle") -> None:
         image = load_image("red_alien.png")
-        health = RedBossHealth(settings, screen)
+        health = RedBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
         # Current position of bullet
@@ -320,12 +317,9 @@ class BlueBoss(Boss):
     _HIT_POINTS = 10
     _HIT_POINTS_WITH_SHIELD = 19
 
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 boss_health: "GroupSingle") -> None:
+    def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
         image = load_image("blue_alien.png")
-        health = BlueBossHealth(settings, screen)
+        health = BlueBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
         # Current position of bullet.

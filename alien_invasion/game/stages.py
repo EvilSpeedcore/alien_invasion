@@ -134,9 +134,6 @@ class Stage(BaseStage):
                             aliens=self.sprites.aliens)
 
     def transit(self) -> None:
-        # TODO: self.stages.current is confusing
-        #       (we set current to early),
-        #       change to self.stages.next
         super().transit()
 
     def check_collision(self) -> None:
@@ -277,7 +274,7 @@ class GreenBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+        common.create_green_boss(screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
         if any((
@@ -292,7 +289,7 @@ class GreenBossStage(BossStage):
                                                   ship=self.ship,
                                                   sprites=self.sprites),
         )) and  self.stats.ships_left:
-            common.create_green_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+            common.create_green_boss(screen=self.screen, sprites=self.sprites)
             time.sleep(self.settings.game_sleep_time)
         super().check_collision()
 
@@ -341,7 +338,7 @@ class BlueBossStage(BossStage):
 
     def setup(self) -> None:
         super().setup()
-        common.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+        common.create_blue_boss(screen=self.screen, sprites=self.sprites)
 
     def check_collision(self) -> None:
         if any((
@@ -364,7 +361,7 @@ class BlueBossStage(BossStage):
             self.settings.black_hole_spawn_timer = 0
             if self.stats.ships_left:
                 self.sprites.boss_black_holes.empty()
-                common.create_blue_boss(settings=self.settings, screen=self.screen, sprites=self.sprites)
+                common.create_blue_boss(screen=self.screen, sprites=self.sprites)
                 time.sleep(self.settings.game_sleep_time)
 
         super().check_collision()
@@ -501,7 +498,6 @@ class Stages(list[StageTypes]):
         for stage in self:
             if stage.name == name:
                 return stage
-        # TODO: Raise proper error
         raise AssertionError
 
     def select(self, name: str) -> None:
@@ -512,7 +508,6 @@ class Stages(list[StageTypes]):
                 return
             self.current = stage
             stage.transit()
-        # TODO: Raise proper error
         raise AssertionError
 
     def load_next_stage(self) -> StageTypes:

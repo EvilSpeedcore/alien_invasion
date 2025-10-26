@@ -276,9 +276,9 @@ def use_ship_shield(screen: "Screen",
         hud.prep_shield()
 
 
-def create_green_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
+def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
-    green_boss = GreenBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
+    green_boss = GreenBoss(screen=screen, boss_health=sprites.boss_health)
     boss_shield = GreenBossShield(screen, green_boss)
     green_boss.set_default_hit_points()
     green_boss.prepare_health()
@@ -286,11 +286,9 @@ def create_green_boss(settings: "Settings", screen: "Screen", sprites: "Sprites"
     sprites.boss_shields.add(boss_shield)
 
 
-def create_blue_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
+def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create blue boss."""
-    blue_boss = BlueBoss(settings=settings,
-                         screen=screen,
-                         boss_health=sprites.boss_health)
+    blue_boss = BlueBoss(screen=screen, boss_health=sprites.boss_health)
     boss_shield = BlueBossShield(screen, blue_boss)
     blue_boss.set_default_hit_points()
     blue_boss.prepare_health()
