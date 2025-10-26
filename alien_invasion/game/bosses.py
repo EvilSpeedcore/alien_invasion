@@ -16,9 +16,8 @@ if TYPE_CHECKING:
 
 
 class Boss(Sprite):
-
-    _HIT_POINTS = 0
-    _HIT_POINTS_WITH_SHIELD = 0
+    HIT_POINTS = 0
+    HIT_POINTS_WITH_SHIELD = 0
 
     def __init__(self,
                  screen: "Screen",
@@ -50,36 +49,35 @@ class Boss(Sprite):
         self.boss_health.add(self.health)
 
     def set_default_hit_points(self) -> None:
-        self.hit_points = self._HIT_POINTS
-        self.hit_points_with_shield = self._HIT_POINTS_WITH_SHIELD
+        self.hit_points = self.HIT_POINTS
+        self.hit_points_with_shield = self.HIT_POINTS_WITH_SHIELD
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
 
 
 class GreenBoss(Boss):
-
     # TODO: Join or calculate?
-    _HIT_POINTS = 10
-    _HIT_POINTS_WITH_SHIELD = 19
+    HIT_POINTS = 10
+    HIT_POINTS_WITH_SHIELD = 19
+    IMAGE = load_image("green_alien.png")
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
-        # TODO: Load once?
-        image = load_image("green_alien.png")
+        image = self.IMAGE
         health = GreenBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
 
 class RedBoss(Boss):
-
-    _HIT_POINTS = 10
-    _HIT_POINTS_WITH_SHIELD = 14
+    HIT_POINTS = 10
+    HIT_POINTS_WITH_SHIELD = 14
+    IMAGE = load_image("red_alien.png")
 
     def __init__(self,
                  settings: "Settings",
                  screen: "Screen",
                  boss_health: "GroupSingle") -> None:
-        image = load_image("red_alien.png")
+        image = self.IMAGE
         health = RedBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
@@ -313,12 +311,12 @@ class RedBoss(Boss):
 
 
 class BlueBoss(Boss):
-
-    _HIT_POINTS = 10
-    _HIT_POINTS_WITH_SHIELD = 19
+    HIT_POINTS = 10
+    HIT_POINTS_WITH_SHIELD = 19
+    IMAGE = load_image("blue_alien.png")
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
-        image = load_image("blue_alien.png")
+        image = self.IMAGE
         health = BlueBossHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
