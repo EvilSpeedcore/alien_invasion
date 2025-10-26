@@ -118,6 +118,7 @@ class Stage(BaseStage):
     def setup(self) -> None:
         super().setup()
         self.ship.center_ship()
+        rt.rotate_to_up(self.ship)
 
         if not maybe_spawn_extra_health(screen=self.screen,
                                         stats=self.stats,

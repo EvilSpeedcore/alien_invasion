@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from pygame.sprite import Sprite
 
 from game.images import load_image
-from game.rotation import Rotation
+from game.rotation import Rotation, rotate_to_up
 
 if TYPE_CHECKING:
     from game.screen import Screen
@@ -67,6 +67,7 @@ class Ship(Sprite):
         """Set ship position below boss position."""
         self.centerx = self.screen_rect.centerx
         self.centery = 700
+        rotate_to_up(ship=self)
 
     def blitme(self) -> None:
         """Draw ship."""

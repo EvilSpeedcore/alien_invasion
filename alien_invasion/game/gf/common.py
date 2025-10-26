@@ -196,6 +196,7 @@ def ship_hit_on_regular_stage(settings: "Settings",
     if stats.ships_left:
         create_fleet(settings, screen, stages, ship, sprites.aliens)
         ship.center_ship()
+        rotate_to_up(ship)
         sleep(settings.game_sleep_time)
 
 
