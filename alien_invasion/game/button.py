@@ -10,11 +10,12 @@ if TYPE_CHECKING:
 
 
 class Button:
+    IMAGE = load_image("button1.png")
 
     def __init__(self, screen: "Screen", message: str) -> None:
         self.screen = screen
         self.screen_rect = screen.rect
-        self.button_image = load_image("button1.png")
+        self.button_image = self.IMAGE
         self.button_color = (176, 186, 231)
         self.hover_text_color = (150, 255, 255)
         self.text_color = (255, 255, 255)

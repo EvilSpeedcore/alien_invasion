@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 
 class Bullet(Sprite):
-
     IMAGE = load_image("bullet.png")
 
     def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
