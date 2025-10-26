@@ -1,8 +1,10 @@
 from typing import TYPE_CHECKING, ClassVar, TypeAlias, Union
 
+from pygame.image import load
 from pygame.sprite import Sprite
 
 from game.images import load_image
+from game.paths import Paths
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
@@ -11,43 +13,40 @@ if TYPE_CHECKING:
 BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
 
 
+def load_from_dirs(*directories: str) -> list["Surface"]:
+    result: list[Surface] = []
+    for name in directories:
+        directory = Paths.images() / name
+        images = (image for image in directory.glob("*.png"))
+        result.extend(load(image) for image in sorted(images, key=lambda image: int(image.stem)))
+    return result
+
+
 class GreenBossHealth(Sprite):
-    IMAGE_NAMES: tuple[str, ...] = (
-        *(f"{index}_hp.png" for index in range(1, 11)),
-        *(f"{index}_shield.png" for index in range(1, 11)),
-    )
-    IMAGES: ClassVar[list["Surface"]] = [load_image(f"green_boss_hp/{name}") for name in IMAGE_NAMES]
-    INITIAL_IMAGE: "Surface" = load_image("green_boss_hp/10_hp.png")
+    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("green_boss_hp", "green_boss_shield")
+    INITIAL_IMAGE: "Surface" = load_image("green_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = self.INITIAL_IMAGE  # undamaged
+        self.image = self.INITIAL_IMAGE
         self.rect = self.image.get_rect()
 
 
 class RedBossHealth(Sprite):
-    IMAGE_NAMES: tuple[str, ...] = (
-        *(f"{index}_hp.png" for index in range(1, 11)),
-        *(f"{index}_shield.png" for index in range(1, 6)),
-    )
-    IMAGES: ClassVar[list["Surface"]] = [load_image(f"red_boss_hp/{name}") for name in IMAGE_NAMES]
-    INITIAL_IMAGE: "Surface" = load_image("red_boss_hp/10_hp.png")
+    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("red_boss_hp", "red_boss_shield")
+    INITIAL_IMAGE: "Surface" = load_image("red_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = self.INITIAL_IMAGE  # undamaged
+        self.image = self.INITIAL_IMAGE
         self.rect = self.image.get_rect()
 
 
 class BlueBossHealth(Sprite):
-    IMAGE_NAMES: tuple[str, ...] = (
-        *(f"{index}_hp.png" for index in range(1, 11)),
-        *(f"{index}_shield.png" for index in range(1, 11)),
-    )
-    IMAGES: ClassVar[list["Surface"]] = [load_image(f"blue_boss_hp/{name}") for name in IMAGE_NAMES]
-    INITIAL_IMAGE: "Surface" = load_image("blue_boss_hp/10_hp.png")
+    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("blue_boss_hp", "blue_boss_shield")
+    INITIAL_IMAGE: "Surface" = load_image("blue_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = self.INITIAL_IMAGE  # undamaged
+        self.image = self.INITIAL_IMAGE
         self.rect = self.image.get_rect()
