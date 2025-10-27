@@ -47,28 +47,28 @@ def handle_ship_diagonal_movement(ship: "Ship") -> None:
     if ship.moving_up and ship.moving_left:
         ship.current_ship_rotation = Rotation.UP_LEFT
         while ship.current_ship_rotation == Rotation.UP_LEFT:
-            ship.image = ship.original_image_up_left
+            ship.image = ship.Images.UP_LEFT
             break
 
     # Check for UP_RIGHT ship direction.
     if ship.moving_up and ship.moving_right:
         ship.current_ship_rotation = Rotation.UP_RIGHT
         while ship.current_ship_rotation == Rotation.UP_RIGHT:
-            ship.image = ship.original_image_up_right
+            ship.image = ship.Images.UP_RIGHT
             break
 
     # Check for DOWN_LEFT ship direction.
     if ship.moving_down and ship.moving_left:
         ship.current_ship_rotation = Rotation.DOWN_LEFT
         while ship.current_ship_rotation == Rotation.DOWN_LEFT:
-            ship.image = ship.original_image_down_left
+            ship.image = ship.Images.DOWN_LEFT
             break
 
     # Check for DOWN_RIGHT ship direction.
     if ship.moving_down and ship.moving_right:
         ship.current_ship_rotation = Rotation.DOWN_RIGHT
         while ship.current_ship_rotation == Rotation.DOWN_RIGHT:
-            ship.image = ship.original_image_down_right
+            ship.image = ship.Images.DOWN_RIGHT
             break
 
 

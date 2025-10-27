@@ -12,21 +12,22 @@ if TYPE_CHECKING:
 
 class Ship(Sprite):
 
+    class Images:
+        UP         = load_image("ship_up.png")
+        RIGHT      = load_image("ship_right.png")
+        LEFT       = load_image("ship_left.png")
+        DOWN       = load_image("ship_down.png")
+        UP_RIGHT   = load_image("ship_up_right.png")
+        UP_LEFT    = load_image("ship_up_left.png")
+        DOWN_RIGHT = load_image("ship_down_right.png")
+        DOWN_LEFT  = load_image("ship_down_left.png")
+
     def __init__(self, settings: "Settings", screen: "Screen") -> None:
         super().__init__()
         self.screen = screen
         self.settings = settings
 
-        # Instead of rotation of one ship image, we upload several images for each ship direction.
-        self.original_image = load_image("ship_up.png")
-        self.original_image_up_right = load_image("ship_up_right.png")
-        self.original_image_up_left = load_image("ship_up_left.png")
-        self.original_image_down_right = load_image("ship_down_right.png")
-        self.original_image_down_left = load_image("ship_down_left.png")
-        self.original_image_right = load_image("ship_right.png")
-        self.original_image_left = load_image("ship_left.png")
-        self.original_image_down = load_image("ship_down.png")
-        self.image = self.original_image
+        self.image = self.Images.UP
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()

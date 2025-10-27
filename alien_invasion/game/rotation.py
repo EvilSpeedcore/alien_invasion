@@ -33,20 +33,20 @@ def rotate(ship: "Ship") -> None:
 
 
 def rotate_to_up(ship: "Ship") -> None:
-    ship.image = ship.original_image
+    ship.image = ship.Images.UP
     ship.current_ship_rotation = Rotation.UP
 
 
 def rotate_to_right(ship: "Ship") -> None:
-    ship.image = ship.original_image_right
+    ship.image = ship.Images.RIGHT
     ship.current_ship_rotation = Rotation.RIGHT
 
 
 def rotate_to_left(ship: "Ship") -> None:
-    ship.image = ship.original_image_left
+    ship.image = ship.Images.LEFT
     ship.current_ship_rotation = Rotation.LEFT
 
 
 def rotate_to_down(ship: "Ship") -> None:
-    ship.image = ship.original_image_down
+    ship.image = ship.Images.DOWN
     ship.current_ship_rotation = Rotation.DOWN

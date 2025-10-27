@@ -24,7 +24,7 @@ def load_from_dirs(*directories: str) -> list["Surface"]:
 
 class GreenBossHealth(Sprite):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("green_boss_hp", "green_boss_shield")
-    INITIAL_IMAGE: "Surface" = load_image("green_boss_hp/10.png")
+    INITIAL_IMAGE = load_image("green_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
@@ -34,7 +34,7 @@ class GreenBossHealth(Sprite):
 
 class RedBossHealth(Sprite):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("red_boss_hp", "red_boss_shield")
-    INITIAL_IMAGE: "Surface" = load_image("red_boss_hp/10.png")
+    INITIAL_IMAGE = load_image("red_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
@@ -44,7 +44,7 @@ class RedBossHealth(Sprite):
 
 class BlueBossHealth(Sprite):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("blue_boss_hp", "blue_boss_shield")
-    INITIAL_IMAGE: "Surface" = load_image("blue_boss_hp/10.png")
+    INITIAL_IMAGE = load_image("blue_boss_hp/10.png")
 
     def __init__(self) -> None:
         super().__init__()
