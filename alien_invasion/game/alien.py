@@ -22,20 +22,13 @@ def collidable(alien: "Alien", other: "Alien") -> bool:
 
 
 class Alien(Sprite):
+    IMAGE = load_image("green_alien.png")
 
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 ship: "Ship") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
         self.settings = settings
-
-        # Image load of different aliens.
-        # TODO: Split by color
-        self.image = load_image("green_alien.png")
-        self.red_alien = load_image("red_alien.png")
-        self.blue_alien = load_image("blue_alien.png")
+        self.image = self.IMAGE
 
         # Get the rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -73,5 +66,23 @@ class Alien(Sprite):
             self.y += self.speed  # type: ignore[assignment]
             self.rect.centery = self.y
 
+    def adjust_in_fleet(self, index: int) -> None:
+        alien_width = self.rect.width
+        self.x = alien_width + 2 * alien_width * index
+        self.rect.x = self.x
+
+
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
+
+
+class GreenAlien(Alien):
+    ...
+
+
+class RedAlien(Alien):
+    IMAGE = load_image("red_alien.png")
+
+
+class BlueAlien(Alien):
+    IMAGE = load_image("blue_alien.png")

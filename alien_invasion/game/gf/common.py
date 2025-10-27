@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from game.alien import Alien
 from game.black_hole import BlackHole
 from game.boss_bullets import BlueBossBullet, GreenBossBullet, RedBossBullet
 from game.boss_shield import BlueBossShield, GreenBossShield, RedBossShield
@@ -26,7 +25,6 @@ if TYPE_CHECKING:
     from game.settings import Settings
     from game.ship import Ship
     from game.sprites import Sprites
-    from game.stages import Stages
     from game.stats import Stats
 
 
@@ -136,49 +134,13 @@ def fire_bullet(settings: "Settings",
         bullets.add(new_bullet)
 
 
-def get_number_aliens_x(settings: "Settings", alien_width: int) -> int:
-    """Calculate number of aliens in row."""
+def get_aliens_row_count(settings: "Settings", alien_width: int) -> int:
     available_space_x = settings.screen_width - 2 * alien_width
     return int(available_space_x / (2 * alien_width))
 
 
-def create_alien(settings: "Settings",
-                 screen: "Screen",
-                 stages: "Stages",
-                 ship: "Ship",
-                 aliens: "Group",
-                 alien_number: int) -> None:
-    """Create an alien and place it in a row."""
-    alien = Alien(settings, screen, ship)
-    alien_width = alien.rect.width
-    alien.x = alien_width + 2 * alien_width * alien_number
-    alien.rect.x = alien.x
-    # TODO: Rework
-    if stages.current.index < stages.get_by_name("green_boss").index:
-        pass
-    elif stages.current.index < stages.get_by_name("red_boss").index:
-        alien.image = alien.red_alien
-    elif stages.current.index < stages.get_by_name("blue_boss").index:
-        alien.image = alien.blue_alien
-    aliens.add(alien)
-
-
-def create_fleet(settings: "Settings",
-                 screen: "Screen",
-                 stages: "Stages",
-                 ship: "Ship",
-                 aliens: "Group") -> None:
-    """Create alien fleet."""
-    alien = Alien(settings, screen, ship)
-    number_aliens_x = get_number_aliens_x(settings, alien.rect.width)
-    for alien_number in range(number_aliens_x):
-        create_alien(settings, screen, stages, ship, aliens, alien_number)
-
-
 def ship_hit_on_regular_stage(settings: "Settings",
-                              screen: "Screen",
                               stats: "Stats",
-                              stages: "Stages",
                               hud: "Hud",
                               ship: "Ship",
                               sprites: "Sprites") -> None:
@@ -193,7 +155,6 @@ def ship_hit_on_regular_stage(settings: "Settings",
     sprites.aliens.empty()
     sprites.ship_bullets.empty()
     if stats.ships_left:
-        create_fleet(settings, screen, stages, ship, sprites.aliens)
         ship.center_ship()
         rotate_to_up(ship)
         sleep(settings.game_sleep_time)

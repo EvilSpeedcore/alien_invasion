@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from game.gf.common import ship_hit_on_boss_stage, ship_hit_on_regular_stage
+from game.gf import common
 from game.paths import Paths
 
 if TYPE_CHECKING:
@@ -17,42 +17,14 @@ if TYPE_CHECKING:
     from game.settings import Settings
     from game.ship import Ship
     from game.sprites import Sprites
-    from game.stages import Stages
     from game.stats import Stats
 
 
-def check_ship_aliens_collision(settings: "Settings",
-                                screen: "Screen",
-                                stats: "Stats",
-                                stages: "Stages",
-                                hud: "Hud",
-                                ship: "Ship",
-                                sprites: "Sprites") -> None:
-    if pygame.sprite.spritecollideany(ship, sprites.aliens):
-        ship_hit_on_regular_stage(settings=settings,
-                                  screen=screen,
-                                  stats=stats,
-                                  stages=stages,
-                                  hud=hud,
-                                  ship=ship,
-                                  sprites=sprites)
+def check_ship_aliens_collision(ship: "Ship", aliens: "Group") -> list | None:
+    return pygame.sprite.spritecollideany(ship, aliens)
 
-
-def check_ship_alien_bullets_collision(settings: "Settings",
-                                       screen: "Screen",
-                                       stats: "Stats",
-                                       stages: "Stages",
-                                       hud: "Hud",
-                                       ship: "Ship",
-                                       sprites: "Sprites") -> None:
-    if pygame.sprite.spritecollideany(ship, sprites.alien_bullets):
-        ship_hit_on_regular_stage(settings=settings,
-                                  screen=screen,
-                                  stats=stats,
-                                  stages=stages,
-                                  hud=hud,
-                                  ship=ship,
-                                  sprites=sprites)
+def check_ship_alien_bullets_collision(ship: "Ship", alien_bullets: "Group") -> list | None:
+    return pygame.sprite.spritecollideany(ship, alien_bullets)
 
 
 def check_ship_boss_bullets_collision(settings: "Settings",
@@ -61,11 +33,11 @@ def check_ship_boss_bullets_collision(settings: "Settings",
                                       ship: "Ship",
                                       sprites: "Sprites") -> list | None:
     if collided := pygame.sprite.spritecollideany(ship, sprites.boss_bullets):
-        ship_hit_on_boss_stage(settings=settings,
-                               stats=stats,
-                               hud=hud,
-                               ship=ship,
-                               sprites=sprites)
+        common.ship_hit_on_boss_stage(settings=settings,
+                                      stats=stats,
+                                      hud=hud,
+                                      ship=ship,
+                                      sprites=sprites)
     return collided
 
 def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") -> None:
@@ -91,11 +63,11 @@ def check_ship_bosses_collision(settings: "Settings",
                                 ship: "Ship",
                                 sprites: "Sprites") -> list | None:
     if collided := pygame.sprite.spritecollideany(ship, sprites.bosses):
-        ship_hit_on_boss_stage(settings=settings,
-                               stats=stats,
-                               hud=hud,
-                               ship=ship,
-                               sprites=sprites)
+        common.ship_hit_on_boss_stage(settings=settings,
+                                      stats=stats,
+                                      hud=hud,
+                                      ship=ship,
+                                      sprites=sprites)
     return collided
 
 
@@ -130,11 +102,11 @@ def check_ship_black_holes_collision(settings: "Settings",
                                      ship: "Ship",
                                      sprites: "Sprites") -> list | None:
     if collided := pygame.sprite.spritecollideany(ship, sprites.boss_black_holes):
-        ship_hit_on_boss_stage(settings=settings,
-                               stats=stats,
-                               hud=hud,
-                               ship=ship,
-                               sprites=sprites)
+        common.ship_hit_on_boss_stage(settings=settings,
+                                      stats=stats,
+                                      hud=hud,
+                                      ship=ship,
+                                      sprites=sprites)
     return collided
 
 def check_bullets_screen_collision(screen: "Screen", bullets: "Group[Bullet]") -> None:

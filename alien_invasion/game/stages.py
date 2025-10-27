@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING, TypeAlias, Union
 import pygame
 
 import game.rotation as rt
+from game.alien import Alien, BlueAlien, RedAlien
 from game.alien_bullet import AlienBullet, BlueAlienBullet, RedAlienBullet
 from game.gf import collision, common
 from game.ship_consumables import ShipAmmo, ShipHealth
@@ -16,7 +17,6 @@ from game.ship_consumables import ShipAmmo, ShipHealth
 if TYPE_CHECKING:
     from pygame.sprite import Group
 
-    from game.alien import Alien
     from game.bosses import Boss
     from game.hud import Hud
     from game.screen import Screen
@@ -115,6 +115,13 @@ class Stage(BaseStage):
                 self.sprites.alien_bullets.add(bullet)
             self.settings.time_elapsed_since_last_alien_bullet = 0
 
+    def create_alien_fleet(self) -> Generator[Alien]:
+        aliens_count = common.get_aliens_row_count(self.settings, Alien.IMAGE.get_rect().width)
+        for index in range(aliens_count):
+            alien = Alien(settings=self.settings, screen=self.screen, ship=self.ship)
+            alien.adjust_in_fleet(index)
+            yield alien
+
     def setup(self) -> None:
         super().setup()
         self.ship.center_ship()
@@ -128,11 +135,7 @@ class Stage(BaseStage):
                                    ship=self.ship,
                                    ammo=self.sprites.ship_ammo)
 
-        common.create_fleet(settings=self.settings,
-                            screen=self.screen,
-                            stages=self.stages,
-                            ship=self.ship,
-                            aliens=self.sprites.aliens)
+        self.sprites.aliens.add(*self.create_alien_fleet())
 
     def transit(self) -> None:
         super().transit()
@@ -144,28 +147,22 @@ class Stage(BaseStage):
                                    self.sprites.aliens,
                                    dokilla=True, dokillb=True)
 
-        # Ship and aliens
-        collision.check_ship_aliens_collision(settings=self.settings,
-                                              screen=self.screen,
-                                              stats=self.stats,
-                                              stages=self.stages,
-                                              hud=self.hud,
-                                              ship=self.ship,
-                                              sprites=self.sprites)
+        if any((
+            collision.check_ship_aliens_collision(ship=self.ship, aliens=self.sprites.aliens),
+            collision.check_ship_alien_bullets_collision(ship=self.ship, alien_bullets=self.sprites.alien_bullets),
+        )):
+            common.ship_hit_on_regular_stage(settings=self.settings,
+                                             stats=self.stats,
+                                             hud=self.hud,
+                                             ship=self.ship,
+                                             sprites=self.sprites)
+            if self.stats.ships_left:
+                self.sprites.aliens.add(*self.create_alien_fleet())
 
         # Ship shield and alien bullets
         pygame.sprite.groupcollide(self.sprites.ship_shields,
                                    self.sprites.alien_bullets,
                                    dokilla=False, dokillb=True)
-
-        # Ship and alien bullets
-        collision.check_ship_alien_bullets_collision(settings=self.settings,
-                                                     screen=self.screen,
-                                                     stats=self.stats,
-                                                     stages=self.stages,
-                                                     hud=self.hud,
-                                                     ship=self.ship,
-                                                     sprites=self.sprites)
 
         # Ship and health
         collision.check_ship_health_collision(stats=self.stats,
@@ -203,6 +200,13 @@ class RedStage(Stage):
             alien_bullet = RedAlienBullet(self.settings, self.screen, alien.rect)
             yield alien_bullet
 
+    def create_alien_fleet(self) -> Generator[RedAlien]:
+        aliens_count = common.get_aliens_row_count(self.settings, Alien.IMAGE.get_rect().width)
+        for index in range(aliens_count):
+            alien = RedAlien(settings=self.settings, screen=self.screen, ship=self.ship)
+            alien.adjust_in_fleet(index)
+            yield alien
+
 
 class BlueStage(Stage):
 
@@ -211,6 +215,13 @@ class BlueStage(Stage):
         for alien in aliens:
             alien_bullet = BlueAlienBullet(self.settings, self.screen, alien.rect)
             yield alien_bullet
+
+    def create_alien_fleet(self) -> Generator[BlueAlien]:
+        aliens_count = common.get_aliens_row_count(self.settings, Alien.IMAGE.get_rect().width)
+        for index in range(aliens_count):
+            alien = BlueAlien(settings=self.settings, screen=self.screen, ship=self.ship)
+            alien.adjust_in_fleet(index)
+            yield alien
 
 
 class BossStage(BaseStage):
