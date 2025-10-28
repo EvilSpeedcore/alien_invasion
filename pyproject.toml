@@ -30,6 +30,7 @@ type = [
 [tool.isort]
 known_third_party = ["pygame"]
 src_paths = ["alien_invasion/game"]
+profile = "black"
 
 [tool.ruff]
 line-length = 120
