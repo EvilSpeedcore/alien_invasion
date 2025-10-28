@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
-from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
+from game.boss_health import BlueBossHudHealth, GreenBossHudHealth, RedBossHudHealth
 from game.images import load_image
 
 if TYPE_CHECKING:
@@ -60,7 +60,7 @@ class GreenBoss(Boss):
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
         image = self.IMAGE
-        health = GreenBossHealth()
+        health = GreenBossHudHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
 
@@ -72,7 +72,7 @@ class RedBoss(Boss):
                  screen: "Screen",
                  boss_health: "GroupSingle") -> None:
         image = self.IMAGE
-        health = RedBossHealth()
+        health = RedBossHudHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
         # Current position of bullet
@@ -309,7 +309,7 @@ class BlueBoss(Boss):
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
         image = self.IMAGE
-        health = BlueBossHealth()
+        health = BlueBossHudHealth()
         super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
 
         # Current position of bullet.

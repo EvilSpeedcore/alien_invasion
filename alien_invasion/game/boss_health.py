@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
 
-BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
+BossHealthTypes: TypeAlias = Union["BlueBossHudHealth", "GreenBossHudHealth", "RedBossHudHealth"]  # noqa: UP040
 
 
 def load_from_dirs(*directories: str) -> list["Surface"]:
@@ -22,7 +22,7 @@ def load_from_dirs(*directories: str) -> list["Surface"]:
     return result
 
 
-class GreenBossHealth(Sprite):
+class GreenBossHudHealth(Sprite):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("green_boss_hp", "green_boss_shield")
     INITIAL_IMAGE = load_image("green_boss_hp/10.png")
 
@@ -32,11 +32,11 @@ class GreenBossHealth(Sprite):
         self.rect = self.image.get_rect()
 
 
-class RedBossHealth(GreenBossHealth):
+class RedBossHudHealth(GreenBossHudHealth):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("red_boss_hp", "red_boss_shield")
     INITIAL_IMAGE = load_image("red_boss_hp/10.png")
 
 
-class BlueBossHealth(GreenBossHealth):
+class BlueBossHudHealth(GreenBossHudHealth):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("blue_boss_hp", "blue_boss_shield")
     INITIAL_IMAGE = load_image("blue_boss_hp/10.png")
