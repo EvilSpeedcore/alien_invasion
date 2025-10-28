@@ -48,10 +48,9 @@ def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") 
         return
 
     boss: Boss = sprites.bosses.sprite
-    boss.hit_points -= 1
-    boss.hit_points_with_shield -= 1
+    boss.health_points -= 1
     boss.prepare_health()
-    if boss.hit_points < 1:
+    if boss.health_points < 1:
         time.sleep(settings.game_sleep_time)
         sprites.bosses.empty()
         sprites.boss_bullets.empty()
@@ -74,9 +73,9 @@ def check_ship_bosses_collision(settings: "Settings",
 def check_ship_bullets_boss_shield_collision(sprites: "Sprites") -> None:
     if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
         boss_shield: BossShield = sprites.boss_shields.sprite
-        boss_shield.points -= 1
         boss: Boss = sprites.bosses.sprite
-        boss.hit_points_with_shield -= 1
+        boss_shield.health_points -= 1
+        boss.health_points -= 1
         boss.prepare_health()
 
 

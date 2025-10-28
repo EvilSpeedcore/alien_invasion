@@ -29,8 +29,8 @@ class BossShield(Sprite):
         self.x = self.rect.centerx
         self.y = self.rect.centery
 
-        # Shield hit points.
-        self.points = 0
+        # Shield health points.
+        self.health_points = 0
 
     def draw_boss_shield(self) -> None:
         """Draw boss shield on screen."""
@@ -58,7 +58,7 @@ class GreenBossShield(BossShield):
 
     def __init__(self, screen: "Screen", position: tuple[int, int]) -> None:
         super().__init__(screen=screen, image=self.IMAGE, position=position)
-        self.points = 10
+        self.health_points = 10
 
 
 class RedBossShield(MovingBossShield):
@@ -66,7 +66,7 @@ class RedBossShield(MovingBossShield):
 
     def __init__(self, screen: "Screen", boss: "RedBoss") -> None:
         super().__init__(screen=screen, image=self.IMAGE, boss=boss)
-        self.points = 5
+        self.health_points = 5
 
 
 class BlueBossShield(MovingBossShield):
@@ -74,4 +74,4 @@ class BlueBossShield(MovingBossShield):
 
     def __init__(self, screen: "Screen", boss: "BlueBoss") -> None:
         super().__init__(screen=screen, image=self.IMAGE, boss=boss)
-        self.points = 10
+        self.health_points = 10

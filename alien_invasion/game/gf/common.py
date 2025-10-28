@@ -102,7 +102,7 @@ def update_screen(settings: "Settings",
     # Display boss shield on hud.
     boss_shield: BossShield
     if boss_shield := sprites.boss_shields.sprite:
-        if boss_shield.points > 0:
+        if boss_shield.health_points > 0:
             boss_shield.draw_boss_shield()
             boss_shield.update()
         else:
@@ -168,7 +168,7 @@ def ship_hit_on_boss_stage(settings: "Settings",
     stats.ships_left -= 1
     hud.prep_health()
     boss: Boss = sprites.bosses.sprite
-    boss.set_default_hit_points()
+    boss.set_default_health_points()
     boss.prepare_health()
     sprites.ship_bullets.empty()
     sprites.bosses.empty()
@@ -218,7 +218,7 @@ def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
     boss = GreenBoss(screen=screen, boss_health=sprites.boss_health)
     boss_shield = GreenBossShield(screen, position=(boss.rect.centerx, boss.rect.centery))
-    boss.set_default_hit_points()
+    boss.set_default_health_points()
     boss.prepare_health()
     sprites.bosses.add(boss)
     sprites.boss_shields.add(boss_shield)
@@ -228,7 +228,7 @@ def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create blue boss."""
     blue_boss = BlueBoss(screen=screen, boss_health=sprites.boss_health)
     boss_shield = BlueBossShield(screen, blue_boss)
-    blue_boss.set_default_hit_points()
+    blue_boss.set_default_health_points()
     blue_boss.prepare_health()
     sprites.bosses.add(blue_boss)
     sprites.boss_shields.add(boss_shield)
@@ -246,7 +246,7 @@ def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") 
     """Create red boss."""
     red_boss = RedBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
     boss_shield = RedBossShield(screen, red_boss)
-    red_boss.set_default_hit_points()
+    red_boss.set_default_health_points()
     red_boss.prepare_health()
     sprites.bosses.add(red_boss)
     sprites.boss_shields.add(boss_shield)

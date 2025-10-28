@@ -1,4 +1,5 @@
 import secrets
+from collections import deque
 from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
@@ -16,9 +17,6 @@ if TYPE_CHECKING:
 
 
 class Boss(Sprite):
-    HIT_POINTS = 0
-    HIT_POINTS_WITH_SHIELD = 0
-
     def __init__(self,
                  screen: "Screen",
                  boss_health: "GroupSingle",
@@ -29,6 +27,7 @@ class Boss(Sprite):
         self.boss_health = boss_health
         self.image = image
         self.health = health
+        self.images = deque(health.IMAGES)
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -38,28 +37,25 @@ class Boss(Sprite):
         self.rect.centerx = self.screen_rect.centerx
         self.rect.centery = self.screen_rect.centery
 
-        self.set_default_hit_points()
+        self.set_default_health_points()
 
     def prepare_health(self) -> None:
         """Prepare to drawn green boss health."""
-        hp_image = self.health.IMAGES[self.hit_points_with_shield]
-        self.health.image = hp_image.copy()
+        image = self.images[-1]
+        self.images.rotate()
+        self.health.image = image
         self.health.rect.x = 500
         self.health.rect.y = 60
         self.boss_health.add(self.health)
 
-    def set_default_hit_points(self) -> None:
-        self.hit_points = self.HIT_POINTS
-        self.hit_points_with_shield = self.HIT_POINTS_WITH_SHIELD
+    def set_default_health_points(self) -> None:
+        self.health_points = len(self.health.IMAGES)
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
 
 
 class GreenBoss(Boss):
-    # TODO: Join or calculate?
-    HIT_POINTS = 10
-    HIT_POINTS_WITH_SHIELD = 19
     IMAGE = load_image("green_alien.png")
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
@@ -69,8 +65,6 @@ class GreenBoss(Boss):
 
 
 class RedBoss(Boss):
-    HIT_POINTS = 10
-    HIT_POINTS_WITH_SHIELD = 14
     IMAGE = load_image("red_alien.png")
 
     def __init__(self,
@@ -311,8 +305,6 @@ class RedBoss(Boss):
 
 
 class BlueBoss(Boss):
-    HIT_POINTS = 10
-    HIT_POINTS_WITH_SHIELD = 19
     IMAGE = load_image("blue_alien.png")
 
     def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
