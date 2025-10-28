@@ -32,21 +32,11 @@ class GreenBossHealth(Sprite):
         self.rect = self.image.get_rect()
 
 
-class RedBossHealth(Sprite):
+class RedBossHealth(GreenBossHealth):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("red_boss_hp", "red_boss_shield")
     INITIAL_IMAGE = load_image("red_boss_hp/10.png")
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.image = self.INITIAL_IMAGE
-        self.rect = self.image.get_rect()
 
-
-class BlueBossHealth(Sprite):
+class BlueBossHealth(GreenBossHealth):
     IMAGES: ClassVar[list["Surface"]] = load_from_dirs("blue_boss_hp", "blue_boss_shield")
     INITIAL_IMAGE = load_image("blue_boss_hp/10.png")
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.image = self.INITIAL_IMAGE
-        self.rect = self.image.get_rect()
