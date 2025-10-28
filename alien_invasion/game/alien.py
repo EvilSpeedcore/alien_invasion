@@ -76,10 +76,6 @@ class Alien(Sprite):
         self.screen.it.blit(self.image, self.rect)
 
 
-class GreenAlien(Alien):
-    ...
-
-
 class RedAlien(Alien):
     IMAGE = load_image("red_alien.png")
 
