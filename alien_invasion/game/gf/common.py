@@ -214,23 +214,36 @@ def use_ship_shield(screen: "Screen",
         hud.prep_shield()
 
 
+def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
+    """Create blue boss."""
+    boss = BlueBoss(screen=screen)
+    boss_shield = BlueBossShield(screen, boss)
+    boss.set_default_health_points()
+    boss.prepare_health()
+    sprites.bosses.add(boss)
+    sprites.boss_health.add(boss.health)
+    sprites.boss_shields.add(boss_shield)
+
+
 def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
-    boss = GreenBoss(screen=screen, boss_health=sprites.boss_health)
+    boss = GreenBoss(screen=screen)
     boss_shield = GreenBossShield(screen, position=(boss.rect.centerx, boss.rect.centery))
     boss.set_default_health_points()
     boss.prepare_health()
     sprites.bosses.add(boss)
+    sprites.boss_health.add(boss.health)
     sprites.boss_shields.add(boss_shield)
 
 
-def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
-    """Create blue boss."""
-    blue_boss = BlueBoss(screen=screen, boss_health=sprites.boss_health)
-    boss_shield = BlueBossShield(screen, blue_boss)
-    blue_boss.set_default_health_points()
-    blue_boss.prepare_health()
-    sprites.bosses.add(blue_boss)
+def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
+    """Create red boss."""
+    boss = RedBoss(settings=settings, screen=screen)
+    boss_shield = RedBossShield(screen, boss)
+    boss.set_default_health_points()
+    boss.prepare_health()
+    sprites.bosses.add(boss)
+    sprites.boss_health.add(boss.health)
     sprites.boss_shields.add(boss_shield)
 
 
@@ -240,16 +253,6 @@ def update_green_boss_bullets(boss_bullets: "Group[GreenBossBullet]") -> None:
             boss_bullets.remove(green_boss_bullet)
         else:
             green_boss_bullet.change_direction()
-
-
-def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
-    """Create red boss."""
-    red_boss = RedBoss(settings=settings, screen=screen, boss_health=sprites.boss_health)
-    boss_shield = RedBossShield(screen, red_boss)
-    red_boss.set_default_health_points()
-    red_boss.prepare_health()
-    sprites.bosses.add(red_boss)
-    sprites.boss_shields.add(boss_shield)
 
 
 def fire_red_boss_bullets(settings: "Settings",

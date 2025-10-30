@@ -8,7 +8,6 @@ from game.boss_health import BlueBossHudHealth, GreenBossHudHealth, RedBossHudHe
 from game.images import load_image
 
 if TYPE_CHECKING:
-    from pygame.sprite import GroupSingle
     from pygame.surface import Surface
 
     from game.boss_health import BossHealthTypes
@@ -19,12 +18,10 @@ if TYPE_CHECKING:
 class Boss(Sprite):
     def __init__(self,
                  screen: "Screen",
-                 boss_health: "GroupSingle",
                  image: "Surface",
                  health: "BossHealthTypes") -> None:
         super().__init__()
         self.screen = screen
-        self.boss_health = boss_health
         self.image = image
         self.health = health
         self.images = deque(health.IMAGES)
@@ -46,7 +43,6 @@ class Boss(Sprite):
         self.health.image = image
         self.health.rect.x = 500
         self.health.rect.y = 60
-        self.boss_health.add(self.health)
 
     def set_default_health_points(self) -> None:
         self.health_points = len(self.health.IMAGES)
@@ -58,22 +54,19 @@ class Boss(Sprite):
 class GreenBoss(Boss):
     IMAGE = load_image("green_alien.png")
 
-    def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
+    def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE
         health = GreenBossHudHealth()
-        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
+        super().__init__(screen=screen, image=image, health=health)
 
 
 class RedBoss(Boss):
     IMAGE = load_image("red_alien.png")
 
-    def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 boss_health: "GroupSingle") -> None:
+    def __init__(self, settings: "Settings", screen: "Screen") -> None:
         image = self.IMAGE
         health = RedBossHudHealth()
-        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
+        super().__init__(screen=screen, image=image, health=health)
 
         # Current position of bullet
         self.x = float(self.rect.centerx)
@@ -307,10 +300,10 @@ class RedBoss(Boss):
 class BlueBoss(Boss):
     IMAGE = load_image("blue_alien.png")
 
-    def __init__(self, screen: "Screen", boss_health: "GroupSingle") -> None:
+    def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE
         health = BlueBossHudHealth()
-        super().__init__(screen=screen, boss_health=boss_health, image=image, health=health)
+        super().__init__(screen=screen, image=image, health=health)
 
         # Current position of bullet.
         self.x = float(self.rect.centerx)
