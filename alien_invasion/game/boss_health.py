@@ -1,25 +1,15 @@
 from collections import UserList, deque
 from typing import TYPE_CHECKING, TypeAlias, Union
 
-from pygame.image import load
 from pygame.sprite import Sprite
 
-from game.paths import Paths
+from game.images import load_sequential_from_dirs
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
 
 BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
-
-
-def load_sequential_from_dirs(*directories: str) -> list["Surface"]:
-    result: list[Surface] = []
-    for name in directories:
-        directory = Paths.images() / name
-        images = (image for image in directory.glob("*.png"))
-        result.extend(load(image) for image in sorted(images, key=lambda image: int(image.stem)))
-    return result
 
 
 class BossHudHealth(UserList):

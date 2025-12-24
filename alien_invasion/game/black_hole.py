@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, ClassVar
 
 from pygame.sprite import Sprite
 
-from game.images import load_image
+from game.images import load_sequential_from_dirs
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
@@ -14,13 +14,8 @@ if TYPE_CHECKING:
     from game.ship import Ship
 
 
-def prepare_images() -> list["Surface"]:
-    filenames = (f"black_hole_{number}.png" for number in range(1, 13))
-    return [load_image(f"black_hole/{image}") for image in filenames]
-
-
 class BlackHole(Sprite):
-    ROTATION_IMAGES: ClassVar[list["Surface"]] = prepare_images()
+    ROTATION_IMAGES: ClassVar[list["Surface"]] = load_sequential_from_dirs("black_hole")
 
     def __init__(self,
                  settings: "Settings",
