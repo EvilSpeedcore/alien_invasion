@@ -1,10 +1,9 @@
 import secrets
-from collections import deque
 from typing import TYPE_CHECKING
 
 from pygame.sprite import Sprite
 
-from game.boss_health import BlueBossHudHealth, GreenBossHudHealth, RedBossHudHealth
+from game.boss_health import BlueBossHealth, GreenBossHealth, RedBossHealth
 from game.images import load_image
 
 if TYPE_CHECKING:
@@ -24,7 +23,6 @@ class Boss(Sprite):
         self.screen = screen
         self.image = image
         self.health = health
-        self.images = deque(health.IMAGES)
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -38,14 +36,11 @@ class Boss(Sprite):
 
     def prepare_health(self) -> None:
         """Prepare to drawn green boss health."""
-        image = self.images[-1]
-        self.images.rotate()
-        self.health.image = image
-        self.health.rect.x = 500
-        self.health.rect.y = 60
+        self.health.rotate()
+        self.health.rect.x, self.health.rect.y = 500, 60
 
     def set_default_health_points(self) -> None:
-        self.health_points = len(self.health.IMAGES)
+        self.health_points = self.health.hit_points
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
@@ -56,7 +51,7 @@ class GreenBoss(Boss):
 
     def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE
-        health = GreenBossHudHealth()
+        health = GreenBossHealth()
         super().__init__(screen=screen, image=image, health=health)
 
 
@@ -65,7 +60,7 @@ class RedBoss(Boss):
 
     def __init__(self, settings: "Settings", screen: "Screen") -> None:
         image = self.IMAGE
-        health = RedBossHudHealth()
+        health = RedBossHealth()
         super().__init__(screen=screen, image=image, health=health)
 
         # Current position of bullet
@@ -302,7 +297,7 @@ class BlueBoss(Boss):
 
     def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE
-        health = BlueBossHudHealth()
+        health = BlueBossHealth()
         super().__init__(screen=screen, image=image, health=health)
 
         # Current position of bullet.

@@ -1,19 +1,19 @@
-from typing import TYPE_CHECKING, ClassVar, TypeAlias, Union
+from collections import UserList, deque
+from typing import TYPE_CHECKING, TypeAlias, Union
 
 from pygame.image import load
 from pygame.sprite import Sprite
 
-from game.images import load_image
 from game.paths import Paths
 
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
 
-BossHealthTypes: TypeAlias = Union["BlueBossHudHealth", "GreenBossHudHealth", "RedBossHudHealth"]  # noqa: UP040
+BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
 
 
-def load_from_dirs(*directories: str) -> list["Surface"]:
+def load_sequential_from_dirs(*directories: str) -> list["Surface"]:
     result: list[Surface] = []
     for name in directories:
         directory = Paths.images() / name
@@ -22,21 +22,40 @@ def load_from_dirs(*directories: str) -> list["Surface"]:
     return result
 
 
-class GreenBossHudHealth(Sprite):
-    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("green_boss_hp", "green_boss_shield")
-    INITIAL_IMAGE = load_image("green_boss_hp/10.png")
+class BossHudHealth(UserList):
+
+    def __init__(self, images: list["Surface"]) -> None:
+        super().__init__(images)
+
+
+class BossHudShield(BossHudHealth):
+    pass
+
+
+class GreenBossHealth(Sprite):
+    HUD_HEALTH = BossHudHealth(load_sequential_from_dirs("green_boss_hp"))
+    HUD_SHIELD = BossHudShield(load_sequential_from_dirs("green_boss_shield"))
 
     def __init__(self) -> None:
         super().__init__()
-        self.image = self.INITIAL_IMAGE
+        self.hud_health = self.HUD_HEALTH
+        self.hud_shield = self.HUD_SHIELD
+        self.images = deque(self.hud_health + self.hud_shield)
+        self.image: Surface = self.hud_health[-1]
         self.rect = self.image.get_rect()
+        self.hit_points = len(self.hud_health) + len(self.hud_shield)
+
+    def rotate(self) -> None:
+        image = self.images[-1]
+        self.images.rotate()
+        self.image = image
 
 
-class RedBossHudHealth(GreenBossHudHealth):
-    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("red_boss_hp", "red_boss_shield")
-    INITIAL_IMAGE = load_image("red_boss_hp/10.png")
+class RedBossHealth(GreenBossHealth):
+    HUD_HEALTH = BossHudHealth(load_sequential_from_dirs("red_boss_hp"))
+    HUD_SHIELD = BossHudShield(load_sequential_from_dirs("red_boss_shield"))
 
 
-class BlueBossHudHealth(GreenBossHudHealth):
-    IMAGES: ClassVar[list["Surface"]] = load_from_dirs("blue_boss_hp", "blue_boss_shield")
-    INITIAL_IMAGE = load_image("blue_boss_hp/10.png")
+class BlueBossHealth(GreenBossHealth):
+    HUD_HEALTH = BossHudHealth(load_sequential_from_dirs("blue_boss_hp"))
+    HUD_SHIELD = BossHudShield(load_sequential_from_dirs("blue_boss_shield"))
