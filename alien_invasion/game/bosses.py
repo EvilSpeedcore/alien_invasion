@@ -22,7 +22,7 @@ class Boss(Sprite):
         super().__init__()
         self.screen = screen
         self.image = image
-        self.health = health
+        self.combined_health = health
 
         # Rectangular area of the image.
         self.rect = self.image.get_rect()
@@ -36,11 +36,11 @@ class Boss(Sprite):
 
     def prepare_health(self) -> None:
         """Prepare to drawn green boss health."""
-        self.health.rotate()
-        self.health.rect.x, self.health.rect.y = 500, 60
+        self.combined_health.rotate()
+        self.combined_health.rect.x, self.combined_health.rect.y = 500, 60
 
     def set_default_health_points(self) -> None:
-        self.health_points = self.health.hit_points
+        self.health_points = self.combined_health.hit_points
 
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)

@@ -26,6 +26,7 @@ class BossHudHealth(UserList):
 
     def __init__(self, images: list["Surface"]) -> None:
         super().__init__(images)
+        self.hit_points = len(images)
 
 
 class BossHudShield(BossHudHealth):
@@ -43,7 +44,7 @@ class GreenBossHealth(Sprite):
         self.images = deque(self.hud_health + self.hud_shield)
         self.image: Surface = self.hud_health[-1]
         self.rect = self.image.get_rect()
-        self.hit_points = len(self.hud_health) + len(self.hud_shield)
+        self.hit_points = self.hud_health.hit_points + self.hud_shield.hit_points
 
     def rotate(self) -> None:
         image = self.images[-1]

@@ -218,10 +218,11 @@ def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create blue boss."""
     boss = BlueBoss(screen=screen)
     boss_shield = BlueBossShield(screen, boss)
+    boss_shield.health_points = boss.combined_health.hud_shield.hit_points
     boss.set_default_health_points()
     boss.prepare_health()
     sprites.bosses.add(boss)
-    sprites.boss_health.add(boss.health)
+    sprites.boss_health.add(boss.combined_health)
     sprites.boss_shields.add(boss_shield)
 
 
@@ -229,10 +230,11 @@ def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     """Create green boss."""
     boss = GreenBoss(screen=screen)
     boss_shield = GreenBossShield(screen, position=(boss.rect.centerx, boss.rect.centery))
+    boss_shield.health_points = boss.combined_health.hud_shield.hit_points
     boss.set_default_health_points()
     boss.prepare_health()
     sprites.bosses.add(boss)
-    sprites.boss_health.add(boss.health)
+    sprites.boss_health.add(boss.combined_health)
     sprites.boss_shields.add(boss_shield)
 
 
@@ -240,10 +242,11 @@ def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") 
     """Create red boss."""
     boss = RedBoss(settings=settings, screen=screen)
     boss_shield = RedBossShield(screen, boss)
+    boss_shield.health_points = boss.combined_health.hud_shield.hit_points
     boss.set_default_health_points()
     boss.prepare_health()
     sprites.bosses.add(boss)
-    sprites.boss_health.add(boss.health)
+    sprites.boss_health.add(boss.combined_health)
     sprites.boss_shields.add(boss_shield)
 
 
