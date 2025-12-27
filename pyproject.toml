@@ -3,7 +3,7 @@ name = "alien-invasion"
 version = "0.1.0"
 description = "alien invation game"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = "==3.13.*"
 dependencies = [
     "pygame>=2.6.1",
 ]
