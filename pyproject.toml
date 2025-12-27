@@ -24,7 +24,7 @@ prod = [
     "pygame>=2.6.1",
 ]
 type = [
-    "mypy>=1.16.1",
+    "mypy==1.19.1",
 ]
 
 [tool.isort]
