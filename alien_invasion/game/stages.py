@@ -1,6 +1,7 @@
 import secrets
 import time
 from abc import abstractmethod
+from collections import UserList
 from collections.abc import Generator
 from itertools import count
 from logging import getLogger
@@ -300,7 +301,7 @@ class GreenBossStage(BossStage):
                                                   hud=self.hud,
                                                   ship=self.ship,
                                                   sprites=self.sprites),
-        )) and  self.stats.ships_left:
+        )) and self.stats.ships_left:
             common.create_green_boss(screen=self.screen, sprites=self.sprites)
             time.sleep(self.settings.game_sleep_time)
         super().check_collision()
@@ -401,7 +402,7 @@ class BlueBossStage(BossStage):
         self.sprites.boss_black_holes.empty()
 
 
-class Stages(list[StageTypes]):
+class Stages(UserList[StageTypes]):
 
     def __init__(self,
                  settings: "Settings",
@@ -458,7 +459,6 @@ class Stages(list[StageTypes]):
                          ship=self.ship,
                          sprites=self.sprites,
                          name=name)
-
 
     def create_green_boss_stage(self, name: str) -> GreenBossStage:
         return GreenBossStage(settings=self.settings,

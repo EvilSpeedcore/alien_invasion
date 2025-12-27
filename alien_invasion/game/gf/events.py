@@ -20,6 +20,7 @@ if TYPE_CHECKING:
     from game.stages import Stages
     from game.stats import Stats
 
+
 @dataclass
 class MainMenuEvents:
     quit: bool = False

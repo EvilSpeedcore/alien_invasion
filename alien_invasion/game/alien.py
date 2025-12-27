@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 def collidable(alien: "Alien", other: "Alien") -> bool:
-    """Check collision between two aliens."""
+    # check collision between two aliens
     if alien is other:
         return False
     return alien.rect.colliderect(other.rect)

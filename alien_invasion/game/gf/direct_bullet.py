@@ -11,10 +11,10 @@ if TYPE_CHECKING:
 
 
 class ShipToBulletPosition(Enum):
-    UP_LEFT      = auto()
-    UP_RIGHT     = auto()
-    DOWN_LEFT    = auto()
-    DOWN_RIGHT   = auto()
+    UP_LEFT = auto()
+    UP_RIGHT = auto()
+    DOWN_LEFT = auto()
+    DOWN_RIGHT = auto()
 
 
 def define_direct_bullet_angle(bullet: "AlienBullet | RedBossBullet", ship: "Ship") -> None:

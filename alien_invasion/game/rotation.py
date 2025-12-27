@@ -6,13 +6,13 @@ if TYPE_CHECKING:
 
 
 class Rotation(Enum):
-    UP         = auto()
-    RIGHT      = auto()
-    LEFT       = auto()
-    DOWN       = auto()
-    UP_RIGHT   = auto()
-    UP_LEFT    = auto()
-    DOWN_LEFT  = auto()
+    UP = auto()
+    RIGHT = auto()
+    LEFT = auto()
+    DOWN = auto()
+    UP_RIGHT = auto()
+    UP_LEFT = auto()
+    DOWN_LEFT = auto()
     DOWN_RIGHT = auto()
 
 

@@ -13,14 +13,14 @@ if TYPE_CHECKING:
 class Ship(Sprite):
 
     class Images:
-        UP         = load_image("ship_up.png")
-        RIGHT      = load_image("ship_right.png")
-        LEFT       = load_image("ship_left.png")
-        DOWN       = load_image("ship_down.png")
-        UP_RIGHT   = load_image("ship_up_right.png")
-        UP_LEFT    = load_image("ship_up_left.png")
+        UP = load_image("ship_up.png")
+        RIGHT = load_image("ship_right.png")
+        LEFT = load_image("ship_left.png")
+        DOWN = load_image("ship_down.png")
+        UP_RIGHT = load_image("ship_up_right.png")
+        UP_LEFT = load_image("ship_up_left.png")
         DOWN_RIGHT = load_image("ship_down_right.png")
-        DOWN_LEFT  = load_image("ship_down_left.png")
+        DOWN_LEFT = load_image("ship_down_left.png")
 
     def __init__(self, settings: "Settings", screen: "Screen") -> None:
         super().__init__()

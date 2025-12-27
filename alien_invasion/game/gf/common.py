@@ -276,7 +276,7 @@ def fire_red_boss_bullets(settings: "Settings",
     for angle in (0, 15, 30, -15, -30):
         bullet = RedBossBullet(settings, screen, boss)
         bullet.define_position(ship)
-        bullet.shooting_angle = bullet.shooting_angle + angle
+        bullet.shooting_angle += angle
         boss_bullets.add(bullet)
 
     settings.time_elapsed_since_last_red_boss_bullet = 0

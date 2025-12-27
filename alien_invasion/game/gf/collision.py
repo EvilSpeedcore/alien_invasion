@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 def check_ship_aliens_collision(ship: "Ship", aliens: "Group") -> list | None:
     return pygame.sprite.spritecollideany(ship, aliens)
 
+
 def check_ship_alien_bullets_collision(ship: "Ship", alien_bullets: "Group") -> list | None:
     return pygame.sprite.spritecollideany(ship, alien_bullets)
 
@@ -39,6 +40,7 @@ def check_ship_boss_bullets_collision(settings: "Settings",
                                       ship=ship,
                                       sprites=sprites)
     return collided
+
 
 def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") -> None:
     if not pygame.sprite.groupcollide(sprites.ship_bullets,
@@ -107,6 +109,7 @@ def check_ship_black_holes_collision(settings: "Settings",
                                       ship=ship,
                                       sprites=sprites)
     return collided
+
 
 def check_bullets_screen_collision(screen: "Screen", bullets: "Group[Bullet]") -> None:
     screen_rect = screen.rect

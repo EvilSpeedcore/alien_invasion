@@ -55,7 +55,7 @@ def run_game(args: Namespace) -> None:
             if pause_events.quit:
                 events.quit_game()
             if pause_events.unpause:
-               state.set(State.ACTIVE)
+                state.set(State.ACTIVE)
 
         # Menu state
         while state(State.MAIN_MENU):

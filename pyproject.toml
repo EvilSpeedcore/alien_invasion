@@ -39,6 +39,7 @@ line-length = 120
 known-first-party = ["game"]
 
 [tool.ruff.lint]
+preview = true
 select = [
     "ALL"
 ]
@@ -56,6 +57,7 @@ ignore = [
     "D213",
     "D417",
     "C901",      # too-complex
+    "CPY001",
     "FIX002",
     "PLR0912",   # too-many-branches
     "PLR0913",   # too-many-arguments
@@ -89,3 +91,6 @@ runner = "uv-venv-lock-runner"
 description = "run mypy"
 dependency_groups = ["type"]
 commands = [["mypy", ".", "--explicit-package-bases"]]
+
+[tool.ruff.lint.pylint]
+max-positional-args = 10
