@@ -72,7 +72,6 @@ class RedBoss(Boss):
 
         # Boss speed.
         self.speed = settings.red_boss_speed
-        self.moving_angle = None
         self.define_start_direction()
 
     def update(self) -> None:
