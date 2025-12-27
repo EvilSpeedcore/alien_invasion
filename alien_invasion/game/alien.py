@@ -71,7 +71,6 @@ class Alien(Sprite):
         self.x = alien_width + 2 * alien_width * index
         self.rect.x = self.x
 
-
     def blitme(self) -> None:
         self.screen.it.blit(self.image, self.rect)
 
