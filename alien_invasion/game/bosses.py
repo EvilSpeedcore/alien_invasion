@@ -73,6 +73,7 @@ class RedBoss(Boss):
         # Boss speed.
         self.speed = settings.red_boss_speed
         self.define_start_direction()
+        self.movement_margin = 150
 
     def move_up(self) -> None:
         self.y -= self.speed
@@ -95,28 +96,27 @@ class RedBoss(Boss):
         self.rect.centery = self.y  # type: ignore[assignment]
 
     def update(self) -> None:
-        """Update boss position depending on boss current position."""
         if self.position == "center":
             if self.random_direction == 1:
-                if self.rect.top > self.screen_rect.top + 150:
+                if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
-                if self.rect.left > self.screen_rect.left + 150:
+                if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
             elif self.random_direction == 3:
-                if self.rect.bottom < self.screen_rect.bottom - 150:
+                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 4:
-                if self.rect.right < self.screen_rect.right - 150:
+                if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "midright"
@@ -129,13 +129,13 @@ class RedBoss(Boss):
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
-                if self.rect.left > self.screen_rect.left + 150:
+                if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
-                if self.rect.right < self.screen_rect.right - 150:
+                if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "topright"
@@ -148,13 +148,13 @@ class RedBoss(Boss):
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
-                if self.rect.top > self.screen_rect.top + 150:
+                if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
-                if self.rect.bottom < self.screen_rect.bottom - 150:
+                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "bottomleft"
@@ -167,13 +167,13 @@ class RedBoss(Boss):
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
-                if self.rect.left > self.screen_rect.left + 150:
+                if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
-                if self.rect.right < self.screen_rect.right - 150:
+                if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "bottomright"
@@ -186,13 +186,13 @@ class RedBoss(Boss):
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
-                if self.rect.top > self.screen_rect.top + 150:
+                if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "topright"
                     self.define_direction_2()
             elif self.random_direction == 3:
-                if self.rect.bottom < self.screen_rect.bottom - 150:
+                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "bottomright"
