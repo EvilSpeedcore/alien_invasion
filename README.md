@@ -1,7 +1,7 @@
 ## Prerequisites
 
 1) Install uv: https://docs.astral.sh/uv/getting-started/installation/
-2) Install dependencies `uv sync --all-groups`
+2) Install dependencies: `uv sync --all-groups`
 
 ## Building
 Windows:
