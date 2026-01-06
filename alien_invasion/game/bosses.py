@@ -74,206 +74,178 @@ class RedBoss(Boss):
         self.speed = settings.red_boss_speed
         self.define_start_direction()
 
+    def move_up(self) -> None:
+        self.y -= self.speed
+        self.rect.centerx = self.x  # type: ignore[assignment]
+        self.rect.centery = self.y  # type: ignore[assignment]
+
+    def move_left(self) -> None:
+        self.x -= self.speed
+        self.rect.centerx = self.x  # type: ignore[assignment]
+        self.rect.centery = self.y  # type: ignore[assignment]
+
+    def move_down(self) -> None:
+        self.y += self.speed
+        self.rect.centerx = self.x  # type: ignore[assignment]
+        self.rect.centery = self.y  # type: ignore[assignment]
+
+    def move_right(self) -> None:
+        self.x += self.speed
+        self.rect.centerx = self.x  # type: ignore[assignment]
+        self.rect.centery = self.y  # type: ignore[assignment]
+
     def update(self) -> None:
         """Update boss position depending on boss current position."""
         if self.position == "center":
             if self.random_direction == 1:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed
-                    self.rect.centery = self.y  # type: ignore[assignment]
-                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed
-                    self.rect.centery = self.y  # type: ignore[assignment]
-                    self.rect.centerx = self.x  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 4:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "midright"
                     self.define_direction_1()
         elif self.position == "midtop":
             if self.random_direction == 1:
                 if self.rect.top < self.screen_rect.centery:
-                    self.y += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "topright"
                     self.define_direction_2()
         elif self.position == "midleft":
             if self.random_direction == 1:
                 if self.rect.left < self.screen_rect.centerx:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
         elif self.position == "midbottom":
             if self.random_direction == 1:
                 if self.rect.bottom > self.screen_rect.centery:
-                    self.y -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.left > self.screen_rect.left + 150:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.right < self.screen_rect.right - 150:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
         elif self.position == "midright":
             if self.random_direction == 1:
                 if self.rect.right > self.screen_rect.centerx:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "center"
                     self.define_start_direction()
             elif self.random_direction == 2:
                 if self.rect.top > self.screen_rect.top + 150:
-                    self.y -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "topright"
                     self.define_direction_2()
             elif self.random_direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - 150:
-                    self.y += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
         elif self.position == "topleft":
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
-                    self.y += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
         elif self.position == "bottomleft":
             if self.random_direction == 1:
                 if self.x < self.screen_rect.centerx:
-                    self.x += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_right()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
-                    self.y -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
         elif self.position == "bottomright":
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y > self.screen_rect.centery:
-                    self.y -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_up()
                 else:
                     self.position = "midright"
                     self.define_direction_1()
         elif self.position == "topright":
             if self.random_direction == 1:
                 if self.x > self.screen_rect.centerx:
-                    self.x -= self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_left()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
             elif self.random_direction == 2:
                 if self.y < self.screen_rect.centery:
-                    self.y += self.speed
-                    self.rect.centerx = self.x  # type: ignore[assignment]
-                    self.rect.centery = self.y  # type: ignore[assignment]
+                    self.move_down()
                 else:
                     self.position = "midright"
                     self.define_direction_1()
