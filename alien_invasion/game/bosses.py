@@ -97,159 +97,169 @@ class RedBoss(Boss):
         self.rect.centery = self.y  # type: ignore[assignment]
 
     def update(self) -> None:
-        if self.position == Side.CENTER:
-            if self.direction == Side.TOP:
-                if self.rect.top > self.screen_rect.top + self.movement_margin:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
-            elif self.direction == Side.LEFT:
-                if self.rect.left > self.screen_rect.left + self.movement_margin:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
-            elif self.direction == Side.BOTTOM:
-                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
-            elif self.direction == Side.RIGHT:
-                if self.rect.right < self.screen_rect.right - self.movement_margin:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
-        elif self.position == Side.TOP:
-            if self.direction == Side.CENTER:
-                if self.rect.top < self.screen_rect.centery:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP_LEFT, Side.BOTTOM)
-            elif self.direction == Side.TOP_LEFT:
-                if self.rect.left > self.screen_rect.left + self.movement_margin:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.TOP)
-            elif self.direction == Side.TOP_RIGHT:
-                if self.rect.right < self.screen_rect.right - self.movement_margin:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.TOP, Side.RIGHT)
-        elif self.position == Side.LEFT:
-            if self.direction == Side.CENTER:
-                if self.rect.left < self.screen_rect.centerx:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
-            elif self.direction == Side.TOP_LEFT:
-                if self.rect.top > self.screen_rect.top + self.movement_margin:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.TOP)
-            elif self.direction == Side.BOTTOM_LEFT:
-                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side. BOTTOM)
-        elif self.position == Side.BOTTOM:
-            if self.direction == Side.CENTER:
-                if self.rect.bottom > self.screen_rect.centery:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
-            elif self.direction == Side.BOTTOM_LEFT:
-                if self.rect.left > self.screen_rect.left + self.movement_margin:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.BOTTOM)
-            elif self.direction == Side.BOTTOM_RIGHT:
-                if self.rect.right < self.screen_rect.right - self.movement_margin:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.RIGHT, Side.BOTTOM)
-        elif self.position == Side.RIGHT:
-            if self.direction == Side.CENTER:
-                if self.rect.right > self.screen_rect.centerx:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
-            elif self.direction == Side.TOP_RIGHT:
-                if self.rect.top > self.screen_rect.top + self.movement_margin:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.RIGHT, Side.TOP)
-            elif self.direction == Side.BOTTOM_RIGHT:
-                if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.RIGHT, Side.BOTTOM)
-        elif self.position == Side.TOP_LEFT:
-            if self.direction == Side.TOP:
-                if self.x < self.screen_rect.centerx:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
-            elif self.direction == Side.LEFT:
-                if self.y < self.screen_rect.centery:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
-        elif self.position == Side.BOTTOM_LEFT:
-            if self.direction == Side.BOTTOM:
-                if self.x < self.screen_rect.centerx:
-                    self.move_right()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
-            elif self.direction == Side.LEFT:
-                if self.y > self.screen_rect.centery:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
-        elif self.position == Side.BOTTOM_RIGHT:
-            if self.direction == Side.BOTTOM:
-                if self.x > self.screen_rect.centerx:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
-            elif self.direction == Side.RIGHT:
-                if self.y > self.screen_rect.centery:
-                    self.move_up()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
-        elif self.position == Side.TOP_RIGHT:
-            if self.direction == Side.TOP:
-                if self.x > self.screen_rect.centerx:
-                    self.move_left()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
-            elif self.direction == Side.RIGHT:
-                if self.y < self.screen_rect.centery:
-                    self.move_down()
-                else:
-                    self.position = self.direction
-                    self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
+        match self.position:
+            case Side.CENTER:
+                match self.direction:
+                    case Side.TOP:
+                        if self.rect.top > self.screen_rect.top + self.movement_margin:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
+                    case Side.LEFT:
+                        if self.rect.left > self.screen_rect.left + self.movement_margin:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
+                    case Side.BOTTOM:
+                        if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
+                    case Side.RIGHT:
+                        if self.rect.right < self.screen_rect.right - self.movement_margin:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
+            case Side.TOP:
+                match self.direction:
+                    case Side.CENTER:
+                        if self.rect.top < self.screen_rect.centery:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP_LEFT, Side.BOTTOM)
+                    case Side.TOP_LEFT:
+                        if self.rect.left > self.screen_rect.left + self.movement_margin:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.TOP)
+                    case Side.TOP_RIGHT:
+                        if self.rect.right < self.screen_rect.right - self.movement_margin:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.TOP, Side.RIGHT)
+            case Side.LEFT:
+                match self.direction:
+                    case Side.CENTER:
+                        if self.rect.left < self.screen_rect.centerx:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
+                    case Side.TOP_LEFT:
+                        if self.rect.top > self.screen_rect.top + self.movement_margin:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.TOP)
+                    case Side.BOTTOM_LEFT:
+                        if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side. BOTTOM)
+            case Side.BOTTOM:
+                match self.direction:
+                    case Side.CENTER:
+                        if self.rect.bottom > self.screen_rect.centery:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
+                    case Side.BOTTOM_LEFT:
+                        if self.rect.left > self.screen_rect.left + self.movement_margin:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.BOTTOM)
+                    case Side.BOTTOM_RIGHT:
+                        if self.rect.right < self.screen_rect.right - self.movement_margin:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.RIGHT, Side.BOTTOM)
+            case Side.RIGHT:
+                match self.direction:
+                    case Side.CENTER:
+                        if self.rect.right > self.screen_rect.centerx:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.LEFT, Side.RIGHT, Side.TOP, Side.BOTTOM)
+                    case Side.TOP_RIGHT:
+                        if self.rect.top > self.screen_rect.top + self.movement_margin:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.RIGHT, Side.TOP)
+                    case Side.BOTTOM_RIGHT:
+                        if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.RIGHT, Side.BOTTOM)
+            case Side.TOP_LEFT:
+                match self.direction:
+                    case Side.TOP:
+                        if self.x < self.screen_rect.centerx:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
+                    case Side.LEFT:
+                        if self.y < self.screen_rect.centery:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
+            case Side.BOTTOM_LEFT:
+                match self.direction:
+                    case Side.BOTTOM:
+                        if self.x < self.screen_rect.centerx:
+                            self.move_right()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
+                    case Side.LEFT:
+                        if self.y > self.screen_rect.centery:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.BOTTOM_LEFT)
+            case Side.BOTTOM_RIGHT:
+                match self.direction:
+                    case Side.BOTTOM:
+                        if self.x > self.screen_rect.centerx:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.BOTTOM_LEFT, Side.BOTTOM_RIGHT)
+                    case Side.RIGHT:
+                        if self.y > self.screen_rect.centery:
+                            self.move_up()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
+            case Side.TOP_RIGHT:
+                match self.direction:
+                    case Side.TOP:
+                        if self.x > self.screen_rect.centerx:
+                            self.move_left()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_LEFT, Side.TOP_RIGHT)
+                    case Side.RIGHT:
+                        if self.y < self.screen_rect.centery:
+                            self.move_down()
+                        else:
+                            self.position = self.direction
+                            self.define_direction(Side.CENTER, Side.TOP_RIGHT, Side.BOTTOM_RIGHT)
 
     def define_direction(self, *sides: Side) -> None:
         self.direction = secrets.choice(sides)
