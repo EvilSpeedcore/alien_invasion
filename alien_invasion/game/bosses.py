@@ -196,25 +196,25 @@ class RedBoss(Boss):
             ),
         }
 
-    def go_up(self) -> None:
-        self.y -= self.speed
+    def update_coordinates(self) -> None:
         self.rect.centerx = self.x  # type: ignore[assignment]
         self.rect.centery = self.y  # type: ignore[assignment]
+
+    def go_up(self) -> None:
+        self.y -= self.speed
+        self.update_coordinates()
 
     def go_left(self) -> None:
         self.x -= self.speed
-        self.rect.centerx = self.x  # type: ignore[assignment]
-        self.rect.centery = self.y  # type: ignore[assignment]
+        self.update_coordinates()
 
     def go_down(self) -> None:
         self.y += self.speed
-        self.rect.centerx = self.x  # type: ignore[assignment]
-        self.rect.centery = self.y  # type: ignore[assignment]
+        self.update_coordinates()
 
     def go_right(self) -> None:
         self.x += self.speed
-        self.rect.centerx = self.x  # type: ignore[assignment]
-        self.rect.centery = self.y  # type: ignore[assignment]
+        self.update_coordinates()
 
     def update(self) -> None:
         action = self.movement_map.get((self.position, self.direction))
