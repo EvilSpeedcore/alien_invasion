@@ -3,11 +3,12 @@ from typing import TYPE_CHECKING
 from pygame.sprite import Sprite
 
 from game.images import load_image
-from game.ship import Rotation, Ship
+from game.screen import ScreenSide
 
 if TYPE_CHECKING:
     from game.screen import Screen
     from game.settings import Settings
+    from game.ship import Ship
 
 
 class Bullet(Sprite):
@@ -64,38 +65,38 @@ class Bullet(Sprite):
     def update(self) -> None:
         """Update bullet position depending on ship current rotation."""
         match self.bullet_rotation:
-            case Rotation.UP:
+            case ScreenSide.TOP:
                 self.y_up -= self.speed_factor
                 self.rect.centery = self.y_up  # type: ignore[assignment]
                 self.rect.centerx = self.x_up  # type: ignore[assignment]
-            case Rotation.RIGHT:
+            case ScreenSide.RIGHT:
                 self.x_right += self.speed_factor
                 self.rect.centerx = self.x_right  # type: ignore[assignment]
                 self.rect.centery = self.y_right  # type: ignore[assignment]
-            case Rotation.LEFT:
+            case ScreenSide.LEFT:
                 self.x_left -= self.speed_factor
                 self.rect.centerx = self.x_left  # type: ignore[assignment]
                 self.rect.centery = self.y_left  # type: ignore[assignment]
-            case Rotation.DOWN:
+            case ScreenSide.BOTTOM:
                 self.y_down += self.speed_factor
                 self.rect.centery = self.y_down  # type: ignore[assignment]
                 self.rect.centerx = self.x_down  # type: ignore[assignment]
-            case Rotation.UP_RIGHT:
+            case ScreenSide.TOP_RIGHT:
                 self.y_up_right -= self.speed_factor
                 self.x_up_right += self.speed_factor
                 self.rect.centery = self.y_up_right  # type: ignore[assignment]
                 self.rect.centerx = self.x_up_right  # type: ignore[assignment]
-            case Rotation.UP_LEFT:
+            case ScreenSide.TOP_LEFT:
                 self.y_up_left -= self.speed_factor
                 self.x_up_left -= self.speed_factor
                 self.rect.centery = self.y_up_left  # type: ignore[assignment]
                 self.rect.centerx = self.x_up_left  # type: ignore[assignment]
-            case Rotation.DOWN_LEFT:
+            case ScreenSide.BOTTOM_LEFT:
                 self.y_down_left += self.speed_factor
                 self.x_down_left -= self.speed_factor
                 self.rect.centery = self.y_down_left  # type: ignore[assignment]
                 self.rect.centerx = self.x_down_left  # type: ignore[assignment]
-            case Rotation.DOWN_RIGHT:
+            case ScreenSide.BOTTOM_RIGHT:
                 self.y_down_right += self.speed_factor
                 self.x_down_right += self.speed_factor
                 self.rect.centery = self.y_down_right  # type: ignore[assignment]

@@ -11,7 +11,8 @@ from game.boss_shield import BlueBossShield, GreenBossShield, RedBossShield
 from game.bosses import BlueBoss, GreenBoss, RedBoss
 from game.bullet import Bullet
 from game.paths import Paths
-from game.rotation import Rotation, rotate_to_up
+from game.rotation import rotate_to_up
+from game.screen import ScreenSide
 from game.ship_consumables import ShipShield
 
 if TYPE_CHECKING:
@@ -40,31 +41,31 @@ def initialize_game_from_main_menu(settings: "Settings", stats: "Stats", hud: "H
 
 
 def handle_ship_diagonal_movement(ship: "Ship") -> None:
-    # Check for UP_LEFT ship direction.
+    # Check for TOP_LEFT ship direction.
     if ship.moving_up and ship.moving_left:
-        ship.current_ship_rotation = Rotation.UP_LEFT
-        while ship.current_ship_rotation == Rotation.UP_LEFT:
+        ship.current_ship_rotation = ScreenSide.TOP_LEFT
+        while ship.current_ship_rotation == ScreenSide.TOP_LEFT:
             ship.image = ship.Images.UP_LEFT
             break
 
-    # Check for UP_RIGHT ship direction.
+    # Check for TOP_RIGHT ship direction.
     if ship.moving_up and ship.moving_right:
-        ship.current_ship_rotation = Rotation.UP_RIGHT
-        while ship.current_ship_rotation == Rotation.UP_RIGHT:
+        ship.current_ship_rotation = ScreenSide.TOP_RIGHT
+        while ship.current_ship_rotation == ScreenSide.TOP_RIGHT:
             ship.image = ship.Images.UP_RIGHT
             break
 
-    # Check for DOWN_LEFT ship direction.
+    # Check for BOTTM_LEFT ship direction.
     if ship.moving_down and ship.moving_left:
-        ship.current_ship_rotation = Rotation.DOWN_LEFT
-        while ship.current_ship_rotation == Rotation.DOWN_LEFT:
+        ship.current_ship_rotation = ScreenSide.BOTTOM_LEFT
+        while ship.current_ship_rotation == ScreenSide.BOTTOM_LEFT:
             ship.image = ship.Images.DOWN_LEFT
             break
 
-    # Check for DOWN_RIGHT ship direction.
+    # Check for BOTTM_RIGHT ship direction.
     if ship.moving_down and ship.moving_right:
-        ship.current_ship_rotation = Rotation.DOWN_RIGHT
-        while ship.current_ship_rotation == Rotation.DOWN_RIGHT:
+        ship.current_ship_rotation = ScreenSide.BOTTOM_RIGHT
+        while ship.current_ship_rotation == ScreenSide.BOTTOM_RIGHT:
             ship.image = ship.Images.DOWN_RIGHT
             break
 

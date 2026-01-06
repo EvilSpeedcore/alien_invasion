@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from pygame.sprite import Sprite
 
 from game.images import load_image
-from game.rotation import Rotation
+from game.screen import ScreenSide
 
 if TYPE_CHECKING:
     from pygame.rect import Rect
@@ -64,32 +64,32 @@ class ShipShield(ShipConsumable):
     def update(self) -> None:
         """Update position of used shield relatively ship position."""
         match self.ship.current_ship_rotation:
-            case Rotation.UP | Rotation.DOWN:
+            case ScreenSide.TOP | ScreenSide.BOTTOM:
                 self.centerx = self.ship.centerx
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery
                 self.rect.centery = self.centery
-            case Rotation.LEFT | Rotation.RIGHT:
+            case ScreenSide.LEFT | ScreenSide.RIGHT:
                 self.centerx = self.ship.centerx - 8
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery + 3
                 self.rect.centery = self.centery
-            case Rotation.UP_LEFT:
+            case ScreenSide.TOP_LEFT:
                 self.centerx = self.ship.centerx - 9
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery - 5
                 self.rect.centery = self.centery
-            case Rotation.UP_RIGHT:
+            case ScreenSide.TOP_RIGHT:
                 self.centerx = self.ship.centerx
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery - 5
                 self.rect.centery = self.centery
-            case Rotation.DOWN_LEFT:
+            case ScreenSide.BOTTOM_LEFT:
                 self.centerx = self.ship.centerx - 9
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery + 1
                 self.rect.centery = self.centery + 1
-            case Rotation.DOWN_RIGHT:
+            case ScreenSide.BOTTOM_RIGHT:
                 self.centerx = self.ship.centerx - 1
                 self.rect.centerx = self.centerx
                 self.centery = self.ship.centery + 2

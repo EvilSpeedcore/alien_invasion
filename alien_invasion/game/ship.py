@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 from pygame.sprite import Sprite
 
 from game.images import load_image
-from game.rotation import Rotation, rotate_to_up
+from game.rotation import rotate_to_up
+from game.screen import ScreenSide
 
 if TYPE_CHECKING:
     from game.screen import Screen
@@ -82,7 +83,7 @@ class Ship(Sprite):
         self.moving_down = False
 
         # Default ship direction.
-        self.current_ship_rotation: Rotation = Rotation.UP
+        self.current_ship_rotation: ScreenSide = ScreenSide.TOP
 
         # Direction in which ship currently moving.
-        self.desirable_ship_rotation: Rotation | None = None
+        self.desirable_ship_rotation: ScreenSide | None = None

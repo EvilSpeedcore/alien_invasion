@@ -7,6 +7,7 @@ import pygame
 
 import game.rotation as rt
 from game.gf.common import fire_bullet, use_ship_shield
+from game.screen import ScreenSide
 
 if TYPE_CHECKING:
     from pygame.event import Event
@@ -70,19 +71,19 @@ def check_active_game_keydown_events(event: "Event",
     events = ActiveGameEvents()
     match event.key:
         case pygame.K_RIGHT:
-            ship.desirable_ship_rotation = rt.Rotation.RIGHT
+            ship.desirable_ship_rotation = ScreenSide.RIGHT
             ship.moving_right = True
             rt.rotate(ship)
         case pygame.K_LEFT:
-            ship.desirable_ship_rotation = rt.Rotation.LEFT
+            ship.desirable_ship_rotation = ScreenSide.LEFT
             ship.moving_left = True
             rt.rotate(ship)
         case pygame.K_UP:
-            ship.desirable_ship_rotation = rt.Rotation.UP
+            ship.desirable_ship_rotation = ScreenSide.TOP
             ship.moving_up = True
             rt.rotate(ship)
         case pygame.K_DOWN:
-            ship.desirable_ship_rotation = rt.Rotation.DOWN
+            ship.desirable_ship_rotation = ScreenSide.BOTTOM
             ship.moving_down = True
             rt.rotate(ship)
         case pygame.K_a:
@@ -98,19 +99,19 @@ def check_pause_keydown_events(event: "Event", ship: "Ship") -> PauseEvents:
     events = PauseEvents()
     match event.key:
         case pygame.K_RIGHT:
-            ship.desirable_ship_rotation = rt.Rotation.RIGHT
+            ship.desirable_ship_rotation = ScreenSide.RIGHT
             ship.moving_right = True
             rt.rotate(ship)
         case pygame.K_LEFT:
-            ship.desirable_ship_rotation = rt.Rotation.LEFT
+            ship.desirable_ship_rotation = ScreenSide.LEFT
             ship.moving_left = True
             rt.rotate(ship)
         case pygame.K_UP:
-            ship.desirable_ship_rotation = rt.Rotation.UP
+            ship.desirable_ship_rotation = ScreenSide.TOP
             ship.moving_up = True
             rt.rotate(ship)
         case pygame.K_DOWN:
-            ship.desirable_ship_rotation = rt.Rotation.DOWN
+            ship.desirable_ship_rotation = ScreenSide.BOTTOM
             ship.moving_down = True
             rt.rotate(ship)
         case pygame.K_s:
