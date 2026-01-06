@@ -97,153 +97,153 @@ class RedBoss(Boss):
 
     def update(self) -> None:
         if self.position == "center":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
-            elif self.random_direction == 3:
+            elif self.direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
-            elif self.random_direction == 4:
+            elif self.direction == 4:
                 if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "midright"
                     self.define_direction_1()
         elif self.position == "midtop":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.rect.top < self.screen_rect.centery:
                     self.move_down()
                 else:
                     self.position = "center"
                     self.define_start_direction()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
-            elif self.random_direction == 3:
+            elif self.direction == 3:
                 if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "topright"
                     self.define_direction_2()
         elif self.position == "midleft":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.rect.left < self.screen_rect.centerx:
                     self.move_right()
                 else:
                     self.position = "center"
                     self.define_start_direction()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "topleft"
                     self.define_direction_2()
-            elif self.random_direction == 3:
+            elif self.direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
         elif self.position == "midbottom":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.rect.bottom > self.screen_rect.centery:
                     self.move_up()
                 else:
                     self.position = "center"
                     self.define_start_direction()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.rect.left > self.screen_rect.left + self.movement_margin:
                     self.move_left()
                 else:
                     self.position = "bottomleft"
                     self.define_direction_2()
-            elif self.random_direction == 3:
+            elif self.direction == 3:
                 if self.rect.right < self.screen_rect.right - self.movement_margin:
                     self.move_right()
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
         elif self.position == "midright":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.rect.right > self.screen_rect.centerx:
                     self.move_left()
                 else:
                     self.position = "center"
                     self.define_start_direction()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.rect.top > self.screen_rect.top + self.movement_margin:
                     self.move_up()
                 else:
                     self.position = "topright"
                     self.define_direction_2()
-            elif self.random_direction == 3:
+            elif self.direction == 3:
                 if self.rect.bottom < self.screen_rect.bottom - self.movement_margin:
                     self.move_down()
                 else:
                     self.position = "bottomright"
                     self.define_direction_2()
         elif self.position == "topleft":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.x < self.screen_rect.centerx:
                     self.move_right()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.y < self.screen_rect.centery:
                     self.move_down()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
         elif self.position == "bottomleft":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.x < self.screen_rect.centerx:
                     self.move_right()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.y > self.screen_rect.centery:
                     self.move_up()
                 else:
                     self.position = "midleft"
                     self.define_direction_1()
         elif self.position == "bottomright":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.x > self.screen_rect.centerx:
                     self.move_left()
                 else:
                     self.position = "midbottom"
                     self.define_direction_1()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.y > self.screen_rect.centery:
                     self.move_up()
                 else:
                     self.position = "midright"
                     self.define_direction_1()
         elif self.position == "topright":
-            if self.random_direction == 1:
+            if self.direction == 1:
                 if self.x > self.screen_rect.centerx:
                     self.move_left()
                 else:
                     self.position = "midtop"
                     self.define_direction_1()
-            elif self.random_direction == 2:
+            elif self.direction == 2:
                 if self.y < self.screen_rect.centery:
                     self.move_down()
                 else:
@@ -252,15 +252,15 @@ class RedBoss(Boss):
 
     def define_start_direction(self) -> None:
         """Define start direction of boss: left, right, top and bottom."""
-        self.random_direction = secrets.choice(range(1, 5))
+        self.direction = secrets.choice(range(1, 5))
 
     def define_direction_1(self) -> None:
         """Define direction of boss from following positions: midleft, midright, midtop and midbottom."""
-        self.random_direction = secrets.choice(range(1, 4))
+        self.direction = secrets.choice(range(1, 4))
 
     def define_direction_2(self) -> None:
         """Define follow up direction of boss from following positions: topright, bottomright, bottomleft, topleft."""
-        self.random_direction = secrets.choice(range(1, 3))
+        self.direction = secrets.choice(range(1, 3))
 
 
 class BlueBoss(Boss):
