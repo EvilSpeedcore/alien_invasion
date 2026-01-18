@@ -41,4 +41,3 @@ class Settings:
         """Initialize settings, that change during the game."""
         self.black_hole_spawn_timer = 0
         self.black_hole_rotation_timer = 0
-        self.black_hole_despawn_timer = 0
