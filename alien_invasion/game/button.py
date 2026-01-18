@@ -50,7 +50,7 @@ class Button:
 
 
 class StartButton(Button):
-    IMAGE = load_image("button1.png")
+    IMAGE = load_image("button.png")
 
     def __init__(self, screen: "Screen") -> None:
         super().__init__(screen=screen,
