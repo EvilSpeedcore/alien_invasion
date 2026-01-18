@@ -119,6 +119,7 @@ def update_main_menu_screen(settings: "Settings", screen: "Screen", start_button
     screen.it.fill(settings.bg_color)
 
     start_button.draw_button()
+    start_button.update()
 
     # Update screen.
     pygame.display.flip()

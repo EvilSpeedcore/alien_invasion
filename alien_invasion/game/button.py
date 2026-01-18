@@ -23,29 +23,34 @@ class Button:
                  hover_text_color: Color,
                  font: pygame.font.Font) -> None:
         self.screen = screen
-        self.button_image = image
+        self.image = image
+        self.message = message
         self.button_color = button_color
         self.text_color = text_color
         self.hover_text_color = hover_text_color
         self.font = font
-        self.ellipse_rect = self.button_image.get_rect()
+
+        self.ellipse_rect = self.image.get_rect()
         self.ellipse_rect.centerx, self.ellipse_rect.centery = position
         self.prepare_message(message)
 
     def prepare_message(self, message: str) -> None:
-        """Turn message to Surface subject."""
-        if self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
-            self.msg_image = self.font.render(message, True, self.hover_text_color, self.button_color)  # noqa: FBT003
-            self.msg_image_rect = self.msg_image.get_rect()
-            self.msg_image_rect.center = self.ellipse_rect.center
-        else:
-            self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
-            self.msg_image_rect = self.msg_image.get_rect()
-            self.msg_image_rect.center = self.ellipse_rect.center
+        self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
+        self.msg_image_rect = self.msg_image.get_rect()
+        self.msg_image_rect.center = self.ellipse_rect.center
+
+    def update(self) -> None:
+        if not self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
+            self.prepare_message(self.message)
+            return
+
+        self.msg_image = self.font.render(self.message, True, self.hover_text_color, self.button_color)  # noqa: FBT003
+        self.msg_image_rect = self.msg_image.get_rect()
+        self.msg_image_rect.center = self.ellipse_rect.center
 
     def draw_button(self) -> None:
         """Draw button with text on screen."""
-        self.screen.it.blit(self.button_image, self.ellipse_rect)
+        self.screen.it.blit(self.image, self.ellipse_rect)
         self.screen.it.blit(self.msg_image, self.msg_image_rect)
 
 
