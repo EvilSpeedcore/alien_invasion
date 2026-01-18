@@ -13,9 +13,9 @@ Windows:
 2. Run `./build/build.bat`
 
 ## TODO
-* Get TODOs from https://drive.google.com/open?id=10TSk52nwgsJAL2iT5ZD8vwbSAtyx0agB
-* R key: reload level (debug only)
+* Move to https://github.com/pygame-community/pygame-ce
+* Reload level
 * Tests with input recording (events)
 * Saves
-* Change blue alien to shoot first bullets with delay
+* Change blue boss to shoot first bullets with delay
 * .ini configuration for executable
