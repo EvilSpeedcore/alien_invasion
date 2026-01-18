@@ -18,7 +18,7 @@ build = [
 ]
 lint = [
     "isort>=6.0.1",
-    "ruff==0.14.10",
+    "ruff==0.14.13",
 ]
 prod = [
     "pygame>=2.6.1",
