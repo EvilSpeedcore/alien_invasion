@@ -22,7 +22,7 @@ def collidable(alien: "Alien", other: "Alien") -> bool:
 
 
 class Alien(Sprite):
-    IMAGE = load_image("green_alien.png")
+    IMAGE = load_image("aliens/green_alien.png")
 
     def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
         super().__init__()
@@ -76,8 +76,8 @@ class Alien(Sprite):
 
 
 class RedAlien(Alien):
-    IMAGE = load_image("red_alien.png")
+    IMAGE = load_image("aliens/red_alien.png")
 
 
 class BlueAlien(Alien):
-    IMAGE = load_image("blue_alien.png")
+    IMAGE = load_image("aliens/blue_alien.png")

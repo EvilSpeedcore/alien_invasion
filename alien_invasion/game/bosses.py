@@ -48,7 +48,7 @@ class Boss(Sprite):
 
 
 class GreenBoss(Boss):
-    IMAGE = load_image("green_alien.png")
+    IMAGE = load_image("aliens/green_alien.png")
 
     def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE
@@ -57,7 +57,7 @@ class GreenBoss(Boss):
 
 
 class RedBoss(Boss):
-    IMAGE = load_image("red_alien.png")
+    IMAGE = load_image("aliens/red_alien.png")
 
     def __init__(self, settings: "Settings", screen: "Screen") -> None:
         image = self.IMAGE
@@ -73,6 +73,7 @@ class RedBoss(Boss):
         self.speed = settings.red_boss_speed
         self.margin = 150
 
+        # TODO: Sometimes boss gets stuck in the center
         self.movement_map = {
             (Side.CENTER, Side.TOP): (
                 lambda: self.rect.top > self.screen_rect.top + self.margin,
@@ -233,7 +234,7 @@ class RedBoss(Boss):
 
 
 class BlueBoss(Boss):
-    IMAGE = load_image("blue_alien.png")
+    IMAGE = load_image("aliens/blue_alien.png")
 
     def __init__(self, screen: "Screen") -> None:
         image = self.IMAGE

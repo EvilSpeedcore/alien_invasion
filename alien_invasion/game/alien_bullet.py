@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 
 class AlienBullet(Sprite):
-    IMAGE = load_image("alien_bullet.png")
+    IMAGE = load_image("aliens/green_alien_bullet.png")
 
     def __init__(self, settings: "Settings", screen: "Screen", rect: "Rect") -> None:
         super().__init__()
@@ -51,8 +51,8 @@ class AlienBullet(Sprite):
 
 
 class RedAlienBullet(AlienBullet):
-    IMAGE = load_image("red_alien_bullet.png")
+    IMAGE = load_image("aliens/red_alien_bullet.png")
 
 
 class BlueAlienBullet(AlienBullet):
-    IMAGE = load_image("blue_alien_bullet.png")
+    IMAGE = load_image("aliens/blue_alien_bullet.png")
