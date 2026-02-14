@@ -6,6 +6,7 @@ import pygame
 from game.buttons import Buttons
 from game.gf import common, events
 from game.hud import Hud
+from game.pause_menu import PauseMenu
 from game.screen import Screen
 from game.settings import Settings
 from game.ship import Ship
@@ -43,6 +44,7 @@ def run_game(args: Namespace) -> None:
                     hud=hud,
                     ship=ship,
                     sprites=sprites)
+    pause_menu = PauseMenu(screen=screen)
 
     state = GameState(State.MAIN_MENU)
     clock = pygame.time.Clock()
@@ -56,6 +58,8 @@ def run_game(args: Namespace) -> None:
                 events.quit_game()
             if pause_events.unpause:
                 state.set(State.ACTIVE)
+            pause_menu.update()
+            pygame.display.flip()
 
         # Menu state
         while state(State.MAIN_MENU):
