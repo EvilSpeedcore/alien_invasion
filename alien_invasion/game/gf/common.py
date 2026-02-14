@@ -22,6 +22,7 @@ if TYPE_CHECKING:
     from game.bosses import Boss
     from game.button import Button
     from game.hud import Hud
+    from game.pause_menu import PauseMenu
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
@@ -111,17 +112,18 @@ def update_screen(settings: "Settings",
 
     hud.show_hud()
 
-    # Update screen.
     pygame.display.flip()
 
 
 def update_main_menu_screen(settings: "Settings", screen: "Screen", start_button: "Button") -> None:
     screen.it.fill(settings.bg_color)
-
     start_button.draw_button()
     start_button.update()
+    pygame.display.flip()
 
-    # Update screen.
+
+def update_pause_screen(pause_menu: "PauseMenu") -> None:
+    pause_menu.update()
     pygame.display.flip()
 
 

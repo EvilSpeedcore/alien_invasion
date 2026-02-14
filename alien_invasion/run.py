@@ -58,8 +58,8 @@ def run_game(args: Namespace) -> None:
                 events.quit_game()
             if pause_events.unpause:
                 state.set(State.ACTIVE)
-            pause_menu.update()
-            pygame.display.flip()
+
+            common.update_pause_screen(pause_menu)
 
         # Menu state
         while state(State.MAIN_MENU):
