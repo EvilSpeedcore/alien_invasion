@@ -117,7 +117,7 @@ def update_screen(settings: "Settings",
 
 def update_main_menu_screen(settings: "Settings", screen: "Screen", start_button: "Button") -> None:
     screen.it.fill(settings.bg_color)
-    start_button.draw_button()
+    start_button.draw()
     start_button.update()
     pygame.display.flip()
 

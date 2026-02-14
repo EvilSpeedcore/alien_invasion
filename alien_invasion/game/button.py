@@ -48,8 +48,7 @@ class Button:
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.ellipse_rect.center
 
-    def draw_button(self) -> None:
-        """Draw button with text on screen."""
+    def draw(self) -> None:
         self.screen.it.blit(self.image, self.ellipse_rect)
         self.screen.it.blit(self.msg_image, self.msg_image_rect)
 
