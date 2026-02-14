@@ -23,7 +23,7 @@ def initialize() -> None:
     pygame.mixer.init()
 
 
-def run_game(args: Namespace) -> None:
+def run_game(args: Namespace) -> None:  # noqa: PLR0914
     initialize()
 
     settings = Settings(health=args.health)
