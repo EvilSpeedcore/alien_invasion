@@ -18,17 +18,17 @@ class Button:
                  image: "Surface",
                  position: tuple[int, int],
                  message: str,
-                 button_color: Color,
-                 text_color: Color,
-                 hover_text_color: Color,
-                 font: pygame.font.Font) -> None:
+                 button_color: Color | None = None,
+                 text_color: Color | None = None,
+                 hover_text_color: Color | None = None,
+                 font: pygame.font.Font | None = None) -> None:
         self.screen = screen
         self.image = image
         self.message = message
-        self.button_color = button_color
-        self.text_color = text_color
-        self.hover_text_color = hover_text_color
-        self.font = font
+        self.button_color = button_color or Color(176, 186, 231)
+        self.text_color = text_color or Color(255, 255, 255)
+        self.hover_text_color = hover_text_color or Color(150, 255, 255)
+        self.font = font or pygame.font.SysFont("tahoma", 40)
 
         self.ellipse_rect = self.image.get_rect()
         self.ellipse_rect.centerx, self.ellipse_rect.centery = position
@@ -57,11 +57,5 @@ class StartButton(Button):
     IMAGE = load_image("button.png")
 
     def __init__(self, screen: "Screen") -> None:
-        super().__init__(screen=screen,
-                         image=self.IMAGE,
-                         position=(screen.rect.centerx, screen.rect.centery),
-                         message="Start",
-                         button_color=Color(176, 186, 231),
-                         text_color=Color(255, 255, 255),
-                         hover_text_color=Color(150, 255, 255),
-                         font=pygame.font.SysFont("tahoma", 40))
+        position = (screen.rect.centerx, screen.rect.centery)
+        super().__init__(screen=screen, image=self.IMAGE, position=position, message="Start")
