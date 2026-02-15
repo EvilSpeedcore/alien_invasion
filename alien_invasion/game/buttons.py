@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from game.button import StartButton
+from game.button import Button
 
 if TYPE_CHECKING:
     from game.screen import Screen
@@ -9,4 +9,6 @@ if TYPE_CHECKING:
 class Buttons:
 
     def __init__(self, screen: "Screen") -> None:
-        self.START = StartButton(screen)
+        self.START = Button(surface=screen.it,
+                            position={"center": (screen.rect.center)},
+                            message="Start")

@@ -9,21 +9,20 @@ from game.images import load_image
 if TYPE_CHECKING:
     from pygame.surface import Surface
 
-    from game.screen import Screen
-
 
 class Button:
+    IMAGE = load_image("button.png")
+
     def __init__(self,
-                 screen: "Screen",
-                 image: "Surface",
+                 surface: "Surface",
                  position: dict[str, tuple[int, int]],
                  message: str,
                  button_color: Color | None = None,
                  text_color: Color | None = None,
                  hover_text_color: Color | None = None,
                  font: pygame.font.Font | None = None) -> None:
-        self.screen = screen
-        self.image = image
+        self.surface = surface
+        self.image = self.IMAGE
         self.message = message
         self.button_color = button_color or Color(176, 186, 231)
         self.text_color = text_color or Color(255, 255, 255)
@@ -47,13 +46,5 @@ class Button:
         self.msg_image_rect.center = self.ellipse_rect.center
 
     def draw(self) -> None:
-        self.screen.it.blit(self.image, self.ellipse_rect)
-        self.screen.it.blit(self.msg_image, self.msg_image_rect)
-
-
-class StartButton(Button):
-    IMAGE = load_image("button.png")
-
-    def __init__(self, screen: "Screen") -> None:
-        position = {"center": (screen.rect.center)}
-        super().__init__(screen=screen, image=self.IMAGE, position=position, message="Start")
+        self.surface.blit(self.image, self.ellipse_rect)
+        self.surface.blit(self.msg_image, self.msg_image_rect)
