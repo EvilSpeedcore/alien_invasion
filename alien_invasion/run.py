@@ -53,6 +53,7 @@ def run_game(args: Namespace) -> None:  # noqa: PLR0914
     while True:
         # Pause state
         while state(State.PAUSED):
+            pygame.mouse.set_visible(True)
             pause_events = events.check_pause_events(ship)
             if pause_events.quit:
                 events.quit_game()
