@@ -136,7 +136,8 @@ class Stage(BaseStage):
                                    ship=self.ship,
                                    ammo=self.sprites.ship_ammo)
 
-        self.sprites.aliens.add(*self.create_alien_fleet())
+        for alien in self.create_alien_fleet():
+            self.sprites.aliens.add(alien)
 
     def transit(self) -> None:
         super().transit()
