@@ -36,8 +36,11 @@ class Button:
         self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
         self.msg_image_rect = self.msg_image.get_rect(center=self.ellipse_rect.center)
 
-    def update(self) -> None:
-        if not self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
+    def update(self, mouse_position: tuple[float, float] | None = None) -> None:
+        if mouse_position is None:
+            mouse_position = pygame.mouse.get_pos()
+
+        if not self.ellipse_rect.collidepoint(mouse_position):
             self.prepare_message(self.message)
             return
 

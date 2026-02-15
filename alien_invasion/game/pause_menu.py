@@ -27,11 +27,15 @@ class PauseMenu:
 
     def update(self) -> None:
         self.surface.fill((0, 0, 0, 0))
+
         pygame.draw.rect(self.surface, self.menu_color, self.rect, border_radius=self.radius)
         self.surface.blit(self.text_surface, self.text_rect)
+
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        offset_x = self.screen.rect.centerx - self.size / 2
+        offset_y = self.screen.rect.centery - self.size / 2
+
+        self.back_to_menu_button.update(mouse_position=(mouse_x - offset_x, mouse_y - offset_y))
         self.back_to_menu_button.draw()
-        self.screen.it.blit(
-            self.surface,
-            (self.screen.rect.centerx - self.size / 2,
-             self.screen.rect.centery - self.size / 2),
-        )
+
+        self.screen.it.blit(self.surface, (offset_x, offset_y))
