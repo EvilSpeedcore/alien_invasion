@@ -10,7 +10,7 @@ dependencies = [
 
 [dependency-groups]
 auto = [
-    "tox>=4.33.0",
+    "tox>=4.35.0",
     "tox-uv>=1.29.0",
 ]
 build = [
