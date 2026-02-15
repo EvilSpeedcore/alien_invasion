@@ -255,9 +255,9 @@ def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") 
 
 
 def update_green_boss_bullets(boss_bullets: "Group[GreenBossBullet]") -> None:
-    for green_boss_bullet in boss_bullets.copy():
+    for green_boss_bullet in boss_bullets:
         if green_boss_bullet.bounces > 3:
-            boss_bullets.remove(green_boss_bullet)
+            green_boss_bullet.kill()
         else:
             green_boss_bullet.change_direction()
 
