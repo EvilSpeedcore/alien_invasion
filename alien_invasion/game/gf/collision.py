@@ -113,6 +113,6 @@ def check_ship_black_holes_collision(settings: "Settings",
 
 def check_bullets_screen_collision(screen: "Screen", bullets: "Group[Bullet]") -> None:
     screen_rect = screen.rect
-    for bullet in bullets.copy():
+    for bullet in bullets:
         if not screen_rect.colliderect(bullet.rect):
-            bullets.remove(bullet)
+            bullet.kill()
