@@ -16,7 +16,7 @@ class Button:
     def __init__(self,
                  screen: "Screen",
                  image: "Surface",
-                 position: tuple[int, int],
+                 position: dict[str, tuple[int, int]],
                  message: str,
                  button_color: Color | None = None,
                  text_color: Color | None = None,
@@ -30,14 +30,12 @@ class Button:
         self.hover_text_color = hover_text_color or Color(150, 255, 255)
         self.font = font or pygame.font.SysFont("tahoma", 40)
 
-        self.ellipse_rect = self.image.get_rect()
-        self.ellipse_rect.centerx, self.ellipse_rect.centery = position
+        self.ellipse_rect = self.image.get_rect(**position)
         self.prepare_message(message)
 
     def prepare_message(self, message: str) -> None:
         self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
-        self.msg_image_rect = self.msg_image.get_rect()
-        self.msg_image_rect.center = self.ellipse_rect.center
+        self.msg_image_rect = self.msg_image.get_rect(center=self.ellipse_rect.center)
 
     def update(self) -> None:
         if not self.ellipse_rect.collidepoint(pygame.mouse.get_pos()):
@@ -57,5 +55,5 @@ class StartButton(Button):
     IMAGE = load_image("button.png")
 
     def __init__(self, screen: "Screen") -> None:
-        position = (screen.rect.centerx, screen.rect.centery)
+        position = {"center": (screen.rect.center)}
         super().__init__(screen=screen, image=self.IMAGE, position=position, message="Start")
