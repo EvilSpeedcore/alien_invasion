@@ -192,6 +192,7 @@ class Stage(BaseStage):
     def teardown(self) -> None:
         super().teardown()
         self.sprites.alien_bullets.empty()
+        self.sprites.aliens.empty()
 
 
 class RedStage(Stage):
