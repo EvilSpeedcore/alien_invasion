@@ -58,6 +58,7 @@ def run_game(args: Namespace) -> None:  # noqa: PLR0914
             if pause_events.quit:
                 events.quit_game()
             if pause_events.unpause:
+                pygame.mouse.set_visible(False)
                 state.set(State.ACTIVE)
             if pause_events.to_main_menu:
                 events.end_game(settings=settings, screen=screen, stages=stages)
