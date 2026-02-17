@@ -14,6 +14,7 @@ if TYPE_CHECKING:
 
     from game.button import Button
     from game.hud import Hud
+    from game.pause_menu import PauseMenu
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
@@ -39,6 +40,7 @@ class MainMenuEvents:
 class PauseEvents:
     quit: bool = False
     unpause: bool = False
+    to_main_menu: bool = False
 
     def update(self, events: "PauseEvents") -> None:
         # Update once
@@ -46,6 +48,8 @@ class PauseEvents:
             self.quit = events.quit
         if self.unpause is False and events.unpause is True:
             self.unpause = events.unpause
+        if self.to_main_menu is False and events.to_main_menu is True:
+            self.to_main_menu = events.to_main_menu
 
 
 @dataclass
@@ -186,7 +190,7 @@ def check_active_game_events(settings: "Settings",
     return events
 
 
-def check_pause_events(ship: "Ship") -> PauseEvents:
+def check_pause_events(ship: "Ship", pause_menu: "PauseMenu") -> PauseEvents:
     events = PauseEvents()
     for event in pygame.event.get():
         match event.type:
@@ -196,6 +200,8 @@ def check_pause_events(ship: "Ship") -> PauseEvents:
                 events.update(check_pause_keydown_events(event, ship))
             case pygame.KEYUP:
                 events.update(check_pause_keyup_events(event, ship))
+            case pygame.MOUSEBUTTONDOWN:
+                events.update(PauseEvents(to_main_menu=check_pause_back_to_menu_button_pressed(pause_menu)))
     return events
 
 
@@ -214,8 +220,12 @@ def check_main_menu_events(play_button: "Button") -> MainMenuEvents:
 
 
 def check_play_button_pressed(play_button: "Button") -> bool:
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-    return play_button.ellipse_rect.collidepoint(mouse_x, mouse_y)
+    return play_button.ellipse_rect.collidepoint(pygame.mouse.get_pos())
+
+
+def check_pause_back_to_menu_button_pressed(pause_menu: "PauseMenu") -> bool:
+    position = pause_menu.get_mouse_position()
+    return pause_menu.back_to_menu_button.ellipse_rect.collidepoint(position)
 
 
 def quit_game() -> None:
