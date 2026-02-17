@@ -30,10 +30,8 @@ class MainMenuEvents:
 
     def update(self, events: "MainMenuEvents") -> None:
         # Update once
-        if self.quit is False and events.quit is True:
-            self.quit = events.quit
-        if self.play is False and events.play is True:
-            self.play = events.play
+        self.quit = self.quit or events.quit
+        self.play = self.play or events.play
 
 
 @dataclass
@@ -44,12 +42,9 @@ class PauseEvents:
 
     def update(self, events: "PauseEvents") -> None:
         # Update once
-        if self.quit is False and events.quit is True:
-            self.quit = events.quit
-        if self.unpause is False and events.unpause is True:
-            self.unpause = events.unpause
-        if self.to_main_menu is False and events.to_main_menu is True:
-            self.to_main_menu = events.to_main_menu
+        self.quit = self.quit or events.quit
+        self.unpause = self.unpause or events.unpause
+        self.to_main_menu = self.to_main_menu or events.to_main_menu
 
 
 @dataclass
