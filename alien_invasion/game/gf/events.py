@@ -54,10 +54,8 @@ class ActiveGameEvents:
 
     def update(self, events: "ActiveGameEvents") -> None:
         # Update once
-        if self.quit is False and events.quit is True:
-            self.quit = events.quit
-        if self.pause is False and events.pause is True:
-            self.pause = events.pause
+        self.quit = self.quit or events.quit
+        self.pause = self.pause or events.pause
 
 
 def check_active_game_keydown_events(event: "Event",
