@@ -18,7 +18,7 @@ build = [
 ]
 lint = [
     "isort>=6.0.1",
-    "ruff==0.15.1",
+    "ruff==0.15.2",
 ]
 prod = [
     "pygame>=2.6.1",
@@ -65,7 +65,6 @@ ignore = [
     "PLR2004",   # magic-values (fix)
     "TD002",
     "TD003",
-
 ]
 
 [tool.mypy]
