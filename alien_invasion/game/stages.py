@@ -105,8 +105,7 @@ class Stage(BaseStage):
     def create_bullets(self) -> Generator[AlienBullet]:
         aliens: list[Alien] = self.sprites.aliens.sprites()
         for alien in aliens:
-            alien_bullet = AlienBullet(self.settings, self.screen, alien.rect)
-            yield alien_bullet
+            yield AlienBullet(self.settings, self.screen, alien.rect)
 
     def fire_alien_bullets(self, dt: int) -> None:
         self.settings.time_elapsed_since_last_alien_bullet += dt
@@ -200,8 +199,7 @@ class RedStage(Stage):
     def create_bullets(self) -> Generator[RedAlienBullet]:
         aliens: list[Alien] = self.sprites.aliens.sprites()
         for alien in aliens:
-            alien_bullet = RedAlienBullet(self.settings, self.screen, alien.rect)
-            yield alien_bullet
+            yield RedAlienBullet(self.settings, self.screen, alien.rect)
 
     def create_alien_fleet(self) -> Generator[RedAlien]:
         aliens_count = common.get_aliens_row_count(self.settings, Alien.IMAGE.get_rect().width)
@@ -216,8 +214,7 @@ class BlueStage(Stage):
     def create_bullets(self) -> Generator[BlueAlienBullet]:
         aliens: list[Alien] = self.sprites.aliens.sprites()
         for alien in aliens:
-            alien_bullet = BlueAlienBullet(self.settings, self.screen, alien.rect)
-            yield alien_bullet
+            yield BlueAlienBullet(self.settings, self.screen, alien.rect)
 
     def create_alien_fleet(self) -> Generator[BlueAlien]:
         aliens_count = common.get_aliens_row_count(self.settings, Alien.IMAGE.get_rect().width)
