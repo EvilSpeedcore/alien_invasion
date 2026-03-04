@@ -14,7 +14,7 @@ class Button:
     IMAGE = load_image("button.png")
 
     def __init__(self,
-                 surface: "Surface",
+                 surface: Surface,
                  position: dict[str, tuple[int, int]],
                  message: str,
                  button_color: Color | None = None,

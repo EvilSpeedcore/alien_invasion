@@ -10,7 +10,7 @@ def load_image(relative_path: str) -> Surface:
     return pygame.image.load(image)
 
 
-def load_sequential_from_dirs(*directories: str) -> list["Surface"]:
+def load_sequential_from_dirs(*directories: str) -> list[Surface]:
     result: list[Surface] = []
     for name in directories:
         directory = Paths.images() / name

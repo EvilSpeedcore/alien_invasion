@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from game.ship import Ship
 
 
-def collidable(alien: "Alien", other: "Alien") -> bool:
+def collidable(alien: Alien, other: Alien) -> bool:
     # check collision between two aliens
     if alien is other:
         return False
@@ -26,7 +26,7 @@ def collidable(alien: "Alien", other: "Alien") -> bool:
 class Alien(Sprite):
     IMAGE = load_image("aliens/green_alien.png")
 
-    def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
+    def __init__(self, settings: Settings, screen: Screen, ship: Ship) -> None:
         super().__init__()
         self.screen = screen
         self.settings = settings
@@ -48,7 +48,7 @@ class Alien(Sprite):
 
         self.speed = self.settings.aliens_speed
 
-    def update(self, aliens: "Group[Alien]", ship: "Ship") -> None:
+    def update(self, aliens: Group[Alien], ship: Ship) -> None:
         """Update aliens position depending on ship current position. Check for collision between aliens."""
         aliens_collision = pygame.sprite.spritecollide(self, aliens, dokill=False, collided=collidable)
         if aliens_collision:

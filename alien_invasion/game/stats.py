@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 
 class Stats:
 
-    def __init__(self, settings: "Settings") -> None:
+    def __init__(self, settings: Settings) -> None:
         self.settings = settings
         self.reset_stats()
 

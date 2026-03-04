@@ -30,7 +30,7 @@ if TYPE_CHECKING:
     from game.stats import Stats
 
 
-def initialize_game_from_main_menu(settings: "Settings", stats: "Stats", hud: "Hud", ship: "Ship") -> None:
+def initialize_game_from_main_menu(settings: Settings, stats: Stats, hud: Hud, ship: Ship) -> None:
     settings.initialize_dynamic_settings()
     pygame.mouse.set_visible(False)
     stats.reset_stats()
@@ -41,7 +41,7 @@ def initialize_game_from_main_menu(settings: "Settings", stats: "Stats", hud: "H
     rotate_to_up(ship)
 
 
-def handle_ship_diagonal_movement(ship: "Ship") -> None:
+def handle_ship_diagonal_movement(ship: Ship) -> None:
     # Check for TOP_LEFT ship direction.
     if ship.moving_up and ship.moving_left:
         ship.current_ship_rotation = ScreenSide.TOP_LEFT
@@ -71,11 +71,11 @@ def handle_ship_diagonal_movement(ship: "Ship") -> None:
             break
 
 
-def update_screen(settings: "Settings",
-                  screen: "Screen",
-                  hud: "Hud",
-                  ship: "Ship",
-                  sprites: "Sprites",
+def update_screen(settings: Settings,
+                  screen: Screen,
+                  hud: Hud,
+                  ship: Ship,
+                  sprites: Sprites,
                   dt: int) -> None:
     """Update screen."""
     screen.it.fill(settings.bg_color)
@@ -115,39 +115,39 @@ def update_screen(settings: "Settings",
     pygame.display.flip()
 
 
-def update_main_menu_screen(settings: "Settings", screen: "Screen", start_button: "Button") -> None:
+def update_main_menu_screen(settings: Settings, screen: Screen, start_button: Button) -> None:
     screen.it.fill(settings.bg_color)
     start_button.draw()
     start_button.update()
     pygame.display.flip()
 
 
-def update_pause_screen(pause_menu: "PauseMenu") -> None:
+def update_pause_screen(pause_menu: PauseMenu) -> None:
     pause_menu.update()
     pygame.display.flip()
 
 
-def fire_bullet(settings: "Settings",
-                screen: "Screen",
-                stats: "Stats",
-                ship: "Ship",
-                bullets: "Group") -> None:
+def fire_bullet(settings: Settings,
+                screen: Screen,
+                stats: Stats,
+                ship: Ship,
+                bullets: Group) -> None:
     """Create ship bullets."""
     if len(bullets) < stats.ammo:
         new_bullet = Bullet(settings, screen, ship)
         bullets.add(new_bullet)
 
 
-def get_aliens_row_count(settings: "Settings", alien_width: int) -> int:
+def get_aliens_row_count(settings: Settings, alien_width: int) -> int:
     available_space_x = settings.screen_width - 2 * alien_width
     return int(available_space_x / (2 * alien_width))
 
 
-def ship_hit_on_regular_stage(settings: "Settings",
-                              stats: "Stats",
-                              hud: "Hud",
-                              ship: "Ship",
-                              sprites: "Sprites") -> None:
+def ship_hit_on_regular_stage(settings: Settings,
+                              stats: Stats,
+                              hud: Hud,
+                              ship: Ship,
+                              sprites: Sprites) -> None:
     stats.ships_left -= 1
     hud.prep_health()
     sprites.ship_health.empty()
@@ -164,11 +164,11 @@ def ship_hit_on_regular_stage(settings: "Settings",
         sleep(settings.game_sleep_time)
 
 
-def ship_hit_on_boss_stage(settings: "Settings",
-                           stats: "Stats",
-                           hud: "Hud",
-                           ship: "Ship",
-                           sprites: "Sprites") -> None:
+def ship_hit_on_boss_stage(settings: Settings,
+                           stats: Stats,
+                           hud: Hud,
+                           ship: Ship,
+                           sprites: Sprites) -> None:
     stats.ships_left -= 1
     hud.prep_health()
 
@@ -187,10 +187,10 @@ def ship_hit_on_boss_stage(settings: "Settings",
     ship.prepare_for_boss()
 
 
-def fire_green_boss_bullets(settings: "Settings",
-                            screen: "Screen",
-                            boss: "GreenBoss",
-                            boss_bullets: "Group",
+def fire_green_boss_bullets(settings: Settings,
+                            screen: Screen,
+                            boss: GreenBoss,
+                            boss_bullets: Group,
                             dt: int) -> None:
     """Create green boss bullets."""
     settings.time_elapsed_since_last_boss_bullet += dt
@@ -207,11 +207,11 @@ def fire_green_boss_bullets(settings: "Settings",
     settings.green_boss_bullet_timer = 1650
 
 
-def use_ship_shield(screen: "Screen",
-                    stats: "Stats",
-                    hud: "Hud",
-                    ship: "Ship",
-                    used_shields: "Group") -> None:
+def use_ship_shield(screen: Screen,
+                    stats: Stats,
+                    hud: Hud,
+                    ship: Ship,
+                    used_shields: Group) -> None:
     """Handle use of ship shield."""
     if stats.shields_left:
         effect = pygame.mixer.Sound(Paths.effects() / "1.ogg")
@@ -222,7 +222,7 @@ def use_ship_shield(screen: "Screen",
         hud.prep_shield()
 
 
-def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
+def create_blue_boss(screen: Screen, sprites: Sprites) -> None:
     """Create blue boss."""
     boss = BlueBoss(screen=screen)
     boss_shield = BlueBossShield(screen, boss)
@@ -234,7 +234,7 @@ def create_blue_boss(screen: "Screen", sprites: "Sprites") -> None:
     sprites.boss_shields.add(boss_shield)
 
 
-def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
+def create_green_boss(screen: Screen, sprites: Sprites) -> None:
     """Create green boss."""
     boss = GreenBoss(screen=screen)
     boss_shield = GreenBossShield(screen, position=(boss.rect.centerx, boss.rect.centery))
@@ -246,7 +246,7 @@ def create_green_boss(screen: "Screen", sprites: "Sprites") -> None:
     sprites.boss_shields.add(boss_shield)
 
 
-def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") -> None:
+def create_red_boss(settings: Settings, screen: Screen, sprites: Sprites) -> None:
     """Create red boss."""
     boss = RedBoss(settings=settings, screen=screen)
     boss_shield = RedBossShield(screen, boss)
@@ -258,7 +258,7 @@ def create_red_boss(settings: "Settings", screen: "Screen", sprites: "Sprites") 
     sprites.boss_shields.add(boss_shield)
 
 
-def update_green_boss_bullets(boss_bullets: "Group[GreenBossBullet]") -> None:
+def update_green_boss_bullets(boss_bullets: Group[GreenBossBullet]) -> None:
     for green_boss_bullet in boss_bullets:
         if green_boss_bullet.bounces > 3:
             green_boss_bullet.kill()
@@ -266,11 +266,11 @@ def update_green_boss_bullets(boss_bullets: "Group[GreenBossBullet]") -> None:
             green_boss_bullet.change_direction()
 
 
-def fire_red_boss_bullets(settings: "Settings",
-                          screen: "Screen",
-                          ship: "Ship",
-                          bosses: "GroupSingle",
-                          boss_bullets: "Group",
+def fire_red_boss_bullets(settings: Settings,
+                          screen: Screen,
+                          ship: Ship,
+                          bosses: GroupSingle,
+                          boss_bullets: Group,
                           dt: int) -> None:
     """Create red boss bullets."""
     settings.time_elapsed_since_last_red_boss_bullet += dt
@@ -290,10 +290,10 @@ def fire_red_boss_bullets(settings: "Settings",
     settings.time_elapsed_since_last_red_boss_bullet = 0
 
 
-def fire_blue_boss_bullets(settings: "Settings",
-                           screen: "Screen",
-                           bosses: "GroupSingle",
-                           boss_bullets: "Group",
+def fire_blue_boss_bullets(settings: Settings,
+                           screen: Screen,
+                           bosses: GroupSingle,
+                           boss_bullets: Group,
                            dt: int) -> None:
     """Create blue boss bullets."""
     settings.time_elapsed_since_last_blue_boss_bullet += dt
@@ -319,15 +319,15 @@ def fire_blue_boss_bullets(settings: "Settings",
             boss.rt_trigger = True
 
 
-def maybe_create_black_hole(settings: "Settings",
-                            screen: "Screen",
-                            ship: "Ship",
-                            black_holes: "GroupSingle") -> None:
+def maybe_create_black_hole(settings: Settings,
+                            screen: Screen,
+                            ship: Ship,
+                            black_holes: GroupSingle) -> None:
     if not black_holes and settings.black_hole_spawn_timer > 2000:
         black_holes.add(BlackHole(settings, screen, ship))
 
 
-def update_black_hole(settings: "Settings", black_holes: "GroupSingle", dt: int) -> None:
+def update_black_hole(settings: Settings, black_holes: GroupSingle, dt: int) -> None:
     """Update black hole animation."""
     settings.black_hole_spawn_timer += dt
     if black_holes and settings.black_hole_spawn_timer > 6000:

@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class AlienBullet(Sprite):
     IMAGE = load_image("aliens/green_alien_bullet.png")
 
-    def __init__(self, settings: "Settings", screen: "Screen", rect: "Rect") -> None:
+    def __init__(self, settings: Settings, screen: Screen, rect: Rect) -> None:
         super().__init__()
         self.screen = screen
         self.screen_rect = self.screen.rect
@@ -46,7 +46,7 @@ class AlienBullet(Sprite):
         """Draw alien bullet on screen."""
         self.screen.it.blit(self.image, self.rect)
 
-    def define_position(self, ship: "Ship") -> None:
+    def define_position(self, ship: Ship) -> None:
         """Define position of ship."""
         direct_bullet.define_direct_bullet_position(bullet=self, ship=ship)
 

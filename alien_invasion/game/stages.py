@@ -2,7 +2,6 @@ import secrets
 import time
 from abc import abstractmethod
 from collections import UserList
-from collections.abc import Generator
 from itertools import count
 from logging import getLogger
 from typing import TYPE_CHECKING, TypeAlias, Union
@@ -16,6 +15,8 @@ from game.gf import collision, common
 from game.ship_consumables import ShipAmmo, ShipHealth
 
 if TYPE_CHECKING:
+    from collections.abc import Generator
+
     from pygame.sprite import Group
 
     from game.bosses import Boss
@@ -35,7 +36,7 @@ class BaseStage:
 
     counter = count(start=0)
 
-    def __init__(self, screen: "Screen", sprites: "Sprites", name: str) -> None:
+    def __init__(self, screen: Screen, sprites: Sprites, name: str) -> None:
         self.screen = screen
         self.sprites = sprites
         self.name = name
@@ -87,13 +88,13 @@ class BaseStage:
 class Stage(BaseStage):
 
     def __init__(self,
-                 stages: "Stages",
-                 settings: "Settings",
-                 screen: "Screen",
-                 hud: "Hud",
-                 stats: "Stats",
-                 ship: "Ship",
-                 sprites: "Sprites",
+                 stages: Stages,
+                 settings: Settings,
+                 screen: Screen,
+                 hud: Hud,
+                 stats: Stats,
+                 ship: Ship,
+                 sprites: Sprites,
                  name: str) -> None:
         super().__init__(screen=screen, sprites=sprites, name=name)
         self.stages = stages
@@ -227,13 +228,13 @@ class BlueStage(Stage):
 class BossStage(BaseStage):
 
     def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 stats: "Stats",
-                 stages: "Stages",
-                 hud: "Hud",
-                 ship: "Ship",
-                 sprites: "Sprites",
+                 settings: Settings,
+                 screen: Screen,
+                 stats: Stats,
+                 stages: Stages,
+                 hud: Hud,
+                 ship: Ship,
+                 sprites: Sprites,
                  name: str) -> None:
         super().__init__(screen=screen, sprites=sprites, name=name)
         self.settings = settings
@@ -411,12 +412,12 @@ class BlueBossStage(BossStage):
 class Stages(UserList[StageTypes]):
 
     def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 stats: "Stats",
-                 hud: "Hud",
-                 ship: "Ship",
-                 sprites: "Sprites") -> None:
+                 settings: Settings,
+                 screen: Screen,
+                 stats: Stats,
+                 hud: Hud,
+                 ship: Ship,
+                 sprites: Sprites) -> None:
         self.settings = settings
         self.screen = screen
         self.stats = stats
@@ -539,9 +540,9 @@ class Stages(UserList[StageTypes]):
         return next_stage
 
 
-def maybe_spawn_consumable(screen: "Screen",
-                           ship: "Ship",
-                           group: "Group",
+def maybe_spawn_consumable(screen: Screen,
+                           ship: Ship,
+                           group: Group,
                            consumable: ShipHealth | ShipAmmo) -> bool:
     if secrets.choice(range(5)):
         return False
@@ -558,10 +559,10 @@ def maybe_spawn_consumable(screen: "Screen",
     return True
 
 
-def maybe_spawn_extra_health(screen: "Screen",
-                             stats: "Stats",
-                             ship: "Ship",
-                             health: "Group") -> bool:
+def maybe_spawn_extra_health(screen: Screen,
+                             stats: Stats,
+                             ship: Ship,
+                             health: Group) -> bool:
     if stats.ships_left > 3:
         return False
     consumable = ShipHealth(screen)
@@ -571,9 +572,9 @@ def maybe_spawn_extra_health(screen: "Screen",
                                   consumable=consumable)
 
 
-def maybe_spawn_extra_ammo(screen: "Screen",
-                           ship: "Ship",
-                           ammo: "Group") -> bool:
+def maybe_spawn_extra_ammo(screen: Screen,
+                           ship: Ship,
+                           ammo: Group) -> bool:
     consumable = ShipAmmo(screen)
     return maybe_spawn_consumable(screen=screen,
                                   ship=ship,

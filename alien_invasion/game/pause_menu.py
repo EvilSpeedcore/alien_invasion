@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 class PauseMenu:
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         self.screen = screen
 
         self.size, self.radius = 350, 20

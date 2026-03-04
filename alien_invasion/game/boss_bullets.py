@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class BossBullet(Sprite):
     IMAGE = load_image("aliens/green_alien_bullet.png")
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         super().__init__()
         self.screen = screen
         self.image: Surface = self.IMAGE
@@ -32,7 +32,7 @@ class BossBullet(Sprite):
 
 class GreenBossBullet(BossBullet):
 
-    def __init__(self, settings: "Settings", screen: "Screen", boss: "GreenBoss") -> None:
+    def __init__(self, settings: Settings, screen: Screen, boss: GreenBoss) -> None:
         super().__init__(screen)
 
         self.screen_rect = self.screen.rect
@@ -81,7 +81,7 @@ class GreenBossBullet(BossBullet):
 class RedBossBullet(BossBullet):
     IMAGE = load_image("aliens/red_alien_bullet.png")
 
-    def __init__(self, settings: "Settings", screen: "Screen", boss: "RedBoss") -> None:
+    def __init__(self, settings: Settings, screen: Screen, boss: RedBoss) -> None:
         super().__init__(screen=screen)
 
         self.screen_rect = self.screen.rect
@@ -102,7 +102,7 @@ class RedBossBullet(BossBullet):
     def update(self) -> None:
         direct_bullet.update_direct_bullet(bullet=self)
 
-    def define_position(self, ship: "Ship") -> None:
+    def define_position(self, ship: Ship) -> None:
         direct_bullet.define_direct_bullet_position(bullet=self, ship=ship)
 
 
@@ -110,9 +110,9 @@ class BlueBossBullet(BossBullet):
     IMAGE = load_image("aliens/blue_alien_bullet.png")
 
     def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 boss: "BlueBoss",
+                 settings: Settings,
+                 screen: Screen,
+                 boss: BlueBoss,
                  angle: int) -> None:
         super().__init__(screen=screen)
 

@@ -16,12 +16,12 @@ if TYPE_CHECKING:
 
 
 class BlackHole(Sprite):
-    ROTATION_IMAGES: ClassVar[list["Surface"]] = load_sequential_from_dirs("black_hole")
+    ROTATION_IMAGES: ClassVar[list[Surface]] = load_sequential_from_dirs("black_hole")
 
     def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 ship: "Ship") -> None:
+                 settings: Settings,
+                 screen: Screen,
+                 ship: Ship) -> None:
         super().__init__()
         self.settings = settings
         self.screen = screen

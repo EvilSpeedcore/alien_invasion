@@ -14,7 +14,7 @@ BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBoss
 
 class BossHudHealth(UserList):
 
-    def __init__(self, images: list["Surface"]) -> None:
+    def __init__(self, images: list[Surface]) -> None:
         super().__init__(images)
         self.hit_points = len(images)
 

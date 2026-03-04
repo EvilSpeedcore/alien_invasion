@@ -16,10 +16,10 @@ if TYPE_CHECKING:
 class ShipConsumable(Sprite):
 
     def __init__(self,
-                 screen: "Screen",
-                 image: "Surface",
-                 item: "Surface",
-                 rect: "Rect") -> None:
+                 screen: Screen,
+                 image: Surface,
+                 item: Surface,
+                 rect: Rect) -> None:
         super().__init__()
         self.screen = screen
         self.image = image
@@ -35,7 +35,7 @@ class ShipHealth(ShipConsumable):
     IMAGE = load_image("stats_health.png")
     ITEM = load_image("spawned_health.png")
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         rect: Rect = self.IMAGE.get_rect()
         super().__init__(screen=screen, image=self.IMAGE, item=self.ITEM, rect=rect)
 
@@ -44,7 +44,7 @@ class ShipAmmo(ShipConsumable):
     IMAGE = load_image("stats_ammo.png")
     ITEM = load_image("spawned_ammo.png")
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         rect: Rect = self.IMAGE.get_rect()
         super().__init__(screen=screen, image=self.IMAGE, item=self.ITEM, rect=rect)
 
@@ -53,7 +53,7 @@ class ShipShield(ShipConsumable):
     IMAGE = load_image("stats_shield.png")
     ITEM = load_image("spawned_shield.png")
 
-    def __init__(self, screen: "Screen", ship: "Ship") -> None:
+    def __init__(self, screen: Screen, ship: Ship) -> None:
         rect: Rect = self.ITEM.get_rect()
         super().__init__(screen=screen, image=self.IMAGE, item=self.ITEM, rect=rect)
         self.ship = ship

@@ -28,7 +28,7 @@ class MainMenuEvents:
     quit: bool = False
     play: bool = False
 
-    def update(self, events: "MainMenuEvents") -> None:
+    def update(self, events: MainMenuEvents) -> None:
         # Update once
         self.quit = self.quit or events.quit
         self.play = self.play or events.play
@@ -40,7 +40,7 @@ class PauseEvents:
     unpause: bool = False
     to_main_menu: bool = False
 
-    def update(self, events: "PauseEvents") -> None:
+    def update(self, events: PauseEvents) -> None:
         # Update once
         self.quit = self.quit or events.quit
         self.unpause = self.unpause or events.unpause
@@ -52,19 +52,19 @@ class ActiveGameEvents:
     quit: bool = False
     pause: bool = False
 
-    def update(self, events: "ActiveGameEvents") -> None:
+    def update(self, events: ActiveGameEvents) -> None:
         # Update once
         self.quit = self.quit or events.quit
         self.pause = self.pause or events.pause
 
 
-def check_active_game_keydown_events(event: "Event",
-                                     settings: "Settings",
-                                     screen: "Screen",
-                                     stats: "Stats",
-                                     hud: "Hud",
-                                     ship: "Ship",
-                                     sprites: "Sprites") -> ActiveGameEvents:
+def check_active_game_keydown_events(event: Event,
+                                     settings: Settings,
+                                     screen: Screen,
+                                     stats: Stats,
+                                     hud: Hud,
+                                     ship: Ship,
+                                     sprites: Sprites) -> ActiveGameEvents:
     events = ActiveGameEvents()
     match event.key:
         case pygame.K_RIGHT:
@@ -92,7 +92,7 @@ def check_active_game_keydown_events(event: "Event",
     return events
 
 
-def check_pause_keydown_events(event: "Event", ship: "Ship") -> PauseEvents:
+def check_pause_keydown_events(event: Event, ship: Ship) -> PauseEvents:
     events = PauseEvents()
     match event.key:
         case pygame.K_RIGHT:
@@ -116,17 +116,17 @@ def check_pause_keydown_events(event: "Event", ship: "Ship") -> PauseEvents:
     return events
 
 
-def check_active_game_keyup_events(event: "Event", ship: "Ship") -> ActiveGameEvents:
+def check_active_game_keyup_events(event: Event, ship: Ship) -> ActiveGameEvents:
     check_keyup_events(event, ship)
     return ActiveGameEvents()
 
 
-def check_pause_keyup_events(event: "Event", ship: "Ship") -> PauseEvents:
+def check_pause_keyup_events(event: Event, ship: Ship) -> PauseEvents:
     check_keyup_events(event, ship)
     return PauseEvents()
 
 
-def check_keyup_events(event: "Event", ship: "Ship") -> None:
+def check_keyup_events(event: Event, ship: Ship) -> None:
     """Handle events when a key is released."""
     match event.key:
         case pygame.K_RIGHT:
@@ -155,12 +155,12 @@ def check_keyup_events(event: "Event", ship: "Ship") -> None:
                 rt.rotate_to_left(ship)
 
 
-def check_active_game_events(settings: "Settings",
-                             screen: "Screen",
-                             stats: "Stats",
-                             hud: "Hud",
-                             ship: "Ship",
-                             sprites: "Sprites") -> ActiveGameEvents:
+def check_active_game_events(settings: Settings,
+                             screen: Screen,
+                             stats: Stats,
+                             hud: Hud,
+                             ship: Ship,
+                             sprites: Sprites) -> ActiveGameEvents:
     events = ActiveGameEvents()
     for event in pygame.event.get():
         match event.type:
@@ -183,7 +183,7 @@ def check_active_game_events(settings: "Settings",
     return events
 
 
-def check_pause_events(ship: "Ship", pause_menu: "PauseMenu") -> PauseEvents:
+def check_pause_events(ship: Ship, pause_menu: PauseMenu) -> PauseEvents:
     events = PauseEvents()
     for event in pygame.event.get():
         match event.type:
@@ -198,7 +198,7 @@ def check_pause_events(ship: "Ship", pause_menu: "PauseMenu") -> PauseEvents:
     return events
 
 
-def check_main_menu_events(play_button: "Button") -> MainMenuEvents:
+def check_main_menu_events(play_button: Button) -> MainMenuEvents:
     events = MainMenuEvents()
     for event in pygame.event.get():
         match event.type:
@@ -212,11 +212,11 @@ def check_main_menu_events(play_button: "Button") -> MainMenuEvents:
     return events
 
 
-def check_play_button_pressed(play_button: "Button") -> bool:
+def check_play_button_pressed(play_button: Button) -> bool:
     return play_button.ellipse_rect.collidepoint(pygame.mouse.get_pos())
 
 
-def check_pause_back_to_menu_button_pressed(pause_menu: "PauseMenu") -> bool:
+def check_pause_back_to_menu_button_pressed(pause_menu: PauseMenu) -> bool:
     position = pause_menu.get_mouse_position()
     return pause_menu.back_to_menu_button.ellipse_rect.collidepoint(position)
 
@@ -226,7 +226,7 @@ def quit_game() -> None:
     sys.exit(0)
 
 
-def end_game(settings: "Settings", screen: "Screen", stages: "Stages") -> None:
+def end_game(settings: Settings, screen: Screen, stages: Stages) -> None:
     # Hide ship fast
     screen.it.fill(settings.bg_color)
     stages.current.teardown()

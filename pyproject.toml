@@ -3,7 +3,7 @@ name = "alien-invasion"
 version = "0.1.0"
 description = "alien invation game"
 readme = "README.md"
-requires-python = "==3.13.*"
+requires-python = "==3.14.*"
 dependencies = [
     "pygame-ce>=2.5.7",
 ]
@@ -77,7 +77,7 @@ exclude = [
 
 [tool.tox]
 requires = ["tox>=4.19"]
-env_list = ["3.13", "lint", "type"]
+env_list = ["3.14", "lint", "type"]
 
 [tool.tox.env.lint]
 runner = "uv-venv-lock-runner"

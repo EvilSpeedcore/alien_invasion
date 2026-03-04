@@ -15,8 +15,8 @@ if TYPE_CHECKING:
 class BossShield(Sprite):
 
     def __init__(self,
-                 screen: "Screen",
-                 image: "Surface",
+                 screen: Screen,
+                 image: Surface,
                  position: tuple[int, int]) -> None:
         super().__init__()
         self.screen = screen
@@ -40,7 +40,7 @@ class BossShield(Sprite):
 
 class MovingBossShield(BossShield):
 
-    def __init__(self, screen: "Screen", image: "Surface", boss: "BlueBoss | RedBoss") -> None:
+    def __init__(self, screen: Screen, image: Surface, boss: BlueBoss | RedBoss) -> None:
         super().__init__(screen=screen,
                          image=image,
                          position=(boss.rect.centerx, boss.rect.centery))
@@ -57,19 +57,19 @@ class MovingBossShield(BossShield):
 class GreenBossShield(BossShield):
     IMAGE = load_image("spawned_green_boss_shield.png")
 
-    def __init__(self, screen: "Screen", position: tuple[int, int]) -> None:
+    def __init__(self, screen: Screen, position: tuple[int, int]) -> None:
         super().__init__(screen=screen, image=self.IMAGE, position=position)
 
 
 class RedBossShield(MovingBossShield):
     IMAGE = load_image("spawned_red_boss_shield.png")
 
-    def __init__(self, screen: "Screen", boss: "RedBoss") -> None:
+    def __init__(self, screen: Screen, boss: RedBoss) -> None:
         super().__init__(screen=screen, image=self.IMAGE, boss=boss)
 
 
 class BlueBossShield(MovingBossShield):
     IMAGE = load_image("spawned_blue_boss_shield.png")
 
-    def __init__(self, screen: "Screen", boss: "BlueBoss") -> None:
+    def __init__(self, screen: Screen, boss: BlueBoss) -> None:
         super().__init__(screen=screen, image=self.IMAGE, boss=boss)

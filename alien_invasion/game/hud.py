@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 class Hud:
 
     def __init__(self,
-                 settings: "Settings",
-                 screen: "Screen",
-                 stats: "Stats",
-                 ship: "Ship",
-                 sprites: "Sprites") -> None:
+                 settings: Settings,
+                 screen: Screen,
+                 stats: Stats,
+                 ship: Ship,
+                 sprites: Sprites) -> None:
         self.screen = screen
         self.screen_rect = screen.rect
         self.settings = settings

@@ -26,7 +26,7 @@ class Ship(Sprite):
         DOWN_RIGHT = load_image("ship_down_right.png")
         DOWN_LEFT = load_image("ship_down_left.png")
 
-    def __init__(self, settings: "Settings", screen: "Screen") -> None:
+    def __init__(self, settings: Settings, screen: Screen) -> None:
         super().__init__()
         self.screen = screen
         self.settings = settings

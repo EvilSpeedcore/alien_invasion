@@ -17,7 +17,7 @@ class ShipToBulletPosition(Enum):
     DOWN_RIGHT = auto()
 
 
-def define_direct_bullet_angle(bullet: "AlienBullet | RedBossBullet", ship: "Ship") -> None:
+def define_direct_bullet_angle(bullet: AlienBullet | RedBossBullet, ship: Ship) -> None:
     ab = abs(bullet.y - ship.centery)
     ac = abs(bullet.x - ship.centerx)
     bc = math.sqrt(pow(ab, 2) + pow(ac, 2))
@@ -25,7 +25,7 @@ def define_direct_bullet_angle(bullet: "AlienBullet | RedBossBullet", ship: "Shi
     bullet.shooting_angle = fa.find_angle_with_cos(bullet.shooting_angle_cos)
 
 
-def define_direct_bullet_position(bullet: "AlienBullet | RedBossBullet", ship: "Ship") -> None:
+def define_direct_bullet_position(bullet: AlienBullet | RedBossBullet, ship: Ship) -> None:
     if (bullet.x < ship.centerx and bullet.y < ship.centery) or (
         bullet.x < ship.centerx and bullet.y == ship.centery
     ):
@@ -47,7 +47,7 @@ def define_direct_bullet_position(bullet: "AlienBullet | RedBossBullet", ship: "
     define_direct_bullet_angle(bullet=bullet, ship=ship)
 
 
-def update_direct_bullet(bullet: "AlienBullet | RedBossBullet") -> None:
+def update_direct_bullet(bullet: AlienBullet | RedBossBullet) -> None:
     match bullet.ship_position:
         case ShipToBulletPosition.DOWN_RIGHT:
             radians = math.radians(360 - bullet.shooting_angle)

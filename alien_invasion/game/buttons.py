@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 class Buttons:
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         self.START = Button(surface=screen.it,
                             position={"center": (screen.rect.center)},
                             message="Start")

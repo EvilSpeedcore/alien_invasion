@@ -18,9 +18,9 @@ if TYPE_CHECKING:
 
 class Boss(Sprite):
     def __init__(self,
-                 screen: "Screen",
-                 image: "Surface",
-                 health: "BossHealthTypes") -> None:
+                 screen: Screen,
+                 image: Surface,
+                 health: BossHealthTypes) -> None:
         super().__init__()
         self.screen = screen
         self.image: Surface = image
@@ -52,7 +52,7 @@ class Boss(Sprite):
 class GreenBoss(Boss):
     IMAGE = load_image("aliens/green_alien.png")
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         image = self.IMAGE
         health = GreenBossHealth()
         super().__init__(screen=screen, image=image, health=health)
@@ -61,7 +61,7 @@ class GreenBoss(Boss):
 class RedBoss(Boss):
     IMAGE = load_image("aliens/red_alien.png")
 
-    def __init__(self, settings: "Settings", screen: "Screen") -> None:
+    def __init__(self, settings: Settings, screen: Screen) -> None:
         image = self.IMAGE
         health = RedBossHealth()
         super().__init__(screen=screen, image=image, health=health)
@@ -238,7 +238,7 @@ class RedBoss(Boss):
 class BlueBoss(Boss):
     IMAGE = load_image("aliens/blue_alien.png")
 
-    def __init__(self, screen: "Screen") -> None:
+    def __init__(self, screen: Screen) -> None:
         image = self.IMAGE
         health = BlueBossHealth()
         super().__init__(screen=screen, image=image, health=health)
