@@ -6,6 +6,9 @@ from game.images import load_image
 from game.screen import ScreenSide
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
+    from pygame.surface import Surface
+
     from game.screen import Screen
     from game.settings import Settings
     from game.ship import Ship
@@ -17,10 +20,10 @@ class Bullet(Sprite):
     def __init__(self, settings: "Settings", screen: "Screen", ship: "Ship") -> None:
         super().__init__()
         self.screen = screen
-        self.image = self.IMAGE
+        self.image: Surface = self.IMAGE
 
         # Get the rectangular area of the image.
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
 
         # Set starting position of bullet at the center of ship.
         self.rect.centerx = ship.rect.centerx

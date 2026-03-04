@@ -5,6 +5,7 @@ from pygame.sprite import Sprite
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
     from pygame.surface import Surface
 
     from game.bosses import BlueBoss, RedBoss
@@ -19,8 +20,8 @@ class BossShield(Sprite):
                  position: tuple[int, int]) -> None:
         super().__init__()
         self.screen = screen
-        self.image = image
-        self.rect = image.get_rect()
+        self.image: Surface = image
+        self.rect: Rect = image.get_rect()
 
         # Set position of shield.
         self.rect.centerx, self.rect.centery = position

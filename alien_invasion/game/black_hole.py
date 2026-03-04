@@ -7,6 +7,7 @@ from pygame.sprite import Sprite
 from game.images import load_sequential_from_dirs
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
     from pygame.surface import Surface
 
     from game.screen import Screen
@@ -27,9 +28,9 @@ class BlackHole(Sprite):
         self.screen_rect = screen.rect
 
         self.images: deque[Surface] = deque(self.ROTATION_IMAGES)
-        self.image = self.images[0].copy()
+        self.image: Surface = self.images[0].copy()
 
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
 
         # Black holes spawns in random area of screen from allowed coordinates.
         self.banned_coordinates_x_1 = list(range(int(ship.centerx - 100.0), int(ship.centerx + 106.0)))

@@ -7,7 +7,9 @@ from pygame.sprite import Sprite
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
     from pygame.sprite import Group
+    from pygame.surface import Surface
 
     from game.screen import Screen
     from game.settings import Settings
@@ -28,10 +30,10 @@ class Alien(Sprite):
         super().__init__()
         self.screen = screen
         self.settings = settings
-        self.image = self.IMAGE
+        self.image: Surface = self.IMAGE
 
         # Get the rectangular area of the image.
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
         self.screen_rect = self.screen.rect
 
         # Every new aliens spawns in random area of the screen from allowed coordinates.

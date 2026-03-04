@@ -5,7 +5,7 @@ description = "alien invation game"
 readme = "README.md"
 requires-python = "==3.13.*"
 dependencies = [
-    "pygame>=2.6.1",
+    "pygame-ce>=2.5.7",
 ]
 
 [dependency-groups]
@@ -21,7 +21,7 @@ lint = [
     "ruff==0.15.3",
 ]
 prod = [
-    "pygame>=2.6.1",
+    "pygame-ce>=2.5.7",
 ]
 type = [
     "mypy==1.19.1",

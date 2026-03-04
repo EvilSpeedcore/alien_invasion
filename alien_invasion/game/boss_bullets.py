@@ -7,6 +7,9 @@ from game.gf import direct_bullet
 from game.images import load_image
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
+    from pygame.surface import Surface
+
     from game.bosses import BlueBoss, GreenBoss, RedBoss
     from game.screen import Screen
     from game.settings import Settings
@@ -19,8 +22,8 @@ class BossBullet(Sprite):
     def __init__(self, screen: "Screen") -> None:
         super().__init__()
         self.screen = screen
-        self.image = self.IMAGE
-        self.rect = self.image.get_rect()
+        self.image: Surface = self.IMAGE
+        self.rect: Rect = self.image.get_rect()
 
     def blitme(self) -> None:
         """Draw bullet on screen."""

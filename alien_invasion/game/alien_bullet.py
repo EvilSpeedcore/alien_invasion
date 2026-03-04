@@ -7,6 +7,7 @@ from game.images import load_image
 
 if TYPE_CHECKING:
     from pygame.rect import Rect
+    from pygame.surface import Surface
 
     from game.screen import Screen
     from game.settings import Settings
@@ -21,9 +22,9 @@ class AlienBullet(Sprite):
         self.screen = screen
         self.screen_rect = self.screen.rect
 
-        self.image = self.IMAGE
+        self.image: Surface = self.IMAGE
         # Get the rectangular area of the image.
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
 
         # Set starting position of bullet.
         self.rect.centerx = rect.centerx

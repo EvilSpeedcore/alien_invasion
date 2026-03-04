@@ -49,7 +49,10 @@ def check_ship_bullets_boss_collision(settings: "Settings", sprites: "Sprites") 
                                       dokillb=False):
         return
 
-    boss: Boss = sprites.bosses.sprite
+    boss: Boss | None = sprites.bosses.sprite
+    if boss is None:
+        raise ValueError
+
     boss.health_points -= 1
     boss.prepare_health()
     if boss.health_points < 1:
@@ -74,8 +77,15 @@ def check_ship_bosses_collision(settings: "Settings",
 
 def check_ship_bullets_boss_shield_collision(sprites: "Sprites") -> None:
     if pygame.sprite.groupcollide(sprites.boss_shields, sprites.ship_bullets, dokilla=False, dokillb=True):
-        boss_shield: BossShield = sprites.boss_shields.sprite
-        boss: Boss = sprites.bosses.sprite
+
+        boss_shield: BossShield | None = sprites.boss_shields.sprite
+        if boss_shield is None:
+            raise ValueError
+
+        boss: Boss | None = sprites.bosses.sprite
+        if boss is None:
+            raise ValueError
+
         boss_shield.health_points -= 1
         boss.health_points -= 1
         boss.prepare_health()

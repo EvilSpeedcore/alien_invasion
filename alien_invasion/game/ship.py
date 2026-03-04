@@ -7,6 +7,9 @@ from game.rotation import rotate_to_up
 from game.screen import ScreenSide
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
+    from pygame.surface import Surface
+
     from game.screen import Screen
     from game.settings import Settings
 
@@ -28,10 +31,10 @@ class Ship(Sprite):
         self.screen = screen
         self.settings = settings
 
-        self.image = self.Images.UP
+        self.image: Surface = self.Images.UP
 
         # Get the rectangular area of the image.
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
 
         self.screen_rect = screen.rect
 

@@ -102,7 +102,7 @@ def update_screen(settings: "Settings",
             sprites.ship_shields.empty()
 
     # Display boss shield on hud.
-    boss_shield: BossShield
+    boss_shield: BossShield | None
     if boss_shield := sprites.boss_shields.sprite:
         if boss_shield.health_points > 0:
             boss_shield.draw_boss_shield()
@@ -171,7 +171,11 @@ def ship_hit_on_boss_stage(settings: "Settings",
                            sprites: "Sprites") -> None:
     stats.ships_left -= 1
     hud.prep_health()
-    boss: Boss = sprites.bosses.sprite
+
+    boss: Boss | None = sprites.bosses.sprite
+    if boss is None:
+        raise ValueError
+
     boss.set_default_health_points()
     boss.prepare_health()
     sprites.ship_bullets.empty()

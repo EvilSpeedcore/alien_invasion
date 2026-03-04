@@ -272,7 +272,11 @@ class BossStage(BaseStage):
 
     def update(self) -> None:
         super().update()
-        boss: Boss = self.sprites.bosses.sprite
+
+        boss: Boss | None = self.sprites.bosses.sprite
+        if boss is None:
+            raise ValueError
+
         boss.update()
         self.sprites.boss_bullets.update()
 
@@ -306,9 +310,12 @@ class GreenBossStage(BossStage):
         super().check_collision()
 
     def gameplay(self, dt: int) -> None:
+        if (boss := self.sprites.bosses.sprite) is None:
+            raise ValueError
+
         common.fire_green_boss_bullets(settings=self.settings,
                                        screen=self.screen,
-                                       boss=self.sprites.bosses.sprite,
+                                       boss=boss,
                                        boss_bullets=self.sprites.boss_bullets,
                                        dt=dt)
         common.update_green_boss_bullets(self.sprites.boss_bullets)

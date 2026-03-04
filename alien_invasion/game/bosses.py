@@ -8,6 +8,7 @@ from game.images import load_image
 from game.screen import ScreenSide as Side
 
 if TYPE_CHECKING:
+    from pygame.rect import Rect
     from pygame.surface import Surface
 
     from game.boss_health import BossHealthTypes
@@ -22,11 +23,11 @@ class Boss(Sprite):
                  health: "BossHealthTypes") -> None:
         super().__init__()
         self.screen = screen
-        self.image = image
+        self.image: Surface = image
         self.combined_health = health
 
         # Rectangular area of the image.
-        self.rect = self.image.get_rect()
+        self.rect: Rect = self.image.get_rect()
 
         # Set starting position of boss.
         self.screen_rect = screen.rect
@@ -36,8 +37,9 @@ class Boss(Sprite):
         self.set_default_health_points()
 
     def prepare_health(self) -> None:
-        """Prepare to drawn green boss health."""
         self.combined_health.rotate()
+        if self.combined_health.rect is None:
+            raise ValueError
         self.combined_health.rect.x, self.combined_health.rect.y = 500, 60
 
     def set_default_health_points(self) -> None:

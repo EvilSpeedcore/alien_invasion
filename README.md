@@ -13,7 +13,6 @@ Windows:
 2. Run `./build/build.bat`
 
 ## TODO
-* Move to https://github.com/pygame-community/pygame-ce
 * Reload level
 * Tests with input recording (events)
 * Saves
