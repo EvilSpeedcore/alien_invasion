@@ -544,8 +544,8 @@ def maybe_spawn_consumable(screen: Screen,
                            ship: Ship,
                            group: Group,
                            consumable: ShipHealth | ShipAmmo) -> bool:
-    # if secrets.choice(range(5)):
-    #     return False
+    if secrets.choice(range(5)):
+        return False
 
     x_padding = consumable.rect.width * 3
     y_padding = consumable.rect.height * 3
