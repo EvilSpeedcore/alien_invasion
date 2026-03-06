@@ -18,7 +18,7 @@ build = [
 ]
 lint = [
     "isort>=6.0.1",
-    "ruff==0.15.4",
+    "ruff==0.15.5",
 ]
 prod = [
     "pygame-ce>=2.5.7",
@@ -76,7 +76,10 @@ exclude = [
 ]
 
 [tool.tox]
-requires = ["tox>=4.19"]
+requires = [
+    "tox>=4.19",
+    "tox-uv>=1.29.0"
+]
 env_list = ["3.14", "lint", "type"]
 
 [tool.tox.env.lint]
