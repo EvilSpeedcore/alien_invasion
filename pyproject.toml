@@ -17,26 +17,23 @@ build = [
     "nuitka>=2.8.4",
 ]
 lint = [
-    "isort>=6.0.1",
     "ruff==0.15.5",
 ]
 prod = [
     "pygame-ce>=2.5.7",
 ]
+test = [
+    "pytest>=9.0.2",
+]
 type = [
     "mypy==1.19.1",
 ]
-
-[tool.isort]
-known_third_party = ["pygame"]
-src_paths = ["alien_invasion/game"]
-profile = "black"
 
 [tool.ruff]
 line-length = 120
 
 [tool.ruff.lint.isort]
-known-first-party = ["game"]
+known-first-party = ["run", "game"]
 
 [tool.ruff.lint]
 preview = true
@@ -75,6 +72,9 @@ exclude = [
     ".*\\.build.*",
 ]
 
+[tool.pytest]
+pythonpath = ["alien_invasion"]
+
 [tool.tox]
 requires = [
     "tox>=4.19",
@@ -85,15 +85,18 @@ env_list = ["3.14", "lint", "type"]
 [tool.tox.env.lint]
 runner = "uv-venv-lock-runner"
 skip_install = true
-description = "run isort and ruff"
+description = "run and ruff"
 dependency_groups = ["lint"]
-commands = [["isort", "."], ["ruff", "check"]]
+commands = [
+    ["ruff", "check", "--select", "I", "--fix"],
+    ["ruff", "check"]
+]
 
 [tool.tox.env.type]
 runner = "uv-venv-lock-runner"
 skip_install = true
 description = "run mypy"
-dependency_groups = ["type"]
+dependency_groups = ["test", "type"]
 commands = [["mypy", ".", "--explicit-package-bases"]]
 
 [tool.ruff.lint.pylint]

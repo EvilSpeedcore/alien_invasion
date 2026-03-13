@@ -17,4 +17,6 @@ Windows:
 * Tests with input recording (events)
 * Saves
 * Change blue boss to shoot first bullets with delay
-* .ini configuration for executable
+* .ini configuration for game (and executable)
+* Improve logging: timestamp, configurable logs folder
+* Add descriptions to ruff ignores in pyproject.toml

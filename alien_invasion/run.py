@@ -24,6 +24,12 @@ def initialize() -> None:
 
 
 def run_game(args: Namespace) -> None:  # noqa: PLR0914
+    if filepath := args.record_events:
+        events.Events().record_filepath = filepath
+
+    if filepath := args.playback_events:
+        events.Events().load(filepath)
+
     initialize()
 
     settings = Settings(health=args.health)
@@ -130,8 +136,14 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--stage", type=str)
     parser.add_argument("--health", type=int)
+    parser.add_argument("--record-events", type=str)
+    parser.add_argument("--playback-events", type=str)
     args = parser.parse_args()
 
     logging.basicConfig(filename="app.log", level=logging.DEBUG)
+
+    if args.record_events and args.playback_events:
+        message = "Recording while playing events not supported yet"
+        raise RuntimeError(message)
 
     run_game(args)

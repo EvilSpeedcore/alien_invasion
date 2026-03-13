@@ -29,3 +29,8 @@ class Paths:
     @cache
     def math() -> Path:
         return Paths.assets() / "math"
+
+    @staticmethod
+    @cache
+    def playbacks() -> Path:
+        return Paths.assets() / "playbacks"
