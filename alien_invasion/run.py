@@ -1,11 +1,13 @@
 import logging
 from argparse import ArgumentParser, Namespace
+from datetime import UTC, datetime
 
 import pygame
 
 from game.buttons import Buttons
 from game.gf import common, events
 from game.hud import Hud
+from game.paths import Paths
 from game.pause_menu import PauseMenu
 from game.screen import Screen
 from game.settings import Settings
@@ -21,6 +23,13 @@ def initialize() -> None:
     pygame.display.set_caption("Alien Invasion")
     pygame.mixer.pre_init(44100, -16, 2, 2048)
     pygame.mixer.init()
+
+
+def configure_logger() -> None:
+    fmt = "%(asctime)s %(levelname)s %(filename)s %(message)s"
+    now = datetime.now(UTC)
+    filepath = Paths.logs() / now.strftime("run_%Y-%m-%dT%H-%M-%S-%f.log")
+    logging.basicConfig(filename=filepath, format=fmt, level=logging.DEBUG)
 
 
 def run_game(args: Namespace) -> None:  # noqa: PLR0914
@@ -140,10 +149,9 @@ if __name__ == "__main__":
     parser.add_argument("--playback-events", type=str)
     args = parser.parse_args()
 
-    logging.basicConfig(filename="app.log", level=logging.DEBUG)
-
     if args.record_events and args.playback_events:
         message = "Recording while playing events not supported yet"
         raise RuntimeError(message)
 
+    configure_logger()
     run_game(args)

@@ -80,7 +80,7 @@ requires = [
     "tox>=4.19",
     "tox-uv>=1.29.0"
 ]
-env_list = ["3.14", "lint", "type"]
+env_list = ["3.14", "lint", "type", "test"]
 
 [tool.tox.env.lint]
 runner = "uv-venv-lock-runner"
@@ -98,6 +98,13 @@ skip_install = true
 description = "run mypy"
 dependency_groups = ["test", "type"]
 commands = [["mypy", ".", "--explicit-package-bases"]]
+
+[tool.tox.env.test]
+runner = "uv-venv-lock-runner"
+skip_install = true
+description = "run tests"
+dependency_groups = ["prod", "test"]
+commands = [["pytest", "alien_invasion/tests"]]
 
 [tool.ruff.lint.pylint]
 max-positional-args = 10

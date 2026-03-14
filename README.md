@@ -14,9 +14,8 @@ Windows:
 
 ## TODO
 * Reload level
-* Tests with input recording (events)
+* Improve events recording (mouse position, etc.)
 * Saves
 * Change blue boss to shoot first bullets with delay
 * .ini configuration for game (and executable)
-* Improve logging: timestamp, configurable logs folder
 * Add descriptions to ruff ignores in pyproject.toml

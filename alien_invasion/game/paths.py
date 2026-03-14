@@ -34,3 +34,10 @@ class Paths:
     @cache
     def playbacks() -> Path:
         return Paths.assets() / "playbacks"
+
+    @staticmethod
+    @cache
+    def logs() -> Path:
+        path = Path(__file__).resolve().parent.parent / "logs"
+        path.mkdir(parents=True, exist_ok=True)
+        return path
