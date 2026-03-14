@@ -18,4 +18,3 @@ Windows:
 * Saves
 * Change blue boss to shoot first bullets with delay
 * .ini configuration for game (and executable)
-* Add descriptions to ruff ignores in pyproject.toml

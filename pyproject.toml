@@ -41,27 +41,27 @@ select = [
     "ALL"
 ]
 ignore = [
-    "D100",
-    "D101",
-    "D102",
-    "D103",
-    "D104",
-    "D105",
-    "D106",
-    "D107",
-    "D203",
-    "D212",
-    "D213",
-    "D417",
-    "C901",      # too-complex
-    "CPY001",
-    "FIX002",
+    "D100",      # undocumented-public-module
+    "D101",      # undocumented-public-class
+    "D102",      # undocumented-public-method
+    "D103",      # undocumented-public-function
+    "D104",      # undocumented-public-package
+    "D105",      # undocumented-magic-method
+    "D106",      # undocumented-public-nested-class
+    "D107",      # undocumented-public-init
+    "D203",      # incorrect-blank-line-before-class
+    "D212",      # multi-line-summary-first-line
+    "D213",      # multi-line-summary-second-line
+    "D417",      # undocumented-param
+    "C901",      # complex-structure
+    "CPY001",    # missing-copyright-notice
+    "FIX002",    # line-contains-todo
     "PLR0912",   # too-many-branches
     "PLR0913",   # too-many-arguments
     "PLR0915",   # too-many-statements
-    "PLR2004",   # magic-values (fix)
-    "TD002",
-    "TD003",
+    "PLR2004",   # magic-value-comparison
+    "TD002",     # missing-todo-author
+    "TD003",     # missing-todo-link
 ]
 
 [tool.mypy]
