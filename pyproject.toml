@@ -49,7 +49,6 @@ ignore = [
     "D105",      # undocumented-magic-method
     "D106",      # undocumented-public-nested-class
     "D107",      # undocumented-public-init
-    "D203",      # incorrect-blank-line-before-class
     "D212",      # multi-line-summary-first-line
     "D213",      # multi-line-summary-second-line
     "D417",      # undocumented-param
