@@ -17,7 +17,7 @@ build = [
     "nuitka>=2.8.4",
 ]
 lint = [
-    "ruff==0.15.7",
+    "ruff==0.15.8",
 ]
 prod = [
     "pygame-ce>=2.5.7",
