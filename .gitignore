@@ -1,4 +1,5 @@
 __pycache__/
+.zed
 venv/
 *.egg-info/
 *.log
