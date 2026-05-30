@@ -26,9 +26,6 @@ if TYPE_CHECKING:
     from game.stats import Stats
 
 
-RECORDED_EVENTS: list[dict] = []
-
-
 @dataclass
 class MainMenuEvents:
     quit: bool = False
