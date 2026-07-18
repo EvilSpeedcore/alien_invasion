@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from game.stats import Stats
 
 
-StageTypes: TypeAlias = Union["BossStage", "Stage"]  # noqa: UP040
+StageTypes: TypeAlias = Union["BossStage", "Stage"]  # ruff:ignore[non-pep695-type-alias]
 log = getLogger(__name__)
 
 

@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from pygame.surface import Surface
 
 
-BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # noqa: UP040
+BossHealthTypes: TypeAlias = Union["BlueBossHealth", "GreenBossHealth", "RedBossHealth"]  # ruff:ignore[non-pep695-type-alias]
 
 
 class BossHudHealth(UserList):

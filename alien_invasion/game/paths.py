@@ -9,7 +9,7 @@ class Paths:
     @cache
     def assets() -> Path:
         if getattr(sys, "frozen", False):
-            base = Path(sys._MEIPASS) if hasattr(sys, "_MEIPASS") else Path(sys.executable).parent  # noqa: SLF001
+            base = Path(sys._MEIPASS) if hasattr(sys, "_MEIPASS") else Path(sys.executable).parent  # ruff:ignore[private-member-access]
             return base / "assets"
 
         base = Path(__file__).resolve().parent.parent

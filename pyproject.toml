@@ -17,7 +17,7 @@ build = [
     "nuitka>=2.8.4",
 ]
 lint = [
-    "ruff==0.15.20",
+    "ruff==0.15.22",
 ]
 prod = [
     "pygame-ce>=2.5.7",
@@ -30,7 +30,7 @@ type = [
 ]
 
 [tool.ruff]
-line-length = 120
+line-length = 140
 
 [tool.ruff.lint.isort]
 known-first-party = ["run", "game"]
@@ -41,26 +41,26 @@ select = [
     "ALL"
 ]
 ignore = [
-    "D100",      # undocumented-public-module
-    "D101",      # undocumented-public-class
-    "D102",      # undocumented-public-method
-    "D103",      # undocumented-public-function
-    "D104",      # undocumented-public-package
-    "D105",      # undocumented-magic-method
-    "D106",      # undocumented-public-nested-class
-    "D107",      # undocumented-public-init
-    "D212",      # multi-line-summary-first-line
-    "D213",      # multi-line-summary-second-line
-    "D417",      # undocumented-param
-    "C901",      # complex-structure
-    "CPY001",    # missing-copyright-notice
-    "FIX002",    # line-contains-todo
-    "PLR0912",   # too-many-branches
-    "PLR0913",   # too-many-arguments
-    "PLR0915",   # too-many-statements
-    "PLR2004",   # magic-value-comparison
-    "TD002",     # missing-todo-author
-    "TD003",     # missing-todo-link
+    "undocumented-public-module",
+    "undocumented-public-class",
+    "undocumented-public-method",
+    "undocumented-public-function",
+    "undocumented-public-package",
+    "undocumented-magic-method",
+    "undocumented-public-nested-class",
+    "undocumented-public-init",
+    "multi-line-summary-first-line",
+    "multi-line-summary-second-line",
+    "undocumented-param",
+    "complex-structure",
+    "missing-copyright-notice",
+    "line-contains-todo",
+    "too-many-branches",
+    "too-many-arguments",
+    "too-many-statements",
+    "magic-value-comparison",
+    "missing-todo-author",
+    "missing-todo-link",
 ]
 
 [tool.mypy]

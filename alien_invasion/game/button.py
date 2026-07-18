@@ -33,7 +33,7 @@ class Button:
         self.prepare_message(message)
 
     def prepare_message(self, message: str) -> None:
-        self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # noqa: FBT003
+        self.msg_image = self.font.render(message, True, self.text_color, self.button_color)  # ruff:ignore[boolean-positional-value-in-call]
         self.msg_image_rect = self.msg_image.get_rect(center=self.ellipse_rect.center)
 
     def update(self, mouse_position: tuple[float, float] | None = None) -> None:
@@ -44,7 +44,7 @@ class Button:
             self.prepare_message(self.message)
             return
 
-        self.msg_image = self.font.render(self.message, True, self.hover_text_color, self.button_color)  # noqa: FBT003
+        self.msg_image = self.font.render(self.message, True, self.hover_text_color, self.button_color)  # ruff:ignore[boolean-positional-value-in-call]
         self.msg_image_rect = self.msg_image.get_rect()
         self.msg_image_rect.center = self.ellipse_rect.center
 

@@ -19,7 +19,7 @@ class PauseMenu:
         self.rect = self.surface.get_rect()
 
         font = pygame.font.SysFont("tahoma", size=40)
-        self.text_surface = font.render("PAUSED", True, (255, 255, 255))  # noqa: FBT003
+        self.text_surface = font.render("PAUSED", True, (255, 255, 255))  # ruff:ignore[boolean-positional-value-in-call]
         self.text_rect = self.text_surface.get_rect(midtop=(self.rect.centerx, 20))
         self.back_to_menu_button = Button(surface=self.surface,
                                           position={"midtop": (self.rect.centerx, 100)},

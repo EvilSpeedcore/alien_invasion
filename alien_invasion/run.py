@@ -32,7 +32,7 @@ def configure_logger() -> None:
     logging.basicConfig(filename=filepath, format=fmt, level=logging.DEBUG)
 
 
-def run_game(args: Namespace) -> None:  # noqa: PLR0914
+def run_game(args: Namespace) -> None:  # ruff:ignore[too-many-locals]
     if filepath := args.record_events:
         events.Events().record_filepath = filepath
 
